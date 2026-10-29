@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>선생님의 공간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --card: #ffffff;
+    --text: #22252a;
+    --muted: #6b7078;
+    --accent: #2f6f5e;
+    --line: #e4e2dc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17191c;
+      --card: #202328;
+      --text: #ecebe7;
+      --muted: #a2a7ae;
+      --accent: #6fc2a8;
+      --line: #30343a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Noto Sans KR", system-ui, sans-serif;
+    line-height: 1.7;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 56px 16px 40px; }
+  header { margin-bottom: 40px; }
+  .hello { color: var(--accent); font-weight: 500; margin: 0 0 6px; }
+  h1 { font-size: 2.1rem; margin: 0 0 12px; line-height: 1.3; }
+  .intro { color: var(--muted); margin: 0; }
+  section { margin-top: 36px; }
+  h2 {
+    font-size: 1.1rem;
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .card h3 { margin: 0 0 6px; font-size: 1rem; }
+  .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+  ul { padding-left: 20px; margin: 0; }
+  a { color: var(--accent); }
+  footer { margin-top: 56px; color: var(--muted); font-size: .85rem; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="hello">안녕하세요 👋</p>
+    <h1>OOO 선생님의 공간입니다</h1>
+    <p class="intro">OO고등학교에서 OO 과목을 가르치고 있습니다. 수업 자료와 연수에서 배운 것들을 이곳에 모아 둡니다.</p>
+  </header>
+
+  <section>
+    <h2>요즘 하고 있는 일</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>수업</h3>
+        <p>담당 과목과 학년, 수업에서 중요하게 생각하는 것을 적어 주세요.</p>
+      </div>
+      <div class="card">
+        <h3>진로·진학 상담</h3>
+        <p>학생 상담과 대입 준비를 함께하고 있습니다.</p>
+      </div>
+      <div class="card">
+        <h3>AI 연수</h3>
+        <p>수업과 업무에 AI를 활용하는 방법을 배우고 정리합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>자료 모음</h2>
+    <ul>
+      <li>공유하고 싶은 자료나 링크를 여기에 추가하세요.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>연락처</h2>
+    <p>학교 이메일이나 연락 방법을 적어 주세요.</p>
+  </section>
+
+  <footer>© 2026 OOO</footer>
+</div>
+</body>
+</html>
