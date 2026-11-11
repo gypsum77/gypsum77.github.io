@@ -1284,9 +1284,9 @@ body {
     }
     OX.locked = false;
     var o = OX.list[OX.idx];
-    $('#oxNo').textContent = '기출 선지 ' + (OX.idx + 1) + ' · ' + (o.s || '수능/평가원');
+    $('#oxNo').textContent = '기출 선지 ' + (OX.idx + 1) + ' · ' + o.t;
     $('#oxProgress').textContent = (OX.idx + 1) + ' / ' + OX.list.length;
-    $('#oxPassage').textContent = o.q;
+    $('#oxPassage').textContent = o.s;
     $('#oxFeedback').style.display = 'none';
   }
 
@@ -1294,7 +1294,9 @@ body {
     if (OX.locked) return;
     OX.locked = true;
     var o = OX.list[OX.idx];
-    var isRight = (ans === o.a);
+    var userBool = (ans === 'O');
+    var isRight = (userBool === !!o.a);
+    var markStr = o.a ? '⭕ O' : '❌ X';
 
     $('#oxFeedback').style.display = 'block';
     var badge = $('#oxFbBadge'), exp = $('#oxFbExplain');
@@ -1303,14 +1305,14 @@ body {
       OX.right++;
       S.xp += 10;
       badge.className = 'res-badge ok';
-      badge.textContent = '정답! (' + o.a + ') 👏';
+      badge.textContent = '정답입니다! (' + markStr + ') 👏';
     } else {
       sfx('no');
       badge.className = 'res-badge no';
-      badge.textContent = '오답! 올바른 답은 [' + o.a + ']입니다.';
+      badge.textContent = '오답! 올바른 답은 [' + markStr + ']입니다.';
     }
     save();
-    exp.innerHTML = '<b>사상가:</b> ' + o.t + '<br><b>해설:</b> ' + (o.e || '기출 핵심 선지입니다.');
+    exp.innerHTML = '<b>사상가:</b> ' + esc(o.t) + '<br><b>해설:</b> ' + esc(o.e || '기출 핵심 선지입니다.');
   };
 
   window.__nextOx = function () {
