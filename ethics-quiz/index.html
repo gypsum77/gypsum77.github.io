@@ -433,6 +433,53 @@ body {
   line-height: 1.7;
   word-break: keep-all;
 }
+
+/* Interactive Blank Slot (for Blind Mode) */
+.blank-slot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  margin: 0 3px;
+  background: #fef08a;
+  color: #854d0e;
+  border: 1.5px dashed #ca8a04;
+  border-radius: 8px;
+  font-family: var(--font-bold);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.15s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+.blank-slot:hover {
+  background: #fde047;
+  transform: translateY(-1px);
+}
+.blank-slot:active {
+  transform: scale(0.92);
+}
+.blank-slot.revealed {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1.5px solid #3b82f6;
+  font-family: var(--font-bold);
+  font-size: 16px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  cursor: default;
+  box-shadow: none;
+  animation: popWord 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popWord {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
 .quiz-prompt {
   font-family: var(--font-bold);
   font-size: 14px;
@@ -782,8 +829,8 @@ body {
 
     <div class="quiz-qbox">
       <span class="quiz-no" id="blindNo">문항 1</span>
-      <div class="quiz-passage" id="blindPassage">핵심 단서가 [ 빈 칸 ]으로 처리된 원전</div>
-      <div class="quiz-prompt">빈칸에 들어갈 단서와 사상가를 떠올려보세요!</div>
+      <div class="quiz-passage" id="blindPassage">핵심 단서가 [ ? ]로 처리된 원전</div>
+      <div class="quiz-prompt">💡 [ ? ]를 터치하면 단어가 쏙 나타나요! 사상가는 누구일까요?</div>
 
       <div class="choice-grid" id="blindChoices"></div>
 
@@ -1178,6 +1225,28 @@ body {
   /* ---------------- 3. Blind Keyword Mode ---------------- */
   var BL = { list: [], idx: 0, locked: false };
 
+  window.__revealBlank = function (btn) {
+    if (!btn || btn.classList.contains('revealed')) return;
+    sfx('ok');
+    var word = btn.getAttribute('data-word');
+    if (word) {
+      btn.textContent = word;
+      btn.classList.add('revealed');
+    }
+  };
+
+  window.__revealAllBlanks = function () {
+    $$('#blindPassage .blank-slot').forEach(function (btn) {
+      if (!btn.classList.contains('revealed')) {
+        var word = btn.getAttribute('data-word');
+        if (word) {
+          btn.textContent = word;
+          btn.classList.add('revealed');
+        }
+      }
+    });
+  };
+
   window.__startBlind = function () {
     sfx('tap');
     BL.list = shuffle(ALL).slice(0, 15);
@@ -1201,15 +1270,33 @@ body {
     $('#blindProgress').textContent = (BL.idx + 1) + ' / ' + BL.list.length;
     $('#blindFeedback').style.display = 'none';
 
-    // Mask clue in stem
-    var masked = q.q;
+    // Extract clue keywords matching passage
+    var candidates = [];
     (q.c || []).forEach(function (c) {
-      var word = c.split(' ')[0].replace(/[\(\)]/g, '');
-      if (word.length >= 2) {
-        masked = masked.replace(new RegExp(word, 'g'), '[ ❓빈칸 ]');
+      var m = c.match(/^([^\s]+)/);
+      if (m) {
+        var raw = m[1].replace(/[,·]/g, '').trim();
+        if (raw && candidates.indexOf(raw) === -1) candidates.push(raw);
+        var clean = raw.replace(/[\(\)\[\],·]/g, '').trim();
+        if (clean && clean.length >= 2 && candidates.indexOf(clean) === -1) candidates.push(clean);
       }
     });
-    $('#blindPassage').innerHTML = esc(masked).replace(/\[ ❓빈칸 \]/g, '<mark style="background:#fef08a;padding:2px 6px;border-radius:4px">[ ❓ 빈 칸 ]</mark>');
+    var matched = candidates.filter(function (w) { return q.q.indexOf(w) !== -1; });
+    matched.sort(function (a, b) { return b.length - a.length; });
+
+    var masked = esc(q.q);
+    matched.forEach(function (w) {
+      var escW = esc(w);
+      var token = '___BLANK___' + encodeURIComponent(w) + '___';
+      masked = masked.split(escW).join(token);
+    });
+
+    masked = masked.replace(/___BLANK___(.*?)___/g, function (match, enc) {
+      var original = decodeURIComponent(enc);
+      return '<button type="button" class="blank-slot" onclick="__revealBlank(this)" data-word="' + esc(original) + '" title="터치하면 정답 확인">?</button>';
+    });
+
+    $('#blindPassage').innerHTML = masked;
 
     // Choices
     var choices = [q.t];
@@ -1231,6 +1318,9 @@ body {
     var q = BL.list[BL.idx];
     var isRight = (chosen === q.t);
 
+    // Reveal all blanks when answered
+    window.__revealAllBlanks();
+
     $$('#blindChoices .choice-btn').forEach(function (btn) {
       var t = btn.getAttribute('data-t');
       if (t === q.t) btn.classList.add('correct');
@@ -1251,7 +1341,7 @@ body {
       S.wrong[q.n] = true;
     }
     save();
-    exp.innerHTML = '<b>원문 숨겨진 단서:</b> ' + (q.c || []).join(' · ') + '<br><b>원전:</b> ' + q.q;
+    exp.innerHTML = '<b>원문 숨겨진 단서:</b> ' + (q.c || []).join(' · ') + '<br><b>원전:</b> ' + esc(q.q);
   };
 
   window.__nextBlind = function () {
