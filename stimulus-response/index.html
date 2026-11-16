@@ -1135,7 +1135,9 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
     if (ok) {
       fb = '<div class="fb good"><div class="head">정답이에요! ✓</div>' +
         (q.type === 'ox'
-          ? '<div>제시된 답은 <b>' + (q.answer ? 'O' : 'X') + '</b> — 이 카드의 정답은 <span class="ans">' + esc(card.a) + '</span></div>'
+          ? (q.answer
+            ? '<div>정답은 <b>O</b> — 제시된 답이 이 카드의 정답이에요.</div>'
+            : '<div>정답은 <b>X</b> — 제시된 답은 이 카드의 정답이 아니에요. 실제 정답: <span class="ans">' + esc(card.a) + '</span></div>')
           : '') +
         (card.note ? '<div class="src">' + esc(card.note) + '</div>' : '') +
         '<span class="src">' + esc(card.src) + '</span>' +
@@ -1144,7 +1146,8 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
     } else {
       var detail = q.type === 'ox'
         ? '<div class="head">아쉬워요 ✗ — 정답은 <b>' + (q.answer ? 'O' : 'X') + '</b></div>' +
-          '<div>이 카드의 정답: <span class="ans">' + esc(card.a) + '</span></div>'
+          '<div>' + (q.answer ? '제시된 답이 이 카드의 정답이었어요.' : '제시된 답은 틀린 답이에요.') +
+          ' 이 카드의 정답: <span class="ans">' + esc(card.a) + '</span></div>'
         : '<div class="head">아쉬워요 ✗</div><div>정답: <span class="ans">' + esc(card.a) + '</span></div>';
       fb = '<div class="fb bad">' + detail +
         (card.note ? '<div class="src">' + esc(card.note) + '</div>' : '') +
