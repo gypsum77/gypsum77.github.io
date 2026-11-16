@@ -310,13 +310,13 @@ body {
 .result .wronglist li span { color: var(--green); font-weight: 700; }
 
 /* ---------- cheat sheet ---------- */
-.sheet { display: grid; gap: 16px; }
-.sheet section { background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 18px 16px; }
+.sheet { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+.sheet section { background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 18px 16px; min-width: 0; }
 .sheet h3 { margin: 0 0 3px; font-size: 1.03rem; display: flex; align-items: center; gap: 8px; }
 .sheet h3 .dotc { width: 9px; height: 9px; border-radius: 99px; background: var(--accent); }
 .sheet .cap { margin: 0 0 12px; font-size: .78rem; color: var(--muted); }
-.tblwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; }
-table.tb { border-collapse: collapse; width: 100%; font-size: .84rem; line-height: 1.5; }
+.tblwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; min-width: 0; }
+table.tb { border-collapse: collapse; width: 100%; min-width: 280px; font-size: .84rem; line-height: 1.5; }
 table.tb th, table.tb td { border: 1px solid #e2eaf3; padding: 8px 9px; text-align: left; vertical-align: top; word-break: keep-all; }
 table.tb thead th { background: #f2f7fe; color: #1b3b6f; font-weight: 700; white-space: nowrap; }
 table.tb tbody th { background: #f8fbff; font-weight: 700; white-space: nowrap; color: #1b3b6f; }
