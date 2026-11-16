@@ -154,6 +154,7 @@ body {
 }
 .face .scroll { overflow-y: auto; overscroll-behavior: contain; flex: 1; min-height: 0; padding-right: 2px; }
 .face.front { background: linear-gradient(170deg, #ffffff 0%, #fbfdff 100%); }
+.face.front .scroll { display: flex; flex-direction: column; justify-content: center; }
 .face.back {
   transform: rotateY(180deg);
   background: linear-gradient(170deg, #ffffff 0%, #f7fbff 100%);
@@ -1083,7 +1084,8 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
         '<button class="oxbtn o" data-ox="o">O</button>' +
         '<button class="oxbtn x" data-ox="x">X</button></div>';
     }
-    body += '</div><div id="fbSlot"></div>';
+    body += '</div><div id="fbSlot"></div>' +
+      '<div style="text-align:center;margin-top:4px"><button class="mini ghost" id="quitQuiz">퀴즈 그만두기</button></div>';
     $('#quizStage').innerHTML = body;
     QZ.results = QZ.results || [];
   }
@@ -1299,6 +1301,8 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
 
     document.addEventListener('click', function (e) {
       if (!QZ) return;
+      var quit = e.target.closest ? e.target.closest('#quitQuiz') : null;
+      if (quit) { QZ = null; $('#quizStage').style.display = 'none'; renderQuizPanel(); return; }
       var ch = e.target.closest ? e.target.closest('#quizStage .choice') : null;
       if (ch) { answerMC(ch); return; }
       var ox = e.target.closest ? e.target.closest('#quizStage .oxbtn') : null;
