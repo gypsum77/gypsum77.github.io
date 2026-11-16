@@ -1,0 +1,1324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>자극과 반응 · 신경계와 호르몬 — 암기 카드</title>
+<meta name="description" content="오투 중등과학 3-1 IV. 자극과 반응 02. 신경계와 호르몬(140·142·144쪽) 암기 플래시카드와 확인 퀴즈">
+<meta name="theme-color" content="#eef3fa">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A0%3C/text%3E%3C/svg%3E">
+<style>
+@font-face {
+  font-family: 'Maplestory';
+  src: url('fonts/MaplestoryOTFLight.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maplestory';
+  src: url('fonts/MaplestoryOTFBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #eef3fa;
+  --bg2: #f7fafd;
+  --card: #ffffff;
+  --ink: #1b2431;
+  --ink2: #3f4c5d;
+  --muted: #7d8896;
+  --line: #e2eaf3;
+  --line2: #eef3f9;
+  --accent: #2f6fed;
+  --accent-soft: #e8f0ff;
+  --green: #0f9d6a;
+  --green-soft: #e6f7ef;
+  --red: #dd4a3f;
+  --red-soft: #fdecea;
+  --amber: #d9880a;
+  --amber-soft: #fdf3e2;
+  --pa: #3b6fe0;
+  --pb: #7a5cd6;
+  --pc: #d9880a;
+  --pd: #0f9d78;
+  --shadow: 0 12px 34px rgba(24, 44, 84, .09), 0 2px 6px rgba(24, 44, 84, .05);
+  --shadow-sm: 0 4px 14px rgba(24, 44, 84, .07);
+  --r: 20px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: 'Maplestory', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 600px at 8% -10%, #dbe8ff 0%, rgba(219, 232, 255, 0) 60%),
+    radial-gradient(900px 520px at 100% 0%, #d9f2ea 0%, rgba(217, 242, 234, 0) 55%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 42%, #f4f8f6 100%);
+  background-attachment: fixed;
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+.app { max-width: 780px; margin: 0 auto; padding: 18px 14px 56px; }
+
+/* ---------- header ---------- */
+.top { display: flex; align-items: flex-start; gap: 12px; margin: 4px 2px 14px; }
+.top .emoji {
+  width: 48px; height: 48px; flex: 0 0 48px; border-radius: 15px;
+  display: grid; place-items: center; font-size: 24px;
+  background: linear-gradient(150deg, #ffffff, #e9f1ff);
+  box-shadow: var(--shadow-sm);
+}
+.top h1 { margin: 0; font-size: 1.42rem; font-weight: 700; letter-spacing: -.4px; line-height: 1.25; }
+.top .sub { margin: 3px 0 0; font-size: .84rem; color: var(--muted); }
+
+.progwrap { margin: 0 2px 14px; }
+.progline { display: flex; justify-content: space-between; align-items: baseline; font-size: .8rem; color: var(--muted); margin-bottom: 5px; }
+.progline b { color: var(--accent); font-weight: 700; }
+.progbar { height: 8px; border-radius: 99px; background: #e3ebf6; overflow: hidden; }
+.progbar > i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #4f8bf0, #2f6fed); transition: width .4s ease; }
+
+/* ---------- tabs ---------- */
+.tabs {
+  position: sticky; top: 0; z-index: 30;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+  padding: 7px; margin: 0 0 16px;
+  background: rgba(255, 255, 255, .82);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(226, 234, 243, .9);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.tabs button {
+  border: 0; background: transparent; font-family: inherit; font-size: .95rem; color: var(--ink2);
+  padding: 10px 6px; border-radius: 11px; cursor: pointer; transition: .18s; font-weight: 400;
+}
+.tabs button.on { background: var(--accent); color: #fff; box-shadow: 0 6px 14px rgba(47, 111, 237, .28); font-weight: 700; }
+
+/* ---------- part chips ---------- */
+.chips { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); background: #fff; color: var(--ink2);
+  font-family: inherit; font-size: .85rem; padding: 7px 12px; border-radius: 99px; cursor: pointer;
+  transition: .16s; box-shadow: 0 1px 2px rgba(24, 44, 84, .04);
+}
+.chip i { width: 8px; height: 8px; border-radius: 99px; background: #c3cede; display: inline-block; }
+.chip[data-part="A"] i { background: var(--pa); }
+.chip[data-part="B"] i { background: var(--pb); }
+.chip[data-part="C"] i { background: var(--pc); }
+.chip[data-part="D"] i { background: var(--pd); }
+.chip.on { background: #1d2b3f; color: #fff; border-color: #1d2b3f; }
+.chip.on i { background: #fff; }
+.chip .n { font-size: .74rem; opacity: .65; }
+
+/* ---------- generic card ---------- */
+.panel { display: none; }
+.panel.on { display: block; animation: fade .22s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.panelbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 2px 10px; font-size: .82rem; color: var(--muted); }
+.panelbar .count b { color: var(--ink); font-weight: 700; }
+
+.mini {
+  border: 1px solid var(--line); background: #fff; color: var(--ink2);
+  font-family: inherit; font-size: .8rem; padding: 6px 11px; border-radius: 99px; cursor: pointer; transition: .15s;
+}
+.mini:hover { border-color: #cdd9e8; }
+.mini.on { background: var(--accent-soft); border-color: #bcd3ff; color: var(--accent); font-weight: 700; }
+.mini.ghost { background: transparent; }
+
+/* ---------- flashcard ---------- */
+.flip { perspective: 1600px; cursor: pointer; outline: none; margin-bottom: 12px; }
+.flip-inner {
+  position: relative; width: 100%;
+  height: clamp(320px, 52vh, 430px);
+  transform-style: preserve-3d;
+  transition: transform .58s cubic-bezier(.24, .8, .24, 1);
+}
+.flip.on .flip-inner { transform: rotateY(180deg); }
+
+.face {
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: var(--r); background: var(--card); border: 1px solid var(--line);
+  box-shadow: var(--shadow); padding: 20px 20px 18px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.face .scroll { overflow-y: auto; overscroll-behavior: contain; flex: 1; min-height: 0; padding-right: 2px; }
+.face.front { background: linear-gradient(170deg, #ffffff 0%, #fbfdff 100%); }
+.face.back {
+  transform: rotateY(180deg);
+  background: linear-gradient(170deg, #ffffff 0%, #f7fbff 100%);
+  border-color: #d8e6fb;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+  font-size: .74rem; padding: 4px 10px; border-radius: 99px; font-weight: 700;
+  background: var(--accent-soft); color: var(--accent); margin-bottom: 14px;
+}
+.badge[data-p="A"] { background: #e8efff; color: var(--pa); }
+.badge[data-p="B"] { background: #f0eafd; color: var(--pb); }
+.badge[data-p="C"] { background: #fdf1dd; color: var(--pc); }
+.badge[data-p="D"] { background: #e3f7f0; color: var(--pd); }
+
+.qtext { font-size: 1.24rem; font-weight: 700; line-height: 1.55; letter-spacing: -.2px; word-break: keep-all; }
+.qtext .blank { color: var(--accent); }
+
+.hint {
+  margin-top: auto; padding-top: 12px; font-size: .78rem; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.hint .dot { width: 6px; height: 6px; border-radius: 99px; background: #c3cede; }
+.answer-label { font-size: .74rem; color: var(--accent); font-weight: 700; letter-spacing: .5px; margin-bottom: 8px; }
+.atext { font-size: 1.2rem; font-weight: 700; line-height: 1.55; word-break: keep-all; color: #12305c; }
+.anote {
+  margin-top: 12px; font-size: .89rem; color: var(--ink2); line-height: 1.6;
+  background: #f5f9ff; border-left: 3px solid #bcd3ff; border-radius: 8px; padding: 9px 12px;
+}
+.asrc { margin-top: auto; padding-top: 10px; font-size: .72rem; color: var(--muted); }
+
+.mark { display: inline-flex; align-items: center; gap: 4px; font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 99px; }
+.mark.known { background: var(--green-soft); color: var(--green); }
+
+/* ---------- actions ---------- */
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 10px; }
+.btn {
+  border: 1px solid var(--line); background: #fff; color: var(--ink); font-family: inherit;
+  font-size: 1rem; padding: 14px 10px; border-radius: 15px; cursor: pointer; transition: .15s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; line-height: 1.3;
+}
+.btn:active { transform: scale(.985); }
+.btn.again { border-color: #f3d3cf; background: #fff8f7; color: #b83b31; }
+.btn.known { border: 0; background: linear-gradient(160deg, #16b077, #0f9d6a); color: #fff; box-shadow: 0 8px 18px rgba(15, 157, 106, .26); font-weight: 700; }
+.btn.primary { border: 0; background: linear-gradient(160deg, #4a86f2, #2f6fed); color: #fff; box-shadow: 0 8px 18px rgba(47, 111, 237, .26); font-weight: 700; }
+.btn.flat { background: #f6f9fd; }
+.btn.wide { width: 100%; }
+.btn:disabled { opacity: .45; cursor: default; box-shadow: none; }
+.btn.sm { font-size: .86rem; padding: 10px 12px; border-radius: 12px; }
+
+.navrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.navbtn {
+  border: 1px solid var(--line); background: #fff; width: 42px; height: 42px; border-radius: 12px;
+  font-size: 1rem; color: var(--ink2); cursor: pointer; display: grid; place-items: center;
+}
+.navbtn:disabled { opacity: .35; }
+.navmid { font-size: .82rem; color: var(--muted); }
+
+/* ---------- done / empty ---------- */
+.done {
+  border-radius: var(--r); background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow);
+  padding: 28px 20px; text-align: center;
+}
+.done .big { font-size: 2rem; margin-bottom: 6px; }
+.done h3 { margin: 0 0 6px; font-size: 1.15rem; }
+.done p { margin: 0 0 16px; color: var(--muted); font-size: .9rem; }
+.done .actions { grid-template-columns: 1fr 1fr; }
+
+/* ---------- quiz ---------- */
+.setup { background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 18px; }
+.setup h2 { margin: 0 0 4px; font-size: 1.1rem; }
+.setup .lead { margin: 0 0 16px; font-size: .86rem; color: var(--muted); }
+.field { margin-bottom: 16px; }
+.field > label { display: block; font-size: .78rem; color: var(--muted); margin-bottom: 7px; letter-spacing: .3px; }
+.seg { display: flex; gap: 7px; flex-wrap: wrap; }
+.seg button {
+  flex: 1 1 0; min-width: 90px; border: 1px solid var(--line); background: #fbfdff; color: var(--ink2);
+  font-family: inherit; font-size: .9rem; padding: 11px 8px; border-radius: 12px; cursor: pointer; transition: .15s;
+}
+.seg button.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.setup .note { font-size: .78rem; color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
+
+.qtop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.qtop .no { font-size: .8rem; color: var(--muted); }
+.qtop .no b { color: var(--ink); }
+.qcard {
+  background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow);
+  padding: 20px; margin-bottom: 12px;
+}
+.qcard .qtext { font-size: 1.14rem; }
+.qcard .oxbox {
+  margin-top: 14px; padding: 14px 15px; border-radius: 14px; background: #f6f9fe;
+  border: 1px dashed #c9daf3; font-size: 1.02rem; font-weight: 700; color: #16325c; line-height: 1.55;
+}
+.qcard .oxlead { margin-top: 14px; font-size: .85rem; color: var(--muted); }
+
+/* progress dots */
+.qdots { display: flex; gap: 3px; margin-bottom: 12px; height: 5px; }
+.qdots i { flex: 1; height: 100%; border-radius: 99px; background: #e3ebf6; }
+.qdots i.ok { background: var(--green); }
+.qdots i.no { background: var(--red); }
+.qdots i.now { background: var(--accent); }
+
+.choices { display: grid; gap: 8px; }
+.choice {
+  display: flex; align-items: flex-start; gap: 10px; text-align: left;
+  border: 1px solid var(--line); background: #fff; border-radius: 14px; padding: 13px 14px;
+  font-family: inherit; font-size: .98rem; color: var(--ink); cursor: pointer; transition: .14s; line-height: 1.5;
+  box-shadow: 0 1px 2px rgba(24, 44, 84, .04); word-break: keep-all;
+}
+.choice:hover:not(:disabled) { border-color: #bcd3ff; background: #fbfdff; }
+.choice .k {
+  flex: 0 0 22px; height: 22px; border-radius: 7px; background: #f1f5fb; color: var(--ink2);
+  display: grid; place-items: center; font-size: .78rem; font-weight: 700; margin-top: 1px;
+}
+.choice.pick { border-color: var(--accent); background: var(--accent-soft); }
+.choice.pick .k { background: var(--accent); color: #fff; }
+.choice.correct { border-color: #a7e0c7; background: var(--green-soft); }
+.choice.correct .k { background: var(--green); color: #fff; }
+.choice.wrong { border-color: #f3c2bd; background: var(--red-soft); }
+.choice.wrong .k { background: var(--red); color: #fff; }
+.choice:disabled { cursor: default; }
+
+.oxbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.oxbtn {
+  border: 1px solid var(--line); background: #fff; border-radius: 16px; padding: 22px 10px;
+  font-family: inherit; font-size: 2rem; font-weight: 700; color: var(--ink2); cursor: pointer; transition: .15s;
+}
+.oxbtn.o { color: #1f6fe0; }
+.oxbtn.x { color: #dd4a3f; }
+.oxbtn.correct { border-color: #a7e0c7; background: var(--green-soft); }
+.oxbtn.wrong { border-color: #f3c2bd; background: var(--red-soft); }
+.oxbtn.pick { border-color: var(--accent); }
+
+.fb { margin-top: 12px; border-radius: 14px; padding: 14px 16px; font-size: .92rem; line-height: 1.6; }
+.fb.good { background: var(--green-soft); border: 1px solid #b7e5d1; color: #0b6a48; }
+.fb.bad { background: var(--red-soft); border: 1px solid #f3c8c3; color: #9e3229; }
+.fb .head { font-weight: 700; margin-bottom: 5px; font-size: .95rem; }
+.fb .ans { font-weight: 700; }
+.fb .src { display: block; margin-top: 6px; font-size: .76rem; opacity: .75; }
+.fb .nextrow { margin-top: 12px; }
+
+.result { background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow); padding: 24px 20px; text-align: center; }
+.result .score { font-size: 2.6rem; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.result .score small { font-size: 1rem; color: var(--muted); font-weight: 400; }
+.result .line { margin: 8px 0 18px; color: var(--muted); font-size: .9rem; }
+.result .wronglist { text-align: left; margin: 0 0 18px; padding: 0; list-style: none; }
+.result .wronglist li {
+  border: 1px solid var(--line2); background: #fbfdff; border-radius: 12px; padding: 10px 12px; margin-bottom: 7px; font-size: .87rem;
+}
+.result .wronglist li b { display: block; font-size: .9rem; margin-bottom: 2px; }
+.result .wronglist li span { color: var(--green); font-weight: 700; }
+
+/* ---------- cheat sheet ---------- */
+.sheet { display: grid; gap: 16px; }
+.sheet section { background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 18px 16px; }
+.sheet h3 { margin: 0 0 3px; font-size: 1.03rem; display: flex; align-items: center; gap: 8px; }
+.sheet h3 .dotc { width: 9px; height: 9px; border-radius: 99px; background: var(--accent); }
+.sheet .cap { margin: 0 0 12px; font-size: .78rem; color: var(--muted); }
+.tblwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; padding: 0 4px; }
+table.tb { border-collapse: collapse; width: 100%; font-size: .84rem; line-height: 1.5; }
+table.tb th, table.tb td { border: 1px solid #e2eaf3; padding: 8px 9px; text-align: left; vertical-align: top; word-break: keep-all; }
+table.tb thead th { background: #f2f7fe; color: #1b3b6f; font-weight: 700; white-space: nowrap; }
+table.tb tbody th { background: #f8fbff; font-weight: 700; white-space: nowrap; color: #1b3b6f; }
+table.tb td.c { text-align: center; white-space: nowrap; }
+table.tb tr.hi td { background: #fcfdff; }
+
+.flow { background: #f7faff; border: 1px solid #e4eefb; border-radius: 12px; padding: 11px 13px; font-size: .84rem; line-height: 1.75; color: #1c3557; }
+.flow b { color: var(--accent); }
+.flow + .flow { margin-top: 8px; }
+.flow .t { display: block; font-size: .76rem; color: var(--muted); margin-bottom: 3px; }
+.chiprow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.chiprow span { font-size: .76rem; background: #f2f7fe; color: #1b3b6f; border-radius: 99px; padding: 4px 9px; }
+
+.sheetbar { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 12px; }
+.sheetbar button {
+  white-space: nowrap; border: 1px solid var(--line); background: #fff; color: var(--ink2);
+  font-family: inherit; font-size: .8rem; padding: 7px 11px; border-radius: 99px; cursor: pointer;
+}
+.sheetbar button:hover { border-color: #bcd3ff; color: var(--accent); }
+
+.foot { margin-top: 22px; text-align: center; font-size: .74rem; color: var(--muted); line-height: 1.7; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 20px);
+  background: #1d2b3f; color: #fff; font-size: .84rem; padding: 10px 16px; border-radius: 99px;
+  opacity: 0; pointer-events: none; transition: .25s; z-index: 60; box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 420px) {
+  .top h1 { font-size: 1.22rem; }
+  .qtext { font-size: 1.12rem; }
+  .atext { font-size: 1.08rem; }
+  .face { padding: 17px 16px 15px; }
+  .actions { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .btn { font-size: .94rem; padding: 13px 6px; }
+  .flip-inner { height: clamp(300px, 48vh, 400px); }
+  .sheet h3 { font-size: .98rem; }
+  table.tb { font-size: .8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner, .progbar > i, .panel.on { transition: none; animation: none; }
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <div class="emoji">🧠</div>
+    <div>
+      <h1>자극과 반응 · 신경계와 호르몬</h1>
+      <p class="sub">오투 중등과학 3-1 · IV. 자극과 반응 02 · 140·142·144쪽</p>
+    </div>
+  </div>
+
+  <div class="progwrap">
+    <div class="progline"><span>외운 카드</span><span><b id="progCount">0 / 0</b></span></div>
+    <div class="progbar"><i id="progBar"></i></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button data-view="learn" class="on" role="tab">🃏 암기 학습</button>
+    <button data-view="quiz" role="tab">✅ 암기 확인</button>
+    <button data-view="sheet" role="tab">📋 요약표</button>
+  </div>
+
+  <!-- ============ 암기 학습 ============ -->
+  <section class="panel on" id="panel-learn">
+    <div class="chips" id="chipsLearn"></div>
+
+    <div class="panelbar">
+      <span class="count" id="panelbarCount">0 / 0</span>
+      <span id="learnKnown"></span>
+    </div>
+
+    <div class="flip" id="flip" tabindex="0" role="button" aria-label="카드를 눌러 정답 보기">
+      <div class="flip-inner">
+        <div class="face front">
+          <div class="badge" id="cardBadge" data-p="A">A. 신경계</div>
+          <div class="scroll">
+            <div class="qtext" id="cardQ"></div>
+          </div>
+          <div class="hint"><span class="dot"></span>카드를 누르면 정답이 보여요</div>
+        </div>
+        <div class="face back">
+          <div class="answer-label">정답</div>
+          <div class="scroll">
+            <div class="atext" id="cardA"></div>
+            <div class="anote" id="cardNote" style="display:none"></div>
+          </div>
+          <div class="asrc" id="cardSrc"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panelbar" style="margin:-2px 2px 8px">
+      <span id="cardMark"></span>
+      <span style="font-size:.76rem">1 = 한번 더 · 2 = 외웠어요</span>
+    </div>
+
+    <div id="learnCtrl">
+      <div class="actions">
+        <button class="btn again" id="btnAgain">한번 더 (모름)</button>
+        <button class="btn known" id="btnKnown">외웠어요 ✓</button>
+      </div>
+      <div class="navrow">
+        <button class="navbtn" id="btnPrev" aria-label="이전 카드">←</button>
+        <div style="display:flex;gap:7px">
+          <button class="mini" id="onlyUnknownBtn">모르는 카드만</button>
+          <button class="mini" id="shuffleBtn">순서 섞기</button>
+          <button class="mini ghost" id="resetBtn">기록 지우기</button>
+        </div>
+        <button class="navbtn" id="btnNext" aria-label="다음 카드">→</button>
+      </div>
+      <div id="resetConfirm" style="display:none;margin-top:10px;border:1px solid #f3d3cf;background:#fff8f7;border-radius:14px;padding:12px 14px;font-size:.85rem">
+        외운 카드 표시를 모두 지울까요? 되돌릴 수 없어요.
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn sm flat" id="resetNo" style="flex:1">취소</button>
+          <button class="btn sm again" id="resetYes" style="flex:1">지우기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="done" id="learnDone" style="display:none">
+      <div class="big">🎉</div>
+      <h3 id="doneTitle">이 파트의 카드를 모두 외웠어요!</h3>
+      <p id="doneSub">전체 카드로 돌아가 복습하거나, 바로 퀴즈로 확인해 보세요.</p>
+      <div class="actions">
+        <button class="btn flat" id="doneAgain">처음부터</button>
+        <button class="btn primary" id="doneQuiz">퀴즈로 확인</button>
+      </div>
+      <div style="margin-top:9px"><button class="btn wide flat sm" id="doneUnknown">모르는 카드만 보기</button></div>
+    </div>
+  </section>
+
+  <!-- ============ 암기 확인 ============ -->
+  <section class="panel" id="panel-quiz">
+    <div class="chips" id="chipsQuiz"></div>
+
+    <div class="setup" id="quizSetup">
+      <h2>암기 확인 퀴즈</h2>
+      <p class="lead">외운 카드가 바로 나오는지 확인해 보세요. 틀린 카드는 자동으로 ‘모르는 카드’가 됩니다.</p>
+
+      <div class="field">
+        <label>문제 유형</label>
+        <div class="seg" data-group="type">
+          <button data-val="mc">4지선다</button>
+          <button data-val="ox">O / X</button>
+          <button data-val="mix">섞어서</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>출제 범위</label>
+        <div class="seg" data-group="scope">
+          <button data-val="all">전체 카드</button>
+          <button data-val="unknown">모르는 카드</button>
+          <button data-val="known">외운 카드</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>문제 수</label>
+        <div class="seg" data-group="count">
+          <button data-val="10">10문제</button>
+          <button data-val="20">20문제</button>
+          <button data-val="all">전체</button>
+        </div>
+      </div>
+
+      <p class="note" id="startInfo"></p>
+      <button class="btn primary wide" id="btnStart">퀴즈 시작하기</button>
+    </div>
+
+    <div id="quizStage" style="display:none"></div>
+    <div id="quizResult" style="display:none"></div>
+  </section>
+
+  <!-- ============ 요약표 ============ -->
+  <section class="panel" id="panel-sheet">
+    <div class="sheetbar">
+      <button data-go="s-neuron">뉴런</button>
+      <button data-go="s-brain">뇌·척수</button>
+      <button data-go="s-auto">자율 신경</button>
+      <button data-go="s-path">반응의 경로</button>
+      <button data-go="s-hormone">호르몬</button>
+      <button data-go="s-gland">내분비샘</button>
+      <button data-go="s-disease">질병</button>
+      <button data-go="s-homeo">항상성</button>
+    </div>
+
+    <div class="sheet">
+
+      <section id="s-neuron">
+        <h3><span class="dotc" style="background:var(--pa)"></span>뉴런의 구조와 기능</h3>
+        <p class="cap">신경계를 이루는 신경 세포 · 140쪽</p>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>구조</th><th>기능</th></tr></thead>
+            <tbody>
+              <tr><th>가지 돌기</th><td>다른 뉴런이나 감각 기관에서 전달된 자극을 받아들인다</td></tr>
+              <tr><th>신경 세포체</th><td>핵과 세포질이 있어 여러 가지 생명 활동이 일어난다</td></tr>
+              <tr><th>축삭 돌기</th><td>다른 뉴런이나 기관으로 자극을 전달한다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flow" style="margin-top:10px"><span class="t">자극의 전달 방향</span>
+          <b>가지 돌기 → 신경 세포체 → 축삭 돌기</b> (한 방향)</div>
+        <div class="tblwrap" style="margin-top:10px">
+          <table class="tb">
+            <thead><tr><th>뉴런의 종류</th><th>이루는 것</th><th>하는 일</th></tr></thead>
+            <tbody>
+              <tr><th>감각 뉴런</th><td>감각 신경</td><td>감각 기관에서 받아들인 자극을 연합 뉴런으로 전달</td></tr>
+              <tr><th>연합 뉴런</th><td>중추 신경계</td><td>자극을 느끼고 판단하여 적절한 명령(신호)을 내림</td></tr>
+              <tr><th>운동 뉴런</th><td>운동 신경</td><td>연합 뉴런의 명령을 반응 기관으로 전달</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flow" style="margin-top:10px"><span class="t">자극의 전달 경로</span>
+          자극 → 감각 기관 → <b>감각 뉴런</b> → <b>연합 뉴런</b> → <b>운동 뉴런</b> → 반응 기관 → 반응</div>
+      </section>
+
+      <section id="s-brain">
+        <h3><span class="dotc" style="background:var(--pa)"></span>중추 신경계 — 뇌와 척수</h3>
+        <p class="cap">부위별 기능과 예 · 140쪽</p>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>부위</th><th>기능</th><th>예</th></tr></thead>
+            <tbody>
+              <tr><th>대뇌</th><td>좌우 2개의 반구 · 감각과 운동 조절 · 기억·추리·학습·감정 등 정신 활동</td><td>구구단을 외운다</td></tr>
+              <tr><th>간뇌</th><td>체온, 체액의 농도 등 몸속 상태를 일정하게 유지</td><td>더울 때 땀을 흘려 체온을 낮춘다</td></tr>
+              <tr><th>중간뇌</th><td>눈의 움직임, 동공과 홍채의 변화 조절</td><td>어두운 곳에서 동공이 커진다</td></tr>
+              <tr><th>소뇌</th><td>근육 운동 조절, 몸의 자세와 균형 유지</td><td>한 발로 서서 몸의 균형을 유지한다</td></tr>
+              <tr><th>연수</th><td>심장 박동·호흡 운동·소화 운동 등 생명 유지 활동 조절 · 기침, 재채기, 눈물 분비의 중추</td><td>운동할 때 심장이 빨리 뛴다</td></tr>
+              <tr><th>척수</th><td>뇌와 말초 신경 사이의 신호 전달 통로 · 자신의 의지와 관계없이 일어나는 반응의 중추</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="cap" style="margin:10px 0 0">말초 신경계 = 감각 신경 + 운동 신경 (온몸에 퍼져 중추 신경계와 온몸을 연결)</p>
+      </section>
+
+      <section id="s-auto">
+        <h3><span class="dotc" style="background:var(--pa)"></span>자율 신경 — 교감 · 부교감</h3>
+        <p class="cap">내장 기관에 연결, 대뇌의 직접적인 명령 없이 조절 · 서로 반대 작용(길항 작용) · 140쪽</p>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>구분</th><th>동공 크기</th><th>호흡 운동</th><th>심장 박동</th><th>소화 운동</th></tr></thead>
+            <tbody>
+              <tr><th>교감 신경<br><span style="font-weight:400;color:var(--muted)">긴장·위기</span></th>
+                <td class="c">확대</td><td class="c">촉진</td><td class="c">촉진</td><td class="c">억제</td></tr>
+              <tr><th>부교감 신경<br><span style="font-weight:400;color:var(--muted)">안정</span></th>
+                <td class="c">축소</td><td class="c">억제</td><td class="c">억제</td><td class="c">촉진</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flow" style="margin-top:10px">위험한 상황 → 교감 신경 → <b>심장 박동·호흡 빨라짐</b> → 위험한 상황이 지나면 → 부교감 신경 → 이전 상태로</div>
+      </section>
+
+      <section id="s-path">
+        <h3><span class="dotc" style="background:var(--pb)"></span>자극에 따른 반응의 경로</h3>
+        <p class="cap">의식적 반응 vs 무조건 반사 · 142쪽</p>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>구분</th><th>의식적 반응</th><th>무조건 반사</th></tr></thead>
+            <tbody>
+              <tr><th>뜻</th><td>대뇌의 판단 과정을 거쳐 자신의 의지에 따라 일어나는 반응</td><td>대뇌의 판단 과정을 거치지 않아 자신의 의지와 관계없이 일어나는 무의식적 반응</td></tr>
+              <tr><th>중추</th><td>대뇌</td><td>척수, 연수, 중간뇌</td></tr>
+              <tr><th>특징</th><td>판단 과정이 복잡할수록 반응이 나타나는 데 시간이 더 걸린다</td><td>매우 빠르게 일어나 위험한 상황에서 몸을 보호하는 데 중요한 역할을 한다</td></tr>
+              <tr><th>예</th><td>주전자를 들고 컵에 물을 따름 · 손이 시린 것을 느끼고 장갑을 낌 · 날아오는 공을 보고 야구 방망이를 휘두름</td>
+                <td>척수: 뜨겁거나 날카로운 물체에 닿았을 때 몸을 움츠림, 무릎 반사<br>연수: 재채기, 딸꾹질, 침 분비<br>중간뇌: 동공 반사</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flow" style="margin-top:10px"><span class="t">의식적 반응 — 주전자를 들고 컵에 물을 따를 때</span>
+          자극 → 감각 기관(눈) → 감각 신경(시각 신경) → <b>대뇌</b> → 척수 → 운동 신경 → 반응 기관(팔의 근육) → 반응</div>
+        <div class="flow"><span class="t">무조건 반사 — 뜨거운 주전자에 손이 닿아 급히 뗄 때</span>
+          자극 → 감각 기관(피부) → 감각 신경(피부 감각 신경) → <b>척수</b> → 운동 신경 → 반응 기관(팔의 근육) → 반응</div>
+        <div class="flow"><span class="t">얼굴 vs 팔·다리</span>
+          얼굴에서 받아들인 자극은 척수를 거치지 않고 바로 대뇌로, 팔이나 다리에서 받아들인 자극은 척수를 거쳐 대뇌로 전달된다.</div>
+      </section>
+
+      <section id="s-hormone">
+        <h3><span class="dotc" style="background:var(--pc)"></span>호르몬의 특성과 신경 비교</h3>
+        <p class="cap">내분비샘(분비관 없음) → 혈액 → 표적 세포(표적 기관) · 142쪽</p>
+        <div class="chiprow">
+          <span>분비관 없이 혈액으로 분비</span><span>표적 세포에 작용</span><span>적은 양으로 큰 효과</span><span>과다·결핍 시 이상 증상</span>
+        </div>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>구분</th><th>전달 매체</th><th>신호 전달 속도</th><th>효과의 지속성</th><th>작용 범위</th></tr></thead>
+            <tbody>
+              <tr><th>호르몬</th><td class="c">혈액</td><td class="c">느림</td><td class="c">지속적</td><td class="c">넓음</td></tr>
+              <tr><th>신경</th><td class="c">뉴런</td><td class="c">빠름</td><td class="c">일시적</td><td class="c">좁음</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s-gland">
+        <h3><span class="dotc" style="background:var(--pc)"></span>내분비샘과 호르몬</h3>
+        <p class="cap">142쪽</p>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>내분비샘</th><th>호르몬</th><th>기능</th></tr></thead>
+            <tbody>
+              <tr><th rowspan="3">뇌하수체</th><td>생장 호르몬</td><td>몸의 생장 촉진</td></tr>
+              <tr><td>갑상샘 자극 호르몬</td><td>티록신 분비 촉진</td></tr>
+              <tr><td>항이뇨 호르몬</td><td>콩팥에서 물의 재흡수 촉진</td></tr>
+              <tr><th>갑상샘</th><td>티록신</td><td>세포 호흡 촉진</td></tr>
+              <tr><th>부신</th><td>아드레날린(에피네프린)</td><td>심장 박동 촉진, 혈당량 증가, 혈압 상승</td></tr>
+              <tr><th rowspan="2">이자</th><td>인슐린</td><td>혈당량 감소</td></tr>
+              <tr><td>글루카곤</td><td>혈당량 증가</td></tr>
+              <tr><th>난소</th><td>에스트로젠</td><td>여성의 2차 성징 발현</td></tr>
+              <tr><th>정소</th><td>테스토스테론</td><td>남성의 2차 성징 발현</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s-disease">
+        <h3><span class="dotc" style="background:var(--pc)"></span>호르몬 관련 질병</h3>
+        <p class="cap">호르몬의 과다·부족으로 나타난다 · 144쪽</p>
+        <div class="tblwrap">
+          <table class="tb">
+            <thead><tr><th>호르몬 이상</th><th>질병</th><th>증상</th></tr></thead>
+            <tbody>
+              <tr><th rowspan="3">생장 호르몬</th><td>소인증 (성장기, 결핍)</td><td>키가 정상인에 비해 매우 작다</td></tr>
+              <tr><td>거인증 (성장기, 과다)</td><td>키가 정상인에 비해 매우 크다</td></tr>
+              <tr><td>말단 비대증 (성장기 이후, 과다)</td><td>입술과 코가 두꺼워져 얼굴 모습이 변하고, 손과 발이 커진다</td></tr>
+              <tr><th rowspan="2">티록신</th><td>갑상샘 기능 저하증 (결핍)</td><td>쉽게 피로해지고, 추위를 잘 타며, 체중이 증가한다</td></tr>
+              <tr><td>갑상샘 기능 항진증 (과다)</td><td>맥박이 빨라지고, 눈이 돌출되며, 체중이 감소한다</td></tr>
+              <tr><th>인슐린</th><td>당뇨병 (결핍)</td><td>쉽게 피로해지고, 체중이 감소하며, 오줌에 당이 섞여 나오고 심한 갈증을 느낀다</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="s-homeo">
+        <h3><span class="dotc" style="background:var(--pd)"></span>항상성 — 체온 · 혈당량 · 수분량</h3>
+        <p class="cap">몸 안팎의 환경이 변해도 적절하게 반응하여 몸의 상태를 일정하게 유지하는 성질(신경·호르몬) · 144쪽</p>
+
+        <div class="flow"><span class="t">체온 조절 · 중추: 간뇌 — 더울 때</span>
+          체온 높아짐 → 간뇌 → <b>피부 근처 혈관 확장</b> + <b>땀 분비 증가</b>(기화열로 열 흡수) → 열 방출량 증가 → 체온 낮아짐</div>
+        <div class="flow"><span class="t">체온 조절 — 추울 때</span>
+          체온 낮아짐 → 간뇌 → <b>피부 근처 혈관 수축</b>(열 방출량 감소) + <b>근육 떨림</b> · 뇌하수체 → 갑상샘 자극 호르몬 ↑ → 갑상샘 → 티록신 ↑ → 세포 호흡 촉진 → 열 발생량 증가 → 체온 높아짐</div>
+
+        <div class="tblwrap" style="margin-top:12px">
+          <table class="tb">
+            <thead><tr><th>체온</th><th>열 방출량</th><th>열 발생량</th></tr></thead>
+            <tbody>
+              <tr><th>더울 때</th><td>피부 근처 혈관 확장, 땀 분비 증가 → <b>증가</b></td><td>—</td></tr>
+              <tr><th>추울 때</th><td>피부 근처 혈관 수축 → <b>감소</b></td><td>근육 떨림, 세포 호흡 촉진 → <b>증가</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flow" style="margin-top:12px"><span class="t">혈당량 조절 — 높을 때</span>
+          혈당량 증가 → 이자에서 <b>인슐린</b> 분비 → 간에서 포도당을 <b>글리코젠</b>으로 합성해 저장 + 세포에서 포도당 흡수 촉진 → 혈당량 감소</div>
+        <div class="flow"><span class="t">혈당량 조절 — 낮을 때</span>
+          혈당량 감소 → 이자에서 <b>글루카곤</b> 분비 → 간에서 글리코젠을 <b>포도당</b>으로 분해해 혈액으로 내보냄 → 혈당량 증가</div>
+
+        <div class="flow" style="margin-top:12px"><span class="t">몸속 수분량 조절 — 감소할 때</span>
+          땀을 많이 흘림 → 뇌하수체에서 <b>항이뇨 호르몬</b> 분비 증가 → 콩팥에서 물의 재흡수 촉진 → <b>오줌량 감소</b></div>
+        <div class="flow"><span class="t">몸속 수분량 조절 — 증가할 때</span>
+          물을 많이 마심 → 뇌하수체에서 <b>항이뇨 호르몬</b> 분비 억제 → 콩팥에서 물의 재흡수 감소 → <b>오줌량 증가</b></div>
+      </section>
+
+    </div>
+  </section>
+
+  <p class="foot">오투 중등과학 3-1 「IV. 자극과 반응 — 02. 신경계와 호르몬」 140·142·144쪽 정리<br>암기 기록은 이 기기에만 저장됩니다.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+window.__CARDS__ = [{"id":"A01","part":"A","grp":"신경계 기본","q":"신경계란 무엇인가?","a":"감각 기관에서 받아들인 자극을 전달하고, 이 자극을 판단하여 적절한 반응이 나타나도록 신호를 전달하는 체계","note":"자극 전달 → 판단 → 반응 신호의 세 단계를 모두 담당한다.","src":"140쪽"},{"id":"A02","part":"A","grp":"신경계 기본","q":"신경계를 이루고 있는 신경 세포를 (   )이라고 한다.","a":"뉴런","note":"뉴런은 신경계의 구조적·기능적 기본 단위이다.","src":"140쪽"},{"id":"A03","part":"A","grp":"신경계 기본","q":"뉴런이 다른 세포들과 달리 자극을 받아들이고 전달하기에 적합한 까닭은?","a":"돌기가 발달되어 있기 때문","note":"돌기가 길게 뻗어 있어 멀리까지 신호를 이어 준다.","src":"140쪽"},{"id":"A05","part":"A","grp":"뉴런의 구조","q":"가지 돌기의 기능은?","a":"다른 뉴런이나 감각 기관에서 전달된 자극을 받아들인다","note":"신호가 들어오는 쪽이다.","src":"140쪽"},{"id":"A06","part":"A","grp":"뉴런의 구조","q":"신경 세포체의 기능은?","a":"핵과 세포질이 있어 여러 가지 생명 활동이 일어난다","note":"뉴런의 핵이 있는 몸통 부분이다.","src":"140쪽"},{"id":"A07","part":"A","grp":"뉴런의 구조","q":"축삭 돌기의 기능은?","a":"다른 뉴런이나 기관으로 자극을 전달한다","note":"신호가 나가는 쪽이다.","src":"140쪽"},{"id":"A08","part":"A","grp":"뉴런의 구조","q":"뉴런에서 자극이 전달되는 방향은?","a":"가지 돌기 → 신경 세포체 → 축삭 돌기 (한 방향)","note":"자극은 한 방향으로만 전달되므로 신호가 되돌아가지 않는다.","src":"140쪽"},{"id":"A09","part":"A","grp":"뉴런의 구조","q":"뉴런에서 핵과 세포질이 있는 부분은?","a":"신경 세포체","note":"","src":"140쪽"},{"id":"A11","part":"A","grp":"뉴런의 종류","q":"뉴런을 기능에 따라 세 가지로 구분하면?","a":"감각 뉴런, 연합 뉴런, 운동 뉴런","note":"","src":"140쪽"},{"id":"A12","part":"A","grp":"뉴런의 종류","q":"감각 뉴런이 하는 일과 이루는 신경은?","a":"감각 신경을 이루며, 감각 기관에서 받아들인 자극을 연합 뉴런으로 전달한다","note":"","src":"140쪽"},{"id":"A13","part":"A","grp":"뉴런의 종류","q":"연합 뉴런이 하는 일과 이루는 것은?","a":"중추 신경계를 이루며, 자극을 느끼고 판단하여 적절한 명령(신호)을 내린다","note":"","src":"140쪽"},{"id":"A14","part":"A","grp":"뉴런의 종류","q":"운동 뉴런이 하는 일과 이루는 신경은?","a":"운동 신경을 이루며, 연합 뉴런의 명령을 반응 기관으로 전달한다","note":"","src":"140쪽"},{"id":"A15","part":"A","grp":"뉴런의 종류","q":"감각 기관에서 받아들인 자극을 연합 뉴런으로 전달하는 뉴런은?","a":"감각 뉴런","note":"","src":"140쪽"},{"id":"A16","part":"A","grp":"뉴런의 종류","q":"자극을 느끼고 판단하여 적절한 명령을 내리는 뉴런은?","a":"연합 뉴런","note":"","src":"140쪽"},{"id":"A17","part":"A","grp":"뉴런의 종류","q":"연합 뉴런의 명령을 반응 기관으로 전달하는 뉴런은?","a":"운동 뉴런","note":"","src":"140쪽"},{"id":"A18","part":"A","grp":"뉴런의 종류","q":"중추 신경계를 이루는 뉴런은?","a":"연합 뉴런","note":"","src":"140쪽"},{"id":"A19","part":"A","grp":"뉴런의 종류","q":"감각 신경을 이루는 뉴런은?","a":"감각 뉴런","note":"","src":"140쪽"},{"id":"A20","part":"A","grp":"뉴런의 종류","q":"운동 신경을 이루는 뉴런은?","a":"운동 뉴런","note":"","src":"140쪽"},{"id":"A21","part":"A","grp":"뉴런의 종류","q":"자극의 전달 경로를 순서대로 쓰면?","a":"자극 → 감각 기관 → 감각 뉴런 → 연합 뉴런 → 운동 뉴런 → 반응 기관 → 반응","note":"감각 뉴런 → 연합 뉴런 → 운동 뉴런의 순서를 기억하면 쉽다.","src":"140쪽"},{"id":"A22","part":"A","grp":"신경계의 구분","q":"신경계는 크게 (   )과 (   )으로 구분된다.","a":"중추 신경계 / 말초 신경계","note":"","src":"140쪽"},{"id":"A23","part":"A","grp":"신경계의 구분","q":"중추 신경계를 이루는 두 기관은?","a":"뇌와 척수","note":"","src":"140쪽"},{"id":"A24","part":"A","grp":"신경계의 구분","q":"중추 신경계의 기능은?","a":"자극을 느끼고 판단하여 적절한 명령을 내린다","note":"","src":"140쪽"},{"id":"A25","part":"A","grp":"신경계의 구분","q":"말초 신경계를 이루는 신경은?","a":"감각 신경과 운동 신경","note":"","src":"140쪽"},{"id":"A26","part":"A","grp":"신경계의 구분","q":"말초 신경계는 어디에 있으며 무엇을 연결하는가?","a":"온몸에 퍼져 있으면서 중추 신경계와 온몸을 연결한다","note":"","src":"140쪽"},{"id":"A27","part":"A","grp":"신경계의 구분","q":"감각 신경의 역할은?","a":"감각 기관에서 받아들인 자극을 중추 신경계로 전달한다","note":"","src":"140쪽"},{"id":"A28","part":"A","grp":"신경계의 구분","q":"운동 신경의 역할은?","a":"중추 신경계에서 내린 명령을 반응 기관으로 전달한다","note":"","src":"140쪽"},{"id":"A29","part":"A","grp":"신경계의 구분","q":"감각 기관이 받아들인 자극은 다음에 어디로 전달되는가?","a":"감각 신경(감각 뉴런)","note":"감각 기관 → 감각 신경 → 중추 신경계 순서이다.","src":"140쪽"},{"id":"A30","part":"A","grp":"뇌의 구조와 기능","q":"뇌를 이루는 다섯 부분은?","a":"대뇌, 간뇌, 중간뇌, 소뇌, 연수","note":"","src":"140쪽"},{"id":"A31","part":"A","grp":"뇌의 구조와 기능","q":"대뇌의 구조는 어떻게 되어 있는가?","a":"좌우 2개의 반구로 나뉘어 있다","note":"","src":"140쪽"},{"id":"A32","part":"A","grp":"뇌의 구조와 기능","q":"대뇌의 기능은?","a":"자극을 느끼고 판단하여 적절한 신호를 보내 몸의 감각과 운동을 조절하며, 기억·추리·학습·감정 등 정신 활동을 담당한다","note":"예) 구구단을 외운다","src":"140쪽"},{"id":"A33","part":"A","grp":"뇌의 구조와 기능","q":"간뇌의 기능은?","a":"체온, 체액의 농도 등 몸속 상태를 일정하게 유지한다","note":"예) 더울 때 땀을 흘려 체온을 낮춘다","src":"140쪽"},{"id":"A34","part":"A","grp":"뇌의 구조와 기능","q":"중간뇌의 기능은?","a":"눈의 움직임, 동공과 홍채의 변화를 조절한다","note":"예) 어두운 곳에서 동공이 커진다","src":"140쪽"},{"id":"A35","part":"A","grp":"뇌의 구조와 기능","q":"소뇌의 기능은?","a":"근육 운동을 조절하고 몸의 자세와 균형을 유지한다","note":"예) 한 발로 서서 몸의 균형을 유지한다","src":"140쪽"},{"id":"A36","part":"A","grp":"뇌의 구조와 기능","q":"연수의 기능은?","a":"심장 박동, 호흡 운동, 소화 운동 등 생명 유지 활동을 조절하며, 기침·재채기·눈물 분비 등의 중추이다","note":"예) 운동할 때 심장이 빨리 뛴다","src":"140쪽"},{"id":"A37","part":"A","grp":"뇌의 구조와 기능","q":"척수의 기능은?","a":"뇌와 말초 신경 사이에서 신호를 전달하는 통로이며, 자신의 의지와 관계없이 일어나는 반응의 중추이다","note":"","src":"140쪽"},{"id":"A38","part":"A","grp":"뇌의 구조와 기능","q":"자극을 느끼고 판단하여 적절한 신호를 보내는 뇌 부위는?","a":"대뇌","note":"","src":"140쪽"},{"id":"A39","part":"A","grp":"뇌의 구조와 기능","q":"기억·추리·학습·감정 등 정신 활동을 담당하는 뇌 부위는?","a":"대뇌","note":"","src":"140쪽"},{"id":"A40","part":"A","grp":"뇌의 구조와 기능","q":"체온과 체액의 농도를 일정하게 유지하는 뇌 부위는?","a":"간뇌","note":"","src":"140쪽"},{"id":"A41","part":"A","grp":"뇌의 구조와 기능","q":"동공과 홍채의 변화를 조절하는 뇌 부위는?","a":"중간뇌","note":"","src":"140쪽"},{"id":"A42","part":"A","grp":"뇌의 구조와 기능","q":"몸의 자세와 균형을 유지하는 뇌 부위는?","a":"소뇌","note":"","src":"140쪽"},{"id":"A43","part":"A","grp":"뇌의 구조와 기능","q":"심장 박동과 호흡 운동을 조절하는 뇌 부위는?","a":"연수","note":"","src":"140쪽"},{"id":"A44","part":"A","grp":"뇌의 구조와 기능","q":"기침·재채기·눈물 분비의 중추는?","a":"연수","note":"","src":"140쪽"},{"id":"A46","part":"A","grp":"뇌의 구조와 기능","q":"뇌와 말초 신경 사이에서 신호를 전달하는 통로는?","a":"척수","note":"","src":"140쪽"},{"id":"A47","part":"A","grp":"뇌의 구조와 기능","q":"구구단을 외우는 것과 관계 깊은 뇌 부위는?","a":"대뇌","note":"기억·학습 등 정신 활동은 대뇌가 담당한다.","src":"140쪽 (플러스 강의)"},{"id":"A48","part":"A","grp":"뇌의 구조와 기능","q":"더울 때 땀을 흘려 체온을 낮추는 것과 관계 깊은 뇌 부위는?","a":"간뇌","note":"체온 유지는 간뇌가 담당한다.","src":"140쪽 (플러스 강의)"},{"id":"A49","part":"A","grp":"뇌의 구조와 기능","q":"어두운 곳에서 동공이 커지는 것과 관계 깊은 뇌 부위는?","a":"중간뇌","note":"동공과 홍채의 변화 조절은 중간뇌가 담당한다.","src":"140쪽 (플러스 강의)"},{"id":"A50","part":"A","grp":"뇌의 구조와 기능","q":"한 발로 서서 몸의 균형을 유지하는 것과 관계 깊은 뇌 부위는?","a":"소뇌","note":"자세와 균형 유지는 소뇌가 담당한다.","src":"140쪽 (플러스 강의)"},{"id":"A51","part":"A","grp":"뇌의 구조와 기능","q":"운동할 때 심장이 빨리 뛰는 것과 관계 깊은 뇌 부위는?","a":"연수","note":"심장 박동과 호흡 운동 조절은 연수가 담당한다.","src":"140쪽 (플러스 강의)"},{"id":"A52","part":"A","grp":"자율 신경","q":"자율 신경은 (   )과 (   )으로 구분된다.","a":"교감 신경 / 부교감 신경","note":"","src":"140쪽"},{"id":"A53","part":"A","grp":"자율 신경","q":"자율 신경은 어디에 연결되어 어떻게 작용하는가?","a":"내장 기관에 연결되어 대뇌의 직접적인 명령 없이 내장 기관의 운동을 조절한다","note":"","src":"140쪽"},{"id":"A54","part":"A","grp":"자율 신경","q":"교감 신경과 부교감 신경은 내장 기관에 대해 어떤 관계로 작용하는가?","a":"서로 반대 작용(길항 작용)을 한다","note":"","src":"140쪽"},{"id":"A55","part":"A","grp":"자율 신경","q":"교감 신경은 어떤 상황에서 활발해지는가?","a":"긴장하거나 위험 상황에 처했을 때 몸을 예민하게 만드는 상태로 만든다","note":"","src":"140쪽 (플러스 강의)"},{"id":"A56","part":"A","grp":"자율 신경","q":"부교감 신경은 어떤 상황에서 활발해지는가?","a":"위험한 상황이 지나면 몸을 안정된 상태로 되돌린다","note":"","src":"140쪽 (플러스 강의)"},{"id":"A57","part":"A","grp":"자율 신경","q":"교감 신경이 활발할 때 동공은?","a":"확대된다","note":"","src":"140쪽"},{"id":"A58","part":"A","grp":"자율 신경","q":"교감 신경이 활발할 때 호흡 운동은?","a":"촉진된다","note":"","src":"140쪽"},{"id":"A59","part":"A","grp":"자율 신경","q":"교감 신경이 활발할 때 심장 박동은?","a":"촉진된다","note":"","src":"140쪽"},{"id":"A60","part":"A","grp":"자율 신경","q":"교감 신경이 활발할 때 소화 운동은?","a":"억제된다","note":"","src":"140쪽"},{"id":"A61","part":"A","grp":"자율 신경","q":"부교감 신경이 활발할 때 동공은?","a":"축소된다","note":"","src":"140쪽"},{"id":"A62","part":"A","grp":"자율 신경","q":"부교감 신경이 활발할 때 호흡 운동은?","a":"억제된다","note":"","src":"140쪽"},{"id":"A63","part":"A","grp":"자율 신경","q":"부교감 신경이 활발할 때 심장 박동은?","a":"억제된다","note":"","src":"140쪽"},{"id":"A64","part":"A","grp":"자율 신경","q":"부교감 신경이 활발할 때 소화 운동은?","a":"촉진된다","note":"","src":"140쪽"},{"id":"A65","part":"A","grp":"자율 신경","q":"동공을 확대하는 자율 신경은?","a":"교감 신경","note":"","src":"140쪽"},{"id":"A66","part":"A","grp":"자율 신경","q":"동공을 축소하는 자율 신경은?","a":"부교감 신경","note":"","src":"140쪽"},{"id":"A67","part":"A","grp":"자율 신경","q":"소화 운동을 억제하는 자율 신경은?","a":"교감 신경","note":"","src":"140쪽"},{"id":"A68","part":"A","grp":"자율 신경","q":"소화 운동을 촉진하는 자율 신경은?","a":"부교감 신경","note":"","src":"140쪽"},{"id":"A69","part":"A","grp":"자율 신경","q":"위험한 상황에 처했을 때 몸에서 일어나는 변화는?","a":"심장 박동과 호흡이 빨라진다 (교감 신경의 작용)","note":"","src":"140쪽 (플러스 강의)"},{"id":"A70","part":"A","grp":"자율 신경","q":"위험한 상황이 지나면 몸은 어떻게 되는가?","a":"심장 박동과 호흡이 이전 상태로 돌아온다 (부교감 신경의 작용)","note":"","src":"140쪽 (플러스 강의)"},{"id":"B01","part":"B","grp":"의식적 반응","q":"의식적 반응이란?","a":"대뇌의 판단 과정을 거쳐 자신의 의지에 따라 일어나는 반응","note":"","src":"142쪽"},{"id":"B02","part":"B","grp":"의식적 반응","q":"의식적 반응의 중추는?","a":"대뇌","note":"","src":"142쪽"},{"id":"B03","part":"B","grp":"의식적 반응","q":"의식적 반응의 특징은?","a":"대뇌에서의 판단 과정이 복잡할수록 반응이 나타나는 데 시간이 더 걸린다","note":"","src":"142쪽"},{"id":"B04","part":"B","grp":"의식적 반응","q":"의식적 반응의 예를 세 가지 들면?","a":"주전자를 들고 컵에 물을 따른다 / 손이 시린 것을 느끼고 장갑을 낀다 / 날아오는 공을 보고 야구 방망이를 휘두른다","note":"","src":"142쪽"},{"id":"B05","part":"B","grp":"의식적 반응","q":"판단 과정이 복잡할수록 반응이 느려지는 반응은?","a":"의식적 반응","note":"","src":"142쪽"},{"id":"B06","part":"B","grp":"의식적 반응","q":"주전자를 들고 컵에 물을 따를 때의 반응 경로는?","a":"자극 → 감각 기관(눈) → 감각 신경(시각 신경) → 대뇌 → 척수 → 운동 신경 → 반응 기관(팔의 근육) → 반응","note":"대뇌에서 판단한 뒤 척수를 거쳐 운동 신경으로 명령이 내려간다.","src":"142쪽"},{"id":"B07","part":"B","grp":"의식적 반응","q":"손이 시린 것을 느끼고 장갑을 끼는 것은 어떤 반응인가?","a":"의식적 반응 (중추: 대뇌)","note":"","src":"142쪽"},{"id":"B08","part":"B","grp":"의식적 반응","q":"날아오는 공을 보고 야구 방망이를 휘두르는 것은 어떤 반응인가?","a":"의식적 반응 (중추: 대뇌)","note":"","src":"142쪽"},{"id":"B09","part":"B","grp":"무조건 반사","q":"무조건 반사란?","a":"대뇌의 판단 과정을 거치지 않아 자신의 의지와 관계없이 일어나는 무의식적 반응","note":"","src":"142쪽"},{"id":"B10","part":"B","grp":"무조건 반사","q":"무조건 반사의 중추가 되는 세 곳은?","a":"척수, 연수, 중간뇌","note":"","src":"142쪽"},{"id":"B11","part":"B","grp":"무조건 반사","q":"무조건 반사의 특징은?","a":"매우 빠르게 일어나므로 위험한 상황에서 몸을 보호하는 데 중요한 역할을 한다","note":"","src":"142쪽"},{"id":"B12","part":"B","grp":"무조건 반사","q":"무조건 반사가 의식적 반응보다 빠른 까닭은?","a":"경로가 짧고 단순하기 때문","note":"","src":"142쪽 (플러스 강의)"},{"id":"B13","part":"B","grp":"무조건 반사","q":"반응의 중추가 척수인 반사의 예는?","a":"뜨겁거나 날카로운 물체가 몸에 닿았을 때 몸을 움츠림, 무릎 반사, 압정을 밟았을 때 발을 듦","note":"","src":"142쪽"},{"id":"B14","part":"B","grp":"무조건 반사","q":"반응의 중추가 연수인 반사의 예는?","a":"재채기, 딸꾹질, 침 분비","note":"","src":"142쪽"},{"id":"B15","part":"B","grp":"무조건 반사","q":"반응의 중추가 중간뇌인 반사의 예는?","a":"동공 반사 (밝기에 따른 동공 크기의 변화)","note":"","src":"142쪽"},{"id":"B16","part":"B","grp":"무조건 반사","q":"무릎 반사의 중추는?","a":"척수","note":"","src":"142쪽"},{"id":"B17","part":"B","grp":"무조건 반사","q":"재채기의 중추는?","a":"연수","note":"","src":"142쪽"},{"id":"B18","part":"B","grp":"무조건 반사","q":"침 분비의 중추는?","a":"연수","note":"","src":"142쪽"},{"id":"B19","part":"B","grp":"무조건 반사","q":"딸꾹질의 중추는?","a":"연수","note":"","src":"142쪽"},{"id":"B20","part":"B","grp":"무조건 반사","q":"동공 반사의 중추는?","a":"중간뇌","note":"","src":"142쪽"},{"id":"B21","part":"B","grp":"무조건 반사","q":"압정을 밟았을 때 발을 드는 반응의 중추는?","a":"척수","note":"","src":"142쪽"},{"id":"B22","part":"B","grp":"무조건 반사","q":"뜨거운 주전자에 손이 닿아 급히 뗄 때의 반응 경로는?","a":"자극 → 감각 기관(피부) → 감각 신경(피부 감각 신경) → 척수 → 운동 신경 → 반응 기관(팔의 근육) → 반응","note":"대뇌를 거치지 않고 척수에서 바로 명령이 내려진다.","src":"142쪽"},{"id":"B23","part":"B","grp":"무조건 반사","q":"뜨거운 물체에 손이 닿았을 때 몸을 움츠리는 반응의 중추는?","a":"척수","note":"","src":"142쪽"},{"id":"B24","part":"B","grp":"무조건 반사","q":"무조건 반사는 자신의 의지와 (   ) 일어난다.","a":"관계없이","note":"대뇌의 판단 과정을 거치지 않는 무의식적 반응이다.","src":"142쪽"},{"id":"B25","part":"B","grp":"반응의 비교","q":"의식적 반응과 무조건 반사를 가르는 기준은?","a":"대뇌의 판단 과정을 거치는지 여부","note":"","src":"142쪽"},{"id":"B26","part":"B","grp":"반응의 비교","q":"의식적 반응과 무조건 반사의 중추를 비교하면?","a":"의식적 반응은 대뇌, 무조건 반사는 척수·연수·중간뇌","note":"","src":"142쪽"},{"id":"B27","part":"B","grp":"반응의 비교","q":"얼굴에서 받아들인 자극은 어떻게 전달되는가?","a":"척수를 거치지 않고 바로 대뇌로 전달된다","note":"","src":"142쪽 (플러스 강의)"},{"id":"B28","part":"B","grp":"반응의 비교","q":"팔이나 다리에서 받아들인 자극은 어떻게 전달되는가?","a":"척수를 거쳐 대뇌로 전달된다","note":"","src":"142쪽 (플러스 강의)"},{"id":"B29","part":"B","grp":"반응의 비교","q":"반응의 중추가 대뇌인 반응은 무엇인가?","a":"의식적 반응","note":"","src":"142쪽"},{"id":"B30","part":"B","grp":"반응의 비교","q":"위험한 상황에서 몸을 보호하는 데 중요한 역할을 하는 반응은?","a":"무조건 반사","note":"","src":"142쪽"},{"id":"C01","part":"C","grp":"호르몬의 특성","q":"호르몬이란?","a":"특정 세포나 기관으로 신호를 전달하여 몸의 기능을 조절하는 물질","note":"","src":"142쪽"},{"id":"C02","part":"C","grp":"호르몬의 특성","q":"호르몬을 만들어 분비하는 기관을 (   )이라고 하며, 분비관이 (   ).","a":"내분비샘 / 없다","note":"분비관이 없어 호르몬이 혈액으로 직접 나간다.","src":"142쪽"},{"id":"C03","part":"C","grp":"호르몬의 특성","q":"내분비샘에서 만들어진 호르몬은 무엇을 통해 이동하는가?","a":"혈액","note":"","src":"142쪽"},{"id":"C04","part":"C","grp":"호르몬의 특성","q":"호르몬이 작용하는 세포나 기관을 무엇이라고 하는가?","a":"표적 세포(표적 기관)","note":"","src":"142쪽"},{"id":"C05","part":"C","grp":"호르몬의 특성","q":"호르몬의 효과 크기는?","a":"적은 양으로 큰 효과를 나타낸다","note":"","src":"142쪽"},{"id":"C06","part":"C","grp":"호르몬의 특성","q":"호르몬의 분비량이 너무 많거나 적으면?","a":"몸에 이상 증상이 나타날 수 있다","note":"","src":"142쪽"},{"id":"C08","part":"C","grp":"호르몬과 신경 비교","q":"호르몬과 신경의 전달 매체를 비교하면?","a":"호르몬은 혈액, 신경은 뉴런","note":"","src":"142쪽"},{"id":"C09","part":"C","grp":"호르몬과 신경 비교","q":"호르몬과 신경의 신호 전달 속도를 비교하면?","a":"호르몬은 느림, 신경은 빠름","note":"","src":"142쪽"},{"id":"C10","part":"C","grp":"호르몬과 신경 비교","q":"호르몬과 신경의 효과 지속성을 비교하면?","a":"호르몬은 지속적, 신경은 일시적","note":"","src":"142쪽"},{"id":"C11","part":"C","grp":"호르몬과 신경 비교","q":"호르몬과 신경의 작용 범위를 비교하면?","a":"호르몬은 넓음, 신경은 좁음","note":"","src":"142쪽"},{"id":"C12","part":"C","grp":"호르몬과 신경 비교","q":"호르몬의 전달 매체·속도·지속성·작용 범위는?","a":"혈액 / 느림 / 지속적 / 넓음","note":"","src":"142쪽"},{"id":"C13","part":"C","grp":"호르몬과 신경 비교","q":"신경의 전달 매체·속도·지속성·작용 범위는?","a":"뉴런 / 빠름 / 일시적 / 좁음","note":"","src":"142쪽"},{"id":"C14","part":"C","grp":"내분비샘","q":"뇌하수체에서 분비되는 세 가지 호르몬은?","a":"생장 호르몬, 갑상샘 자극 호르몬, 항이뇨 호르몬","note":"","src":"142쪽"},{"id":"C15","part":"C","grp":"내분비샘","q":"생장 호르몬의 기능은?","a":"몸의 생장 촉진","note":"","src":"142쪽"},{"id":"C16","part":"C","grp":"내분비샘","q":"갑상샘 자극 호르몬의 기능은?","a":"티록신 분비 촉진","note":"","src":"142쪽"},{"id":"C17","part":"C","grp":"내분비샘","q":"항이뇨 호르몬의 기능은?","a":"콩팥에서 물의 재흡수 촉진","note":"","src":"142쪽"},{"id":"C18","part":"C","grp":"내분비샘","q":"티록신을 분비하는 기관과 그 기능은?","a":"갑상샘 / 세포 호흡 촉진","note":"","src":"142쪽"},{"id":"C19","part":"C","grp":"내분비샘","q":"아드레날린(에피네프린)을 분비하는 기관과 그 기능은?","a":"부신 / 심장 박동 촉진, 혈당량 증가, 혈압 상승","note":"","src":"142쪽"},{"id":"C20","part":"C","grp":"내분비샘","q":"인슐린을 분비하는 기관과 그 기능은?","a":"이자 / 혈당량 감소","note":"","src":"142쪽"},{"id":"C21","part":"C","grp":"내분비샘","q":"글루카곤을 분비하는 기관과 그 기능은?","a":"이자 / 혈당량 증가","note":"","src":"142쪽"},{"id":"C22","part":"C","grp":"내분비샘","q":"에스트로젠을 분비하는 기관과 그 기능은?","a":"난소 / 여성의 2차 성징 발현","note":"","src":"142쪽"},{"id":"C23","part":"C","grp":"내분비샘","q":"테스토스테론을 분비하는 기관과 그 기능은?","a":"정소 / 남성의 2차 성징 발현","note":"","src":"142쪽"},{"id":"C24","part":"C","grp":"내분비샘","q":"인슐린과 글루카곤을 분비하는 기관은?","a":"이자","note":"","src":"142쪽"},{"id":"C25","part":"C","grp":"내분비샘","q":"혈당량을 낮추는 호르몬은?","a":"인슐린","note":"","src":"142쪽"},{"id":"C26","part":"C","grp":"내분비샘","q":"혈당량을 높이는 호르몬은?","a":"글루카곤","note":"","src":"142쪽"},{"id":"C27","part":"C","grp":"내분비샘","q":"여성의 2차 성징을 발현시키는 호르몬은?","a":"에스트로젠","note":"","src":"142쪽"},{"id":"C28","part":"C","grp":"내분비샘","q":"남성의 2차 성징을 발현시키는 호르몬은?","a":"테스토스테론","note":"","src":"142쪽"},{"id":"C29","part":"C","grp":"내분비샘","q":"세포 호흡을 촉진하는 호르몬은?","a":"티록신","note":"","src":"142쪽"},{"id":"C30","part":"C","grp":"내분비샘","q":"심장 박동을 촉진하고 혈압을 높이며 혈당량을 증가시키는 호르몬은?","a":"아드레날린(에피네프린)","note":"","src":"142쪽"},{"id":"C31","part":"C","grp":"내분비샘","q":"콩팥에서 물의 재흡수를 촉진하는 호르몬은?","a":"항이뇨 호르몬","note":"","src":"142쪽"},{"id":"C32","part":"C","grp":"내분비샘","q":"몸의 생장을 촉진하는 호르몬은?","a":"생장 호르몬","note":"","src":"142쪽"},{"id":"C33","part":"C","grp":"내분비샘","q":"티록신의 분비를 촉진하는 호르몬은?","a":"갑상샘 자극 호르몬","note":"","src":"142쪽"},{"id":"C34","part":"C","grp":"내분비샘","q":"내분비샘을 다섯 가지만 쓰면?","a":"뇌하수체, 갑상샘, 부신, 이자, 난소(정소)","note":"","src":"142쪽"},{"id":"C35","part":"C","grp":"내분비샘","q":"2차 성징이란?","a":"청소년기에 남성과 여성으로서의 여러 가지 특징이 나타나는 것","note":"","src":"142쪽 (플러스 강의)"},{"id":"C37","part":"C","grp":"호르몬 질병","q":"생장 호르몬이 성장기에 부족하면 나타나는 질병은?","a":"소인증 (키가 정상인에 비해 매우 작다)","note":"","src":"144쪽"},{"id":"C38","part":"C","grp":"호르몬 질병","q":"생장 호르몬이 성장기에 과다하면 나타나는 질병은?","a":"거인증 (키가 정상인에 비해 매우 크다)","note":"","src":"144쪽"},{"id":"C39","part":"C","grp":"호르몬 질병","q":"성장기 이후에 생장 호르몬이 과다하면 나타나는 질병은?","a":"말단 비대증","note":"","src":"144쪽"},{"id":"C40","part":"C","grp":"호르몬 질병","q":"말단 비대증의 증상은?","a":"입술과 코가 두꺼워져 얼굴 모습이 변하고, 손과 발이 커진다","note":"","src":"144쪽"},{"id":"C41","part":"C","grp":"호르몬 질병","q":"티록신이 부족하면 나타나는 질병은?","a":"갑상샘 기능 저하증","note":"","src":"144쪽"},{"id":"C42","part":"C","grp":"호르몬 질병","q":"갑상샘 기능 저하증의 증상은?","a":"쉽게 피로해지고, 추위를 잘 타며, 체중이 증가한다","note":"","src":"144쪽"},{"id":"C43","part":"C","grp":"호르몬 질병","q":"티록신이 과다하면 나타나는 질병은?","a":"갑상샘 기능 항진증","note":"","src":"144쪽"},{"id":"C44","part":"C","grp":"호르몬 질병","q":"갑상샘 기능 항진증의 증상은?","a":"맥박이 빨라지고, 눈이 돌출되며, 체중이 감소한다","note":"","src":"144쪽"},{"id":"C45","part":"C","grp":"호르몬 질병","q":"인슐린이 부족하면 나타나는 질병은?","a":"당뇨병","note":"","src":"144쪽"},{"id":"C46","part":"C","grp":"호르몬 질병","q":"당뇨병의 증상은?","a":"쉽게 피로해지고, 체중이 감소하며, 오줌에 당이 섞여 나오고 심한 갈증을 느낀다","note":"","src":"144쪽"},{"id":"C47","part":"C","grp":"호르몬 질병","q":"입술과 코가 두꺼워지고 손과 발이 커지는 질병은?","a":"말단 비대증","note":"","src":"144쪽"},{"id":"C48","part":"C","grp":"호르몬 질병","q":"맥박이 빨라지고 눈이 돌출되며 체중이 감소하는 질병은?","a":"갑상샘 기능 항진증","note":"","src":"144쪽"},{"id":"C49","part":"C","grp":"호르몬 질병","q":"쉽게 피로해지고 추위를 잘 타며 체중이 증가하는 질병은?","a":"갑상샘 기능 저하증","note":"","src":"144쪽"},{"id":"C50","part":"C","grp":"호르몬 질병","q":"오줌에 당이 섞여 나오고 심한 갈증을 느끼는 질병은?","a":"당뇨병","note":"","src":"144쪽"},{"id":"C51","part":"C","grp":"호르몬 질병","q":"키가 정상인에 비해 매우 작은 질병은?","a":"소인증","note":"","src":"144쪽"},{"id":"C52","part":"C","grp":"호르몬 질병","q":"키가 정상인에 비해 매우 큰 질병은?","a":"거인증","note":"","src":"144쪽"},{"id":"D01","part":"D","grp":"항상성","q":"항상성이란?","a":"몸 안팎의 환경이 변해도 적절하게 반응하여 몸의 상태를 일정하게 유지하는 성질","note":"","src":"144쪽"},{"id":"D02","part":"D","grp":"항상성","q":"항상성은 무엇의 작용으로 유지되는가?","a":"신경과 호르몬의 작용","note":"","src":"144쪽"},{"id":"D03","part":"D","grp":"항상성","q":"항상성이 유지되는 예를 세 가지 들면?","a":"체온 유지, 혈당량 유지, 몸속 수분량 유지","note":"","src":"144쪽"},{"id":"D04","part":"D","grp":"항상성","q":"체온 조절을 담당하는 중추는?","a":"간뇌","note":"","src":"144쪽"},{"id":"D05","part":"D","grp":"체온 조절","q":"체온 조절은 무엇을 조절하여 이루어지는가?","a":"열 방출량과 열 발생량","note":"","src":"144쪽"},{"id":"D06","part":"D","grp":"체온 조절","q":"더울 때 피부 근처 혈관은 어떻게 되는가?","a":"혈관이 확장되어 열 방출량이 증가한다","note":"","src":"144쪽"},{"id":"D07","part":"D","grp":"체온 조절","q":"더울 때 땀 분비는 어떻게 되는가?","a":"땀 분비가 증가하여 기화열로 피부의 열을 빼앗기므로 열 방출량이 증가한다","note":"","src":"144쪽"},{"id":"D08","part":"D","grp":"체온 조절","q":"더울 때 체온은 어떻게 되는가?","a":"열 방출량이 증가하여 체온이 낮아진다","note":"","src":"144쪽"},{"id":"D09","part":"D","grp":"체온 조절","q":"추울 때 피부 근처 혈관은 어떻게 되는가?","a":"혈관이 수축되어 열 방출량이 감소한다","note":"","src":"144쪽"},{"id":"D10","part":"D","grp":"체온 조절","q":"추울 때 열을 만드는 방법 두 가지는?","a":"근육 떨림, 세포 호흡 촉진(티록신)으로 열 발생량을 증가시킨다","note":"","src":"144쪽"},{"id":"D11","part":"D","grp":"체온 조절","q":"추울 때 호르몬이 작용하는 경로는?","a":"뇌하수체 → 갑상샘 자극 호르몬 분비 증가 → 갑상샘 → 티록신 분비 증가 → 세포 호흡 촉진","note":"결국 열 발생량이 증가하여 체온이 높아진다.","src":"144쪽"},{"id":"D12","part":"D","grp":"체온 조절","q":"추울 때 갑상샘 자극 호르몬을 분비하는 기관은?","a":"뇌하수체","note":"","src":"144쪽"},{"id":"D13","part":"D","grp":"체온 조절","q":"추울 때 체온은 어떻게 되는가?","a":"열 발생량이 증가하여 체온이 높아진다","note":"","src":"144쪽"},{"id":"D14","part":"D","grp":"체온 조절","q":"땀이 기화하면서 피부의 열에너지를 빼앗아 체온을 낮추는 원리는?","a":"기화열","note":"기화열: 액체가 기체로 될 때 주위에서 흡수하는 열에너지","src":"144쪽"},{"id":"D15","part":"D","grp":"체온 조절","q":"체온 조절에 관여하는 호르몬은?","a":"티록신","note":"","src":"144쪽"},{"id":"D16","part":"D","grp":"체온 조절","q":"더울 때 열을 내보내는 방법 두 가지는?","a":"피부 근처 혈관 확장, 땀 분비 증가","note":"","src":"144쪽"},{"id":"D17","part":"D","grp":"혈당량 조절","q":"혈당량을 조절하는 두 호르몬은?","a":"인슐린(혈당량 감소)과 글루카곤(혈당량 증가)","note":"","src":"144쪽"},{"id":"D18","part":"D","grp":"혈당량 조절","q":"혈당량이 높을 때 인슐린은 어떻게 작용하는가?","a":"간에서 포도당을 글리코젠으로 합성하여 저장하고, 세포에서의 포도당 흡수를 촉진하여 혈당량을 낮춘다","note":"","src":"144쪽"},{"id":"D19","part":"D","grp":"혈당량 조절","q":"혈당량이 낮을 때 글루카곤은 어떻게 작용하는가?","a":"간에서 글리코젠을 포도당으로 분해하여 혈액으로 내보내 혈당량을 높인다","note":"","src":"144쪽"},{"id":"D20","part":"D","grp":"혈당량 조절","q":"혈당량이 높을 때 분비가 촉진되는 호르몬은?","a":"인슐린","note":"","src":"144쪽"},{"id":"D21","part":"D","grp":"혈당량 조절","q":"혈당량이 낮을 때 분비가 촉진되는 호르몬은?","a":"글루카곤","note":"","src":"144쪽"},{"id":"D22","part":"D","grp":"혈당량 조절","q":"포도당을 글리코젠으로 합성하여 저장하는 기관은?","a":"간","note":"","src":"144쪽"},{"id":"D23","part":"D","grp":"혈당량 조절","q":"글리코젠이란?","a":"동물의 간이나 근육 등에 저장된 탄수화물","note":"","src":"144쪽"},{"id":"D24","part":"D","grp":"혈당량 조절","q":"식사를 하여 혈당량이 높아지면 이자에서는?","a":"인슐린 분비가 촉진된다","note":"","src":"144쪽"},{"id":"D25","part":"D","grp":"혈당량 조절","q":"운동을 하여 혈당량이 낮아지면 이자에서는?","a":"글루카곤 분비가 촉진된다","note":"","src":"144쪽"},{"id":"D26","part":"D","grp":"수분량 조절","q":"땀을 많이 흘려 몸속 수분량이 감소하면?","a":"뇌하수체에서 항이뇨 호르몬 분비가 증가 → 콩팥에서 물의 재흡수 촉진 → 오줌량 감소","note":"","src":"144쪽"},{"id":"D27","part":"D","grp":"수분량 조절","q":"물을 많이 마셔 몸속 수분량이 증가하면?","a":"뇌하수체에서 항이뇨 호르몬 분비가 억제 → 콩팥에서 물의 재흡수 감소 → 오줌량 증가","note":"","src":"144쪽"},{"id":"D28","part":"D","grp":"수분량 조절","q":"항이뇨 호르몬이 작용하는 기관은?","a":"콩팥","note":"","src":"144쪽"},{"id":"D29","part":"D","grp":"수분량 조절","q":"땀을 많이 흘리면 오줌량은 어떻게 되는가?","a":"감소한다 (항이뇨 호르몬 분비 증가)","note":"","src":"144쪽"},{"id":"D30","part":"D","grp":"수분량 조절","q":"물을 많이 마시면 오줌량은 어떻게 되는가?","a":"증가한다 (항이뇨 호르몬 분비 억제)","note":"","src":"144쪽"},{"id":"D31","part":"D","grp":"항상성","q":"체온 조절에 함께 작용하는 두 체계는?","a":"신경(간뇌의 명령)과 호르몬(티록신)","note":"","src":"144쪽"}];
+window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 신경계","src":"140쪽"},"B":{"label":"B. 반응의 경로","sub":"의식적 반응과 무조건 반사","src":"142쪽"},"C":{"label":"C. 호르몬","sub":"내분비샘·호르몬과 질병","src":"142~144쪽"},"D":{"label":"D. 항상성","sub":"체온·혈당량·수분량 조절","src":"144쪽"}};
+</script>
+<script>
+/* 자극과 반응 · 신경계와 호르몬 — 플래시카드 / 암기 확인 퀴즈 */
+(function () {
+  'use strict';
+
+  var CARDS = window.__CARDS__ || [];
+  var PARTS = window.__PARTS__ || {};
+  var KEY = 'sr-neuron-hormone-v1';
+
+  var byId = {};
+  CARDS.forEach(function (c) { byId[c.id] = c; });
+
+  /* ---------------- state ---------------- */
+  var S = {
+    known: {},          // id -> true
+    view: 'learn',
+    part: 'ALL',
+    onlyUnknown: false,
+    finished: false,
+    order: [],          // ids, current filter order
+    idx: 0,
+    flipped: false,
+    shuffled: false,
+    quiz: { type: 'mc', scope: 'all', count: 20 },
+    stats: { answered: 0, right: 0 }
+  };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d && typeof d === 'object') {
+        if (d.known && typeof d.known === 'object') S.known = d.known;
+        if (d.quiz) S.quiz = Object.assign(S.quiz, d.quiz);
+        if (d.stats) S.stats = Object.assign(S.stats, d.stats);
+        if (d.part) S.part = d.part;
+        if (typeof d.onlyUnknown === 'boolean') S.onlyUnknown = d.onlyUnknown;
+        if (d.view) S.view = d.view;
+      }
+    } catch (e) { /* 저장소를 못 쓰면 무시하고 진행 */ }
+  }
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        known: S.known, quiz: S.quiz, stats: S.stats, part: S.part,
+        onlyUnknown: S.onlyUnknown, view: S.view
+      }));
+    } catch (e) { /* 무시 */ }
+  }
+
+  /* ---------------- helpers ---------------- */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+  function withBlank(s) {
+    return esc(s).replace(/\((\s*)\)/g, '<span class="blank">( )</span>');
+  }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function partPool() {
+    return S.part === 'ALL' ? CARDS.slice() : CARDS.filter(function (c) { return c.part === S.part; });
+  }
+  function knownCount() {
+    return CARDS.reduce(function (n, c) { return n + (S.known[c.id] ? 1 : 0); }, 0);
+  }
+  var toastTimer = null;
+  function toast(msg) {
+    var el = $('#toast');
+    el.textContent = msg;
+    el.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('on'); }, 1900);
+  }
+
+  /* ---------------- progress ---------------- */
+  function renderProgress() {
+    var k = knownCount(), t = CARDS.length;
+    $('#progCount').textContent = k + ' / ' + t;
+    $('#progBar').style.width = (t ? (k / t * 100) : 0) + '%';
+  }
+
+  /* ---------------- tabs & chips ---------------- */
+  function setView(v) {
+    S.view = v;
+    $$('.tabs button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-view') === v); });
+    $$('.panel').forEach(function (p) { p.classList.toggle('on', p.id === 'panel-' + v); });
+    if (v === 'learn') renderLearn();
+    if (v === 'quiz') renderQuizPanel();
+    save();
+  }
+
+  function chipHtml() {
+    var out = ['<button class="chip' + (S.part === 'ALL' ? ' on' : '') + '" data-part="ALL">전체 <span class="n">' + CARDS.length + '</span></button>'];
+    ['A', 'B', 'C', 'D'].forEach(function (p) {
+      var n = CARDS.filter(function (c) { return c.part === p; }).length;
+      out.push('<button class="chip' + (S.part === p ? ' on' : '') + '" data-part="' + p + '">' +
+        '<i></i>' + esc(PARTS[p].label) + ' <span class="n">' + n + '</span></button>');
+    });
+    return out.join('');
+  }
+  function renderChips() {
+    ['#chipsLearn', '#chipsQuiz'].forEach(function (sel) {
+      var box = $(sel);
+      if (box) box.innerHTML = chipHtml();
+    });
+  }
+  function setPart(p) {
+    S.part = p;
+    S.idx = 0;
+    S.flipped = false;
+    S.finished = false;
+    buildOrder();
+    renderChips();
+    renderLearn();
+    renderQuizPanel();
+    save();
+  }
+
+  /* ---------------- learn ---------------- */
+  function buildOrder() {
+    var pool = partPool().map(function (c) { return c.id; });
+    S.order = S.shuffled ? shuffle(pool) : pool;
+  }
+  function deckIds() {
+    return S.order.filter(function (id) {
+      var c = byId[id];
+      if (!c) return false;
+      if (S.part !== 'ALL' && c.part !== S.part) return false;
+      if (S.onlyUnknown && S.known[id]) return false;
+      return true;
+    });
+  }
+
+  function renderLearn() {
+    var deck = deckIds();
+    var flip = $('#flip');
+    var doneBox = $('#learnDone');
+    var ctrl = $('#learnCtrl');
+
+    $('#onlyUnknownBtn').classList.toggle('on', S.onlyUnknown);
+    $('#shuffleBtn').classList.toggle('on', S.shuffled);
+
+    if (S.idx >= deck.length) S.idx = 0;
+    if (S.idx < 0) S.idx = 0;
+
+    if (!deck.length || S.finished) {
+      flip.style.display = 'none';
+      ctrl.style.display = 'none';
+      doneBox.style.display = 'block';
+      var allDone = (S.onlyUnknown || S.finished) && deck.length > 0;
+      $('#doneTitle').textContent = allDone ? '이 파트의 카드를 모두 외웠어요! 🎉' : '표시할 카드가 없어요.';
+      $('#doneSub').textContent = allDone         ? '전체 카드로 돌아가 복습하거나, 바로 퀴즈로 확인해 보세요.'         : '다른 파트를 골라 보세요.';
+      $('#panelbarCount').innerHTML = deck.length
+        ? '<b>' + deck.length + '</b> / ' + deck.length + '장 (완료)' : '0 / 0';
+      return;
+    }
+
+    flip.style.display = '';
+    ctrl.style.display = '';
+    doneBox.style.display = 'none';
+
+    var card = byId[deck[S.idx]];
+    var p = PARTS[card.part];
+    flip.classList.remove('on');
+    S.flipped = false;
+
+    $('#cardBadge').textContent = p.label;
+    $('#cardBadge').setAttribute('data-p', card.part);
+    $('#cardQ').innerHTML = withBlank(card.q);
+    $('#cardA').innerHTML = withBlank(card.a);
+    $('#cardSrc').textContent = card.src ? '오투 중등과학 3-1 · ' + card.src : '';
+    var note = $('#cardNote');
+    if (card.note) { note.style.display = 'block'; note.innerHTML = withBlank(card.note); }
+    else { note.style.display = 'none'; }
+    $('#cardMark').innerHTML = S.known[card.id]
+      ? '<span class="mark known">✓ 외운 카드</span>' : '';
+
+    $('#panelbarCount').innerHTML = '<b>' + (S.idx + 1) + '</b> / ' + deck.length + '장';
+    $('#learnKnown').textContent = '이 파트 외운 카드 ' + deck.filter(function (id) { return S.known[id]; }).length + '장';
+    save();
+  }
+
+  function flipCard() {
+    var flip = $('#flip');
+    var on = !flip.classList.contains('on');
+    flip.classList.toggle('on', on);
+    S.flipped = on;
+  }
+
+  function markKnown() {
+    var deck = deckIds();
+    if (!deck.length) return;
+    var id = deck[S.idx];
+    S.known[id] = true;
+    S.flipped = false;
+    var after = deckIds();
+    var allKnown = after.length > 0 && after.every(function (x) { return S.known[x]; });
+    if (S.onlyUnknown) {
+      if (S.idx >= after.length) S.idx = 0;
+    } else {
+      S.idx = (S.idx + 1) % after.length;
+    }
+    if (allKnown) S.finished = true;
+    save();
+    renderProgress();
+    renderLearn();
+  }
+  function markAgain() {
+    var deck = deckIds();
+    if (!deck.length) return;
+    var id = deck[S.idx];
+    delete S.known[id];
+    S.flipped = false;
+    S.finished = false;
+    var after = deckIds();
+    if (S.idx + 1 >= after.length) {
+      S.idx = 0;
+      renderProgress();
+      renderLearn();
+      toast('이 파트 카드를 한 바퀴 다 봤어요');
+      return;
+    }
+    S.idx = (S.idx + 1) % after.length;
+    save();
+    renderProgress();
+    renderLearn();
+  }
+  function move(dir) {
+    var deck = deckIds();
+    if (!deck.length) return;
+    S.finished = false;
+    S.idx = (S.idx + dir + deck.length) % deck.length;
+    renderLearn();
+  }
+
+  /* ---------------- quiz ---------------- */
+  var QZ = null;
+
+  function scopePool() {
+    var pool = partPool();
+    if (S.quiz.scope === 'known') pool = pool.filter(function (c) { return S.known[c.id]; });
+    if (S.quiz.scope === 'unknown') pool = pool.filter(function (c) { return !S.known[c.id]; });
+    return pool;
+  }
+
+  function pickDistractors(card, n) {
+    var len = card.a.length;
+    var cands = CARDS.filter(function (c) {
+      return c.id !== card.id && c.a !== card.a;
+    }).filter(function (c) {
+      var r = Math.min(c.a.length, len) / Math.max(c.a.length, len);
+      return r >= 0.42 && c.q !== card.q;
+    });
+    function sample(list) { return shuffle(list.slice()); }
+    var picks = [];
+    var tiers = [
+      cands.filter(function (c) { return c.part === card.part && c.grp === card.grp; }),
+      cands.filter(function (c) { return c.part === card.part && c.grp !== card.grp; }),
+      cands.filter(function (c) { return c.part !== card.part; })
+    ];
+    for (var t = 0; t < tiers.length && picks.length < n; t++) {
+      var s = sample(tiers[t]);
+      for (var i = 0; i < s.length && picks.length < n; i++) {
+        var dup = picks.some(function (x) { return x.a === s[i].a; });
+        if (!dup) picks.push(s[i]);
+      }
+    }
+    if (picks.length < n) {
+      var rest = sample(CARDS.filter(function (c) { return c.id !== card.id && c.a !== card.a; }));
+      for (var j = 0; j < rest.length && picks.length < n; j++) {
+        if (!picks.some(function (x) { return x.a === rest[j].a; })) picks.push(rest[j]);
+      }
+    }
+    return picks.slice(0, n);
+  }
+
+  function makeQuestion(card, type) {
+    var t = type;
+    if (type === 'mix') t = Math.random() < 0.62 ? 'mc' : 'ox';
+    if (t === 'mc') {
+      var ds = pickDistractors(card, 3).map(function (c) { return c.a; });
+      var opts = shuffle([card.a].concat(ds));
+      return { card: card, type: 'mc', options: opts, answer: card.a };
+    }
+    var wrongPool = pickDistractors(card, 1);
+    var showTrue = !wrongPool.length || Math.random() < 0.5;
+    var shown = showTrue ? card.a : wrongPool[0].a;
+    return {
+      card: card, type: 'ox', shown: shown, answer: showTrue,
+      fakeFrom: showTrue ? null : wrongPool[0]
+    };
+  }
+
+  function startQuiz(cards) {
+    var pool = cards || scopePool();
+    if (!pool.length) {
+      toast('조건에 맞는 카드가 없어요');
+      return;
+    }
+    var picked = shuffle(pool.slice());
+    if (!cards) {
+      var n = S.quiz.count === 'all' ? picked.length : Math.min(Number(S.quiz.count) || 20, picked.length);
+      picked = picked.slice(0, n);
+    }
+    QZ = {
+      list: picked.map(function (c) { return makeQuestion(c, S.quiz.type); }),
+      i: 0, right: 0, wrong: [], locked: false, type: S.quiz.type, results: []
+    };
+    $('#quizSetup').style.display = 'none';
+    $('#quizResult').style.display = 'none';
+    $('#quizStage').style.display = 'block';
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    var q = QZ.list[QZ.i];
+    var card = q.card;
+    QZ.locked = false;
+
+    var dots = QZ.list.map(function (it, i) {
+      var cls = i < QZ.i ? (QZ.results && QZ.results[i] ? 'ok' : 'no') : (i === QZ.i ? 'now' : '');
+      return '<i class="' + cls + '"></i>';
+    }).join('');
+    var body = '<div class="qdots">' + dots + '</div>' +
+      '<div class="qtop"><span class="no"><b>' + (QZ.i + 1) + '</b> / ' + QZ.list.length + '</span>' +
+      '<span class="badge" data-p="' + card.part + '">' + esc(PARTS[card.part].label) + '</span></div>' +
+      '<div class="qcard">' +
+      '<div class="qtext">' + withBlank(card.q) + '</div>';
+
+    if (q.type === 'mc') {
+      var keys = ['①', '②', '③', '④'];
+      body += '<div class="choices" style="margin-top:14px">' +
+        q.options.map(function (o, i) {
+          return '<button class="choice" data-opt="' + esc(o) + '"><span class="k">' + keys[i] + '</span><span>' + withBlank(o) + '</span></button>';
+        }).join('') + '</div>';
+    } else {
+      body += '<div class="oxbox">' + withBlank(q.shown) + '</div>' +
+        '<div class="oxlead">위의 답이 이 질문의 정답이면 <b>O</b>, 틀리면 <b>X</b></div>' +
+        '<div class="oxbtns" style="margin-top:10px">' +
+        '<button class="oxbtn o" data-ox="o">O</button>' +
+        '<button class="oxbtn x" data-ox="x">X</button></div>';
+    }
+    body += '</div><div id="fbSlot"></div>';
+    $('#quizStage').innerHTML = body;
+    QZ.results = QZ.results || [];
+  }
+
+  function answerMC(btn) {
+    if (QZ.locked) return;
+    QZ.locked = true;
+    var q = QZ.list[QZ.i];
+    var picked = btn.getAttribute('data-opt');
+    var ok = picked === q.answer;
+    $$('#quizStage .choice').forEach(function (b) {
+      var v = b.getAttribute('data-opt');
+      if (v === q.answer) b.classList.add('correct');
+      if (v === picked && !ok) b.classList.add('wrong');
+      b.disabled = true;
+    });
+    finishAnswer(ok, q);
+  }
+  function answerOX(btn) {
+    if (QZ.locked) return;
+    QZ.locked = true;
+    var q = QZ.list[QZ.i];
+    var picked = btn.getAttribute('data-ox') === 'o';
+    var ok = picked === q.answer;
+    $$('#quizStage .oxbtn').forEach(function (b) {
+      var v = b.getAttribute('data-ox') === 'o';
+      if (v === q.answer) b.classList.add('correct');
+      if (v === picked && !ok) b.classList.add('wrong');
+      b.disabled = true;
+    });
+    finishAnswer(ok, q);
+  }
+
+  function finishAnswer(ok, q) {
+    var card = q.card;
+    var results = QZ.results || (QZ.results = []);
+    results[QZ.i] = ok;
+    if (ok) { QZ.right++; S.known[card.id] = true; }
+    else { QZ.wrong.push(card); delete S.known[card.id]; }
+    S.stats.answered++;
+    if (ok) S.stats.right++;
+    save();
+    renderProgress();
+    renderChips();
+
+    var fb;
+    if (ok) {
+      fb = '<div class="fb good"><div class="head">정답이에요! ✓</div>' +
+        (q.type === 'ox'
+          ? '<div>제시된 답은 <b>' + (q.answer ? 'O' : 'X') + '</b> — 이 카드의 정답은 <span class="ans">' + esc(card.a) + '</span></div>'
+          : '') +
+        (card.note ? '<div class="src">' + esc(card.note) + '</div>' : '') +
+        '<span class="src">' + esc(card.src) + '</span>' +
+        '<div class="nextrow"><button class="btn primary wide sm" id="nextQ">' +
+        (QZ.i + 1 >= QZ.list.length ? '결과 보기' : '다음 문제 →') + '</button></div></div>';
+    } else {
+      var detail = q.type === 'ox'
+        ? '<div class="head">아쉬워요 ✗ — 정답은 <b>' + (q.answer ? 'O' : 'X') + '</b></div>' +
+          '<div>이 카드의 정답: <span class="ans">' + esc(card.a) + '</span></div>'
+        : '<div class="head">아쉬워요 ✗</div><div>정답: <span class="ans">' + esc(card.a) + '</span></div>';
+      fb = '<div class="fb bad">' + detail +
+        (card.note ? '<div class="src">' + esc(card.note) + '</div>' : '') +
+        '<span class="src">' + esc(card.src) + ' · 이 카드는 ‘모르는 카드’로 표시했어요</span>' +
+        '<div class="nextrow"><button class="btn primary wide sm" id="nextQ">' +
+        (QZ.i + 1 >= QZ.list.length ? '결과 보기' : '다음 문제 →') + '</button></div></div>';
+    }
+    $('#fbSlot').innerHTML = fb;
+    $('#nextQ').addEventListener('click', nextQuestion);
+    $('#nextQ').focus({ preventScroll: true });
+  }
+
+  function nextQuestion() {
+    if (QZ.i + 1 >= QZ.list.length) { showResult(); return; }
+    QZ.i++;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showResult() {
+    var total = QZ.list.length;
+    var pct = Math.round(QZ.right / total * 100);
+    var stars = pct === 100 ? '🏆' : pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '💪';
+    var msg = pct === 100 ? '완벽해요! 이 단원은 끝났어요.'
+      : pct >= 80 ? '아주 좋아요. 틀린 카드만 다시 보면 끝!'
+        : pct >= 60 ? '절반은 넘었어요. 오답 카드를 다시 외워 봐요.'
+          : '오답 카드부터 천천히 다시 외워 봐요.';
+
+    var html = '<div class="result">' +
+      '<div class="big" style="font-size:2rem">' + stars + '</div>' +
+      '<div class="score">' + pct + '<small>%</small></div>' +
+      '<div class="line">' + QZ.right + '문제 맞힘 / 전체 ' + total + '문제 · ' + msg + '</div>';
+
+    if (QZ.wrong.length) {
+      html += '<div style="text-align:left;font-size:.82rem;color:var(--muted);margin-bottom:7px">다시 볼 카드 ' + QZ.wrong.length + '장</div>' +
+        '<ul class="wronglist">' + QZ.wrong.map(function (c) {
+          return '<li><b>' + esc(c.q) + '</b><span>' + esc(c.a) + '</span></li>';
+        }).join('') + '</ul>';
+    }
+    html += '<div class="actions">' +
+      (QZ.wrong.length ? '<button class="btn again" id="retryWrong">오답만 다시 풀기</button>' : '<button class="btn flat" id="goLearn">암기 학습으로</button>') +
+      '<button class="btn primary" id="retryAll">새로 풀기</button></div>' +
+      '<div style="margin-top:9px"><button class="btn wide flat sm" id="goLearn2">암기 학습으로 돌아가기</button></div>' +
+      '</div>';
+
+    $('#quizStage').style.display = 'none';
+    $('#quizResult').innerHTML = html;
+    $('#quizResult').style.display = 'block';
+
+    var wrong = QZ.wrong.slice();
+    var rw = $('#retryWrong');
+    if (rw) rw.addEventListener('click', function () { startQuiz(wrong); });
+    $('#retryAll').addEventListener('click', function () { startQuiz(); });
+    var gl = $('#goLearn'), gl2 = $('#goLearn2');
+    if (gl) gl.addEventListener('click', function () { setView('learn'); });
+    if (gl2) gl2.addEventListener('click', function () { setView('learn'); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function renderQuizPanel() {
+    if (QZ && $('#quizStage').style.display === 'block') return;
+    $('#quizSetup').style.display = 'block';
+    $('#quizResult').style.display = 'none';
+    $('#quizStage').style.display = 'none';
+    var poolN = scopePool().length;
+    $('#startInfo').textContent = '지금 조건으로 ' + poolN + '장에서 출제해요.';
+  }
+
+  /* ---------------- events ---------------- */
+  function bind() {
+    $$('.tabs button').forEach(function (b) {
+      b.addEventListener('click', function () { setView(b.getAttribute('data-view')); });
+    });
+
+    document.addEventListener('click', function (e) {
+      var chip = e.target.closest ? e.target.closest('.chip') : null;
+      if (chip) { setPart(chip.getAttribute('data-part')); }
+    });
+
+    $('#flip').addEventListener('click', flipCard);
+    $('#flip').addEventListener('keydown', function (e) {
+      if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipCard(); }
+    });
+    $('#btnKnown').addEventListener('click', markKnown);
+    $('#btnAgain').addEventListener('click', markAgain);
+    $('#btnPrev').addEventListener('click', function () { move(-1); });
+    $('#btnNext').addEventListener('click', function () { move(1); });
+    $('#onlyUnknownBtn').addEventListener('click', function () {
+      S.onlyUnknown = !S.onlyUnknown;
+      S.idx = 0;
+      S.finished = false;
+      save(); renderLearn();
+    });
+    $('#shuffleBtn').addEventListener('click', function () {
+      S.shuffled = !S.shuffled;
+      buildOrder();
+      S.idx = 0;
+      S.finished = false;
+      save(); renderLearn();
+      toast(S.shuffled ? '카드 순서를 섞었어요' : '순서대로 되돌렸어요');
+    });
+    $('#resetBtn').addEventListener('click', function () {
+      var box = $('#resetConfirm');
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    });
+    $('#resetYes').addEventListener('click', function () {
+      S.known = {};
+      S.stats = { answered: 0, right: 0 };
+      S.idx = 0;
+      $('#resetConfirm').style.display = 'none';
+      save(); renderProgress(); renderChips(); renderLearn();
+      toast('암기 기록을 지웠어요');
+    });
+    $('#resetNo').addEventListener('click', function () {
+      $('#resetConfirm').style.display = 'none';
+    });
+
+    // 진행 완료 카드의 버튼들
+    $('#doneAgain').addEventListener('click', function () { S.idx = 0; S.finished = false; renderLearn(); });
+    $('#doneUnknown').addEventListener('click', function () {
+      S.onlyUnknown = true; S.idx = 0; S.finished = false; save();
+      if (!deckIds().length) {
+        S.onlyUnknown = false; save(); renderLearn();
+        toast('모르는 카드가 없어요. 모두 외웠어요!');
+        return;
+      }
+      renderLearn();
+    });
+    $('#doneQuiz').addEventListener('click', function () { setView('quiz'); });
+
+    // quiz setup
+    $$('.seg[data-group="type"] button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        S.quiz.type = b.getAttribute('data-val');
+        $$('.seg[data-group="type"] button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        save(); renderQuizPanel();
+      });
+    });
+    $$('.seg[data-group="scope"] button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        S.quiz.scope = b.getAttribute('data-val');
+        $$('.seg[data-group="scope"] button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        save(); renderQuizPanel();
+      });
+    });
+    $$('.seg[data-group="count"] button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        S.quiz.count = b.getAttribute('data-val');
+        $$('.seg[data-group="count"] button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        save();
+      });
+    });
+    $('#btnStart').addEventListener('click', function () { startQuiz(); });
+
+    document.addEventListener('click', function (e) {
+      if (!QZ) return;
+      var ch = e.target.closest ? e.target.closest('#quizStage .choice') : null;
+      if (ch) { answerMC(ch); return; }
+      var ox = e.target.closest ? e.target.closest('#quizStage .oxbtn') : null;
+      if (ox) { answerOX(ox); }
+    });
+
+    // cheat sheet quick nav
+    $$('.sheetbar button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var el = document.getElementById(b.getAttribute('data-go'));
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (S.view !== 'learn') return;
+      var tag = (e.target.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); move(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1); }
+      else if (e.key === '1') { markAgain(); }
+      else if (e.key === '2') { markKnown(); }
+    });
+  }
+
+  /* ---------------- init ---------------- */
+  function syncSetupUI() {
+    $$('.seg[data-group="type"] button').forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-val') === S.quiz.type);
+    });
+    $$('.seg[data-group="scope"] button').forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-val') === S.quiz.scope);
+    });
+    $$('.seg[data-group="count"] button').forEach(function (b) {
+      b.classList.toggle('on', String(b.getAttribute('data-val')) === String(S.quiz.count));
+    });
+  }
+
+  function init() {
+    load();
+    if (S.view !== 'learn' && S.view !== 'quiz' && S.view !== 'sheet') S.view = 'learn';
+    if (['ALL', 'A', 'B', 'C', 'D'].indexOf(S.part) < 0) S.part = 'ALL';
+    renderChips();
+    syncSetupUI();
+    buildOrder();
+    renderProgress();
+    bind();
+    setView(S.view);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+
+</script>
+</body>
+</html>
