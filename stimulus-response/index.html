@@ -909,8 +909,8 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
     function hh(el) { return el ? el.getBoundingClientRect().height : 0; }
     var noteEl = $('#cardNote');
     var noteH = (noteEl && noteEl.style.display !== 'none') ? hh(noteEl) + 12 : 0;
-    var front = 38 + 40 + hh($('#cardQ')) + 32;
-    var back = 38 + 22 + hh($('#cardA')) + noteH + 24;
+    var front = 38 + 44 + hh($('#cardQ')) + 36;
+    var back = 38 + 32 + hh($('#cardA')) + noteH + 36;
     var h = Math.max(front, back, 200);
     inner.style.height = Math.min(h, 580) + 'px';
   }
