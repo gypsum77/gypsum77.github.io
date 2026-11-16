@@ -988,7 +988,7 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
       if (card.kind === 'list') minR = 0.1;
       else if (card.kind === 'disease') minR = 0.22;
       if (r < minR) return;
-      if (shp === 'noun' && L <= 5 && cl > 9) return;
+      if (!card.kind && shp === 'noun' && L <= 5 && cl > 9) return;
       var score = (c.grp === card.grp ? 6 : 0) + (c.part === card.part ? 3 : 0) + r * 3;
       (kindKey(c) === sh ? strict : loose).push({ c: c, s: score });
     });
