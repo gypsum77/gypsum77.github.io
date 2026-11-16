@@ -140,7 +140,7 @@ body {
 .flip { perspective: 1600px; cursor: pointer; outline: none; margin-bottom: 12px; }
 .flip-inner {
   position: relative; width: 100%;
-  height: clamp(320px, 52vh, 430px);
+  height: clamp(200px, 46vh, 430px);
   transform-style: preserve-3d;
   transition: transform .58s cubic-bezier(.24, .8, .24, 1);
 }
@@ -911,7 +911,7 @@ window.__PARTS__ = {"A":{"label":"A. 신경계","sub":"뉴런과 중추·말초 
     var noteH = (noteEl && noteEl.style.display !== 'none') ? hh(noteEl) + 12 : 0;
     var front = 38 + 40 + hh($('#cardQ')) + 32;
     var back = 38 + 22 + hh($('#cardA')) + noteH + 24;
-    var h = Math.max(front, back, 250);
+    var h = Math.max(front, back, 200);
     inner.style.height = Math.min(h, 580) + 'px';
   }
 
