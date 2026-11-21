@@ -1,7 +1,30 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8">
 <title>390px 확인용</title>
-<style>body{margin:0;background:#dfe6ef;font-family:sans-serif;display:flex;gap:16px;padding:16px}
-iframe{border:0;background:#fff;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.15)}</style></head>
+<style>body{margin:0;background:#dfe6ef;font-family:sans-serif;padding:16px}
+iframe{border:0;background:#fff;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.15);display:block}</style></head>
 <body>
-<iframe src="./index.html" width="390" height="844"></iframe>
+<iframe id="f" src="./index.html" width="390" height="844"></iframe>
+<script>
+(function(){
+  var m = new URLSearchParams(location.search);
+  var acts = (m.get('act')||'').split(',').filter(Boolean);
+  var f = document.getElementById('f');
+  f.onload = function(){
+    var d = f.contentDocument, w = f.contentWindow;
+    setTimeout(function(){
+      acts.forEach(function(a){
+        if (a === 'flip') { var el = d.querySelector('#flip'); if (el) el.click(); }
+        else if (a === 'next') { var b = d.querySelector('#btnNext'); if (b) b.click(); }
+        else if (a === 'prev') { var p = d.querySelector('#btnPrev'); if (p) p.click(); }
+        else if (a === 'known') { var k = d.querySelector('#btnKnown'); if (k) k.click(); }
+        else if (a === 'learn') { var t = d.querySelector('.tabs button[data-view="learn"]'); if (t) t.click(); }
+        else if (a === 'quiz') { var q = d.querySelector('.tabs button[data-view="quiz"]'); if (q) q.click(); }
+        else if (a === 'sheet') { var s = d.querySelector('.tabs button[data-view="sheet"]'); if (s) s.click(); }
+        else if (a === 'start') { var st = d.querySelector('#btnStart'); if (st) st.click(); }
+        else if (a.indexOf('scroll') === 0) { w.scrollTo(0, parseInt(a.slice(6),10)||0); }
+      });
+    }, 350);
+  };
+})();
+</script>
 </body></html>
