@@ -309,7 +309,7 @@ body {
 .unithead[data-p="CIR"] { background: linear-gradient(120deg, #4a86f2, #2f6fed); }
 .unithead[data-p="RES"] { background: linear-gradient(120deg, #2fb39f, #159c86); }
 .unithead[data-p="EXC"] { background: linear-gradient(120deg, #9a7ee0, #7a5cd6); }
-.unithead .pg { margin-left: auto; font-size: .76rem; font-weight: 400; opacity: .9; }
+.unithead .pg { margin-left: auto; font-size: .71rem; font-weight: 400; opacity: .9; white-space: nowrap; }
 
 .sheet { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
 .sheet section { background: #fff; border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-sm); padding: 16px 14px; min-width: 0; }
@@ -332,7 +332,7 @@ table.tb tr.hi td, table.tb tr.hi th { background: #fcfdff; }
 .chiprow { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
 .chiprow span { font-size: .75rem; background: #f2f7fe; color: #1b3b6f; border-radius: 99px; padding: 4px 9px; }
 
-.fig { margin: 4px 0 12px; padding: 8px 6px 6px; border: 1px solid #eef3f9; border-radius: 16px; background: #fdfeff; position: relative; }
+.fig { margin: 4px 0 12px; padding: 26px 6px 6px; border: 1px solid #eef3f9; border-radius: 16px; background: #fdfeff; position: relative; }
 .fig .dg { max-width: 360px; }
 .fig figcaption { margin: 6px 6px 0; font-size: .74rem; color: var(--muted); line-height: 1.5; }
 .figbtn {
@@ -1374,7 +1374,8 @@ window.__DIAGRAMS__ = {"heart":"<svg class=\"dg-svg\" viewBox=\"0 0 360 290\" ro
   }
 
   /* 점검용 */
-  window.__BS__ = { cards: CARDS, questions: QUESTIONS, parts: PARTS, state: S };
+  window.__BS__ = { cards: CARDS, questions: QUESTIONS, parts: PARTS, state: S,
+    startQuiz: startQuiz, getQZ: function () { return QZ; }, setView: setView };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
