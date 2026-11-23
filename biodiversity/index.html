@@ -440,12 +440,15 @@ function apiGet(params) {
     .then(function (r) { return r.text(); })
     .then(parseApi_);
 }
-function apiPost(payload) {
+/** POST 로 보낼 때 요청 종류는 body.method 에 넣습니다.
+    (submitSurvey 의 payload.action 은 학생이 쓴 '실천 행동' 이라 이름이 겹칩니다) */
+function apiPost(action, payload) {
+  var body = Object.assign({}, payload || {}, { method: action });
   return fetch(API_URL, {
     method: 'POST',
     redirect: 'follow',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },  // preflight(OPTIONS) 안 생기게
-    body: JSON.stringify(payload)
+    body: JSON.stringify(body)
   })
     .then(function (r) { return r.text(); })
     .then(parseApi_);
@@ -830,7 +833,7 @@ function doSurvey() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span>저장하는 중…';
 
-  apiPost(Object.assign({ action: 'submitSurvey' }, payload))
+  apiPost('submitSurvey', payload)
     .then(function (res) {
       btn.disabled = false;
       btn.innerHTML = '제출하고 제미나이 프롬프트 받기 🎨';
@@ -890,7 +893,7 @@ function doVote() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span>보내는 중…';
 
-  apiPost(Object.assign({ action: 'submitVote' }, payload))
+  apiPost('submitVote', payload)
     .then(function (res) {
       btn.disabled = false;
       btn.innerHTML = '투표 제출하기 🎵';
@@ -1042,7 +1045,7 @@ function doPoster() {
       creature: creature, slogan: $('posterSlogan').value.trim(),
       imageBase64: res.b64, mimeType: res.mime
     };
-    apiPost(Object.assign({ action: 'uploadPoster' }, payload))
+    apiPost('uploadPoster', payload)
       .then(function (r) {
         btn.disabled = false;
         btn.innerHTML = '전시장에 올리기 🖼️';
@@ -1158,7 +1161,7 @@ function doSaveSuno() {
   var btn = $('btnSunoSave');
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span>저장 중…';
-  apiPost({ action: 'saveSunoLink', classNum: cls, groupNum: g + '모둠', title: $('sunoSong').value.trim(), link: link })
+  apiPost('saveSunoLink', { classNum: cls, groupNum: g + '모둠', title: $('sunoSong').value.trim(), link: link })
     .then(function (r) {
       btn.disabled = false;
       btn.innerHTML = '저장하기';

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>생물다양성 캠페인 · 교사용 보드</title>
+<style>
+@font-face{font-family:'MapleL';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFLight.woff') format('woff'),url('https://cdn.jsdelivr.net/gh/fonts-archive/Maplestory/Maplestory-Light.woff2') format('woff2');font-display:swap}
+@font-face{font-family:'MapleB';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff') format('woff'),url('https://cdn.jsdelivr.net/gh/fonts-archive/Maplestory/Maplestory-Bold.woff2') format('woff2');font-display:swap}
+:root{
+  --green:#17824B; --green-d:#0C5B33; --green-l:#3FA96E;
+  --mint:#EAF8EF; --mint2:#D6F0E0; --line:#CBE7D7;
+  --ink:#1B2A22; --grey:#61736A;
+  --amber:#B8730E; --amber-bg:#FFF7E6; --amber-line:#F2D9A6;
+  --purple:#5B45A8; --purple-bg:#F4F0FD; --purple-line:#DCD2F5;
+  --fl:'MapleL','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+  --fb:'MapleB','Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{margin:0;background:
+   radial-gradient(1200px 400px at 50% -140px,#DCF2E4 0%,rgba(220,242,228,0) 70%),
+   #F2F8F4;
+  color:var(--ink);font-family:var(--fl);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:14px 12px 56px}
+.top{background:linear-gradient(150deg,#0C5B33 0%,#17824B 60%,#2E9A5E 100%);border-radius:18px;
+  padding:16px 18px;color:#fff;box-shadow:0 10px 24px rgba(12,91,51,.18)}
+.top h1{margin:0;font-family:var(--fb);font-size:22px;letter-spacing:-.01em}
+.top p{margin:4px 0 0;font-size:12.5px;opacity:.9}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 0}
+.chip{font-family:var(--fl);font-size:14px;border:1.5px solid var(--line);background:#fff;color:var(--green-d);
+  border-radius:999px;padding:7px 15px;cursor:pointer}
+.chip.on{background:var(--green);border-color:var(--green);color:#fff;font-family:var(--fb)}
+.btn{font-family:var(--fl);font-size:13.5px;border:1.5px solid var(--line);background:#fff;color:var(--green-d);
+  border-radius:10px;padding:7px 12px;cursor:pointer}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff;font-family:var(--fb)}
+.btn.on{background:var(--amber-bg);border-color:var(--amber-line);color:var(--amber)}
+.btn:disabled{opacity:.55;cursor:default}
+.sp{display:inline-block;width:11px;height:11px;border:2px solid rgba(0,0,0,.18);border-top-color:var(--green);
+  border-radius:50%;margin-right:5px;vertical-align:-1px;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+a{color:var(--green-d)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.stat{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center}
+.stat b{display:block;font-family:var(--fb);font-size:22px;color:var(--green-d);line-height:1.2}
+.stat span{font-size:11.5px;color:var(--grey)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 13px 13px;
+  box-shadow:0 2px 8px rgba(16,70,45,.05)}
+.card h2{margin:0;font-family:var(--fb);font-size:17px;color:var(--green-d);display:flex;justify-content:space-between;align-items:baseline}
+.card h2 small{font-family:var(--fl);font-size:11.5px;color:var(--grey)}
+.row{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag{background:var(--mint);border:1px solid var(--mint2);border-radius:999px;padding:2px 9px;font-size:12px;color:var(--green-d)}
+.tag b{font-family:var(--fb);font-weight:normal}
+.tag.p{background:var(--purple-bg);border-color:var(--purple-line);color:var(--purple)}
+.tag.a{background:var(--amber-bg);border-color:var(--amber-line);color:var(--amber)}
+.sub{margin-top:10px;font-size:11.5px;color:var(--grey);font-family:var(--fb)}
+.quote{font-size:12.5px;background:#F7FBF8;border-left:3px solid var(--green-l);border-radius:0 8px 8px 0;
+  padding:5px 9px;margin-top:5px;color:#25402F;word-break:keep-all}
+.empty{font-size:12px;color:#93A69B;padding:4px 0}
+.suno-ko{font-size:12.5px;background:var(--amber-bg);border:1px solid var(--amber-line);border-radius:10px;
+  padding:7px 9px;margin-top:8px;color:#6E4A08;word-break:keep-all}
+.suno-tags{display:block;font-family:monospace;font-size:11.5px;color:#4A5C51;margin-top:5px;word-break:break-all}
+.pbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.linky{display:flex;gap:5px;margin-top:8px}
+.linky input{flex:1;min-width:0;font-family:var(--fl);font-size:12.5px;border:1.5px solid var(--line);
+  border-radius:9px;padding:6px 9px;background:#fff;color:var(--ink)}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.thumbs button{border:1.5px solid var(--line);border-radius:10px;padding:0;overflow:hidden;background:#fff;
+  width:74px;cursor:pointer}
+.thumbs img{display:block;width:100%;height:96px;object-fit:cover}
+.thumbs small{display:block;font-size:10px;color:var(--grey);padding:2px 3px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbl-wrap{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 13px;margin-top:14px}
+.table{width:100%;border-collapse:collapse;font-size:13px}
+.table th,.table td{border-bottom:1px solid #E7F1EB;padding:6px 6px;text-align:center}
+.table th{font-family:var(--fb);font-weight:normal;color:var(--green-d);font-size:12px;background:#F7FBF8}
+.table td.name{font-family:var(--fb)}
+.o{color:var(--green);font-family:var(--fb)}
+.x{color:#C3CFC8}
+.table tr.miss td{background:#FFFDF5}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#173D2A;color:#fff;
+  font-size:13.5px;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(9,24,17,.82);display:flex;align-items:center;justify-content:center;
+  padding:16px;z-index:60}
+.modal img{max-width:100%;max-height:82vh;border-radius:12px;background:#fff}
+.modal .cap{color:#E8F5EC;font-size:13px;text-align:center;margin-top:8px}
+.updated{font-size:11.5px;color:var(--grey);margin-top:6px}
+@media(max-width:560px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .wrap{padding:10px 9px 48px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>🧑‍🏫 생물다양성 캠페인 · 교사용 보드</h1>
+    <p>보평중학교 1학년 자유학기 과학 · 윤혜선 선생님 — 모둠별 집계와 학생별 제출 현황을 한 화면에 모았어요.</p>
+    <div class="updated" id="updated">불러오는 중…</div>
+  </div>
+
+  <div class="bar">
+    <div id="classChips" style="display:flex;gap:6px"></div>
+    <button class="btn" id="btnReload">🔄 새로고침</button>
+    <button class="btn" id="btnAuto">⏱️ 15초 자동 새로고침</button>
+    <a class="btn" id="sheetLink" href="https://docs.google.com/spreadsheets/d/1zpkB_Ao9P94mqoiCzZWs3q-XYljic_53dA6SdEWkXZw/edit" target="_blank" rel="noopener">📊 취합 시트 열기</a>
+    <a class="btn" href="./">🧪 학생용 화면</a>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="grid" id="groups"></div>
+
+  <div class="tbl-wrap">
+    <h2 style="margin:0;font-family:var(--fb);font-size:17px;color:var(--green-d)">👥 학생별 제출 현황</h2>
+    <p style="margin:4px 0 10px;font-size:12px;color:var(--grey)">조사·투표·포스터를 하나라도 안 낸 학생은 노란 줄로 표시했어요.</p>
+    <div style="overflow-x:auto">
+      <table class="table">
+        <thead>
+          <tr><th style="width:52px">번호</th><th style="width:88px">이름</th><th>조사</th><th>투표</th><th>포스터</th><th>조사한 생물</th></tr>
+        </thead>
+        <tbody id="rosterBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="imgModal" hidden>
+  <div>
+    <img id="imgBig" src="" alt="포스터 크게 보기">
+    <div class="cap" id="imgCap"></div>
+  </div>
+</div>
+
+<script>
+/* ================= 서버 ================= */
+var API_URL = 'https://script.google.com/macros/s/AKfycbxTuJxsk-St2YqHocVlbcVCQyIEIp-zIqDbNe9Pw_lmaTIe7xusXqz_Pe34dZ_cq_fYYQ/exec';
+var CLASSES = ['2반', '4반'];
+var GROUPS = 8;
+var $ = function (id) { return document.getElementById(id); };
+var state = { cls: CLASSES[0], data: null, auto: 0, loading: false };
+
+function esc(s) {
+  return String(s === null || s === undefined ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function toast(msg) {
+  var t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(function () { t.classList.remove('show'); }, 2600);
+}
+function parseApi_(text) {
+  var res;
+  try { res = JSON.parse(text); }
+  catch (e) { throw new Error('서버 응답을 읽지 못했어요.'); }
+  if (res && res.ok === false) throw new Error(res.error || '서버에서 처리하지 못했어요.');
+  return res;
+}
+function apiGet(params) {
+  var qs = Object.keys(params).map(function (k) {
+    return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+  }).join('&');
+  return fetch(API_URL + '?' + qs, { method: 'GET', redirect: 'follow' })
+    .then(function (r) { return r.text(); }).then(parseApi_);
+}
+function apiPost(action, payload) {
+  var body = Object.assign({}, payload || {}, { method: action });
+  return fetch(API_URL, {
+    method: 'POST', redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(body)
+  }).then(function (r) { return r.text(); }).then(parseApi_);
+}
+
+/* ================= 화면 ================= */
+function paintChips() {
+  var box = $('classChips');
+  box.innerHTML = '';
+  CLASSES.forEach(function (c) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (state.cls === c ? ' on' : '');
+    b.textContent = c;
+    b.addEventListener('click', function () {
+      if (state.cls === c) return;
+      state.cls = c;
+      paintChips();
+      load();
+    });
+    box.appendChild(b);
+  });
+}
+
+function load() {
+  if (state.loading) return;
+  state.loading = true;
+  $('btnReload').disabled = true;
+  $('btnReload').innerHTML = '<span class="sp"></span>불러오는 중…';
+  apiGet({ action: 'teacherBoard', classNum: state.cls }).then(function (res) {
+    state.data = res;
+    render(res);
+  }).catch(function (err) {
+    $('groups').innerHTML = '<div class="card"><div class="empty">불러오지 못했어요: ' +
+      esc(err && err.message ? err.message : '잠시 뒤 다시 눌러 주세요') + '</div></div>';
+    $('updated').textContent = '불러오기 실패 — 새로고침을 눌러 주세요';
+  }).then(function () {
+    state.loading = false;
+    $('btnReload').disabled = false;
+    $('btnReload').innerHTML = '🔄 새로고침';
+  });
+}
+
+function render(d) {
+  $('updated').textContent = d.classLabel + ' 기준 · ' + (d.at || '') + ' 에 시트에서 읽었어요';
+  var t = d.totals || {};
+  $('stats').innerHTML =
+    '<div class="stat"><b>' + (t.students || 0) + '</b><span>학생 수</span></div>' +
+    '<div class="stat"><b>' + (t.survey || 0) + '</b><span>개인 조사 제출</span></div>' +
+    '<div class="stat"><b>' + (t.vote || 0) + '</b><span>수노 투표 제출</span></div>' +
+    '<div class="stat"><b>' + (t.poster || 0) + '</b><span>포스터 올림</span></div>';
+
+  $('groups').innerHTML = (d.groups || []).map(cardHtml).join('');
+  (d.groups || []).forEach(wireCard);
+
+  var rows = (d.roster || []).map(function (p) {
+    var miss = !(p.survey && p.vote && p.poster);
+    return '<tr class="' + (miss ? 'miss' : '') + '">' +
+      '<td>' + esc(p.number) + '</td>' +
+      '<td class="name">' + esc(p.name) + '</td>' +
+      '<td>' + (p.survey ? '<span class="o">O</span>' : '<span class="x">X</span>') + '</td>' +
+      '<td>' + (p.vote ? '<span class="o">O</span>' : '<span class="x">X</span>') + '</td>' +
+      '<td>' + (p.poster ? '<span class="o">O</span>' : '<span class="x">X</span>') + '</td>' +
+      '<td>' + esc(p.creature || '—') + '</td>' +
+      '</tr>';
+  }).join('');
+  $('rosterBody').innerHTML = rows || '<tr><td colspan="6" class="empty">명렬표를 읽지 못했어요</td></tr>';
+}
+
+function tags(list, cls, unit) {
+  if (!list || !list.length) return '<div class="empty">아직 없음</div>';
+  return '<div class="row">' + list.map(function (x) {
+    return '<span class="tag ' + (cls || '') + '"><b>' + esc(x.label) + '</b>' + (unit ? ' ' + x.count + unit : '') + '</span>';
+  }).join('') + '</div>';
+}
+
+function cardHtml(g) {
+  var hasVote = g.voteCount > 0;
+  var link = g.suno;
+  return '<div class="card" data-g="' + g.group + '">' +
+    '<h2>' + g.group + '모둠 <small>조사 ' + g.surveyCount + '명 · 투표 ' + g.voteCount + '표 · 포스터 ' + g.posterCount + '장</small></h2>' +
+
+    '<div class="sub">🐾 모인 생물</div>' + tags(g.creatures, '', '표') +
+
+    '<div class="sub">🎧 수노 투표 1등</div>' +
+    (hasVote
+      ? '<div class="row">' +
+          [['장르', g.genre], ['분위기', g.mood], ['템포', g.tempo], ['보컬', g.vocal]].map(function (pair) {
+            var top = (pair[1] && pair[1].length) ? pair[1][0] : null;
+            return top ? '<span class="tag p">' + pair[0] + ' <b>' + esc(top.label) + '</b></span>' : '';
+          }).join('') +
+        '</div>'
+      : '<div class="empty">아직 투표가 없어요</div>') +
+
+    '<div class="sub">🔑 키워드</div>' +
+    (g.keywords && g.keywords.length
+      ? '<div class="row">' + g.keywords.map(function (x) { return '<span class="tag">' + esc(x.label) + '</span>'; }).join('') + '</div>'
+      : '<div class="empty">아직 없음</div>') +
+
+    '<div class="sub">🎵 후렴구 후보</div>' +
+    (g.choruses && g.choruses.length
+      ? g.choruses.map(function (x) { return '<div class="quote">“' + esc(x.label) + '”</div>'; }).join('')
+      : '<div class="empty">아직 없음</div>') +
+
+    '<div class="suno-ko">' + esc(g.sunoKo || '') + '</div>' +
+    '<code class="suno-tags">' + esc(g.sunoTags || '') + '</code>' +
+    '<div class="pbtns">' +
+      '<button class="btn primary copy-suno" type="button">📋 수노 프롬프트 복사</button>' +
+    '</div>' +
+
+    '<div class="sub">🔗 모둠 수노 링크</div>' +
+    (link
+      ? '<div class="row"><a class="tag a" href="' + esc(link.link) + '" target="_blank" rel="noopener">🎵 ' +
+        esc(link.title || link.link) + '</a></div>'
+      : '<div class="empty">아직 등록된 링크가 없어요</div>') +
+    '<div class="linky">' +
+      '<input class="suno-title" type="text" placeholder="노래 제목 (선택)" value="' + esc(link && link.title ? link.title : '') + '">' +
+      '<input class="suno-url" type="text" placeholder="https://suno.com/song/..." value="' + esc(link ? link.link : '') + '">' +
+      '<button class="btn save-suno" type="button">🎵 저장</button>' +
+    '</div>' +
+
+    '<div class="sub">🖼️ 올라온 포스터</div>' +
+    (g.posters && g.posters.length
+      ? '<div class="thumbs">' + g.posters.map(function (p) {
+          return '<button type="button" class="thumb" data-url="' + esc(p.url) + '" data-cap="' +
+            esc(p.number + '번 ' + p.name + ' · ' + p.creature + (p.slogan ? ' · ' + p.slogan : '')) + '">' +
+            '<img loading="lazy" src="' + esc(p.url) + '" alt="' + esc(p.creature) + ' 포스터">' +
+            '<small>' + esc(p.number + '번 ' + p.name) + '</small></button>';
+        }).join('') + '</div>'
+      : '<div class="empty">아직 올린 포스터가 없어요</div>') +
+    '</div>';
+}
+
+function wireCard(g) {
+  var card = document.querySelector('.card[data-g="' + g.group + '"]');
+  if (!card) return;
+
+  card.querySelector('.copy-suno').addEventListener('click', function () {
+    var text = (g.sunoKo || '') + '\n' + (g.sunoTags || '');
+    var done = function () { toast(g.group + '모둠 수노 프롬프트를 복사했어요'); };
+    var fail = function () { toast('복사하지 못했어요 — 문장을 길게 눌러 복사해 주세요'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fail);
+    } else { fail(); }
+  });
+
+  card.querySelectorAll('.thumb').forEach(function (el) {
+    el.addEventListener('click', function () {
+      $('imgBig').src = el.getAttribute('data-url');
+      $('imgCap').textContent = el.getAttribute('data-cap');
+      $('imgModal').hidden = false;
+    });
+  });
+
+  card.querySelector('.save-suno').addEventListener('click', function () {
+    var btn = this;
+    var url = card.querySelector('.suno-url').value.trim();
+    var title = card.querySelector('.suno-title').value.trim();
+    if (!url) { toast('수노 링크를 붙여넣어 주세요'); card.querySelector('.suno-url').focus(); return; }
+    btn.disabled = true;
+    btn.innerHTML = '<span class="sp"></span>저장';
+    apiPost('saveSunoLink', { classNum: state.cls, groupNum: g.group + '모둠', title: title, link: url })
+      .then(function (r) {
+        toast(r.updated ? g.group + '모둠 수노 링크를 새 링크로 바꿨어요' : g.group + '모둠 수노 링크를 걸었어요');
+        load();
+      })
+      .catch(function (err) {
+        btn.disabled = false;
+        btn.textContent = '🎵 저장';
+        toast('저장하지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시 눌러 주세요'));
+      });
+  });
+}
+
+/* ================= 자동 새로고침 ================= */
+function toggleAuto() {
+  if (state.auto) { clearInterval(state.auto); state.auto = 0; }
+  else { state.auto = setInterval(function () { if (!document.hidden) load(); }, 15000); }
+  $('btnAuto').className = 'btn' + (state.auto ? ' on' : '');
+  $('btnAuto').textContent = state.auto ? '⏱️ 15초 자동 새로고침 켜짐' : '⏱️ 15초 자동 새로고침';
+}
+
+/* ================= 시작 ================= */
+(function init() {
+  paintChips();
+  $('btnReload').addEventListener('click', load);
+  $('btnAuto').addEventListener('click', toggleAuto);
+  $('imgModal').addEventListener('click', function () { $('imgModal').hidden = true; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('imgModal').hidden = true; });
+  load();
+})();
+</script>
+</body>
+</html>
