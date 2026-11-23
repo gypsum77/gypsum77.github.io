@@ -46,10 +46,12 @@ a{color:var(--green-d)}
 .stat b{display:block;font-family:var(--fb);font-size:22px;color:var(--green-d);line-height:1.2}
 .stat span{font-size:11.5px;color:var(--grey)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.grid>*{min-width:0}
 .card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 13px 13px;
-  box-shadow:0 2px 8px rgba(16,70,45,.05)}
-.card h2{margin:0;font-family:var(--fb);font-size:17px;color:var(--green-d);display:flex;justify-content:space-between;align-items:baseline}
-.card h2 small{font-family:var(--fl);font-size:11.5px;color:var(--grey)}
+  min-width:0;box-shadow:0 2px 8px rgba(16,70,45,.05)}
+.card h2{margin:0;font-family:var(--fb);font-size:17px;color:var(--green-d);display:flex;flex-wrap:wrap;
+  justify-content:space-between;align-items:baseline;gap:1px 8px}
+.card h2 small{font-family:var(--fl);font-size:11.5px;color:var(--grey);text-align:right;margin-left:auto}
 .row{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
 .tag{background:var(--mint);border:1px solid var(--mint2);border-radius:999px;padding:2px 9px;font-size:12px;color:var(--green-d)}
 .tag b{font-family:var(--fb);font-weight:normal}
@@ -91,6 +93,9 @@ a{color:var(--green-d)}
   .stats{grid-template-columns:repeat(2,1fr)}
   .grid{grid-template-columns:1fr}
   .wrap{padding:10px 9px 48px}
+  .linky{flex-wrap:wrap}
+  .linky input{flex:1 1 100%}
+  .card h2{font-size:16px}
 }
 </style>
 </head>
