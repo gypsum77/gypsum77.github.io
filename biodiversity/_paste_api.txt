@@ -1,0 +1,230 @@
+/* ================= JSON API (GitHub Pages 화면용) =================
+ * 화면은 https://gypsum77.github.io/biodiversity/ 에서 열리고,
+ * 이 웹앱은 JSON만 돌려줍니다.
+ *
+ *   GET  <웹앱주소>?action=roster                       → 명렬표 { "2": [{num,name}], "4": [...] }
+ *   GET  <웹앱주소>?action=summary&classNum=&groupNum=   → 모둠 현황(학생용 3단계)
+ *   GET  <웹앱주소>?action=gallery&classNum=             → 전시장(학생용 5단계)
+ *   GET  <웹앱주소>?action=teacherBoard&classNum=        → 교사용 보드(모둠별 집계 + 학생별 제출 현황)
+ *   POST { method: 'submitSurvey' | 'submitVote' | 'uploadPoster' | 'saveSunoLink', ... }
+ *
+ * 주의: submitSurvey 의 'action' 은 학생이 쓴 '실천 행동' 값이라 요청 종류와 이름이 겹칩니다.
+ *       그래서 POST 는 data.method 로 종류를 고르고, method 가 없을 때만 data.action 을 봅니다.
+ */
+
+var API_ACTIONS = { submitSurvey: 1, submitVote: 1, uploadPoster: 1, saveSunoLink: 1 };
+
+function jsonOut_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function errText_(err) {
+  if (!err) return '알 수 없는 오류';
+  if (typeof err === 'string') return err;
+  return String(err.message || err);
+}
+
+function topLabel_(list) {
+  return (list && list.length) ? list[0].label : '';
+}
+
+/** 집계 결과로 선생님이 Suno에 그대로 넣을 문장·태그 만들기 (getGroupSummary 와 같은 규칙) */
+function sunoOf_(genreT, moodT, tempoT, vocalT, mainCreature, keywords, chorusT) {
+  var g = topLabel_(genreT), m = topLabel_(moodT), t = topLabel_(tempoT), v = topLabel_(vocalT);
+  var kw = (keywords || []).map(function (x) { return x.label || x; });
+
+  var ko = '우리 모둠 캠페인 송은 ' + (g || '(장르 미정)') + ' 장르, ' +
+    (m || '(분위기 미정)') + ' 분위기, ' + (t || '(템포 미정)') + ' 템포, ' +
+    (v || '(보컬 미정)') + ' 보컬로 만들어 주세요. 주제 생물은 ' + (mainCreature || '(조사 전)') +
+    '이고' + (kw.length ? ', 가사에 꼭 넣을 말은 ' + kw.join(', ') + '입니다.' : '.') +
+    ((chorusT && chorusT.length)
+      ? ' 후렴구 후보: "' + chorusT.slice(0, 3).map(function (x) { return x.label; }).join('" / "') + '".'
+      : '');
+
+  var tags = '[' + [
+    GENRE_EN[g] || g,
+    m === '긴장감 있는' ? 'dramatic' : m,
+    t === '빠르게' ? 'fast tempo' : t === '느리게' ? 'slow tempo' : 'mid tempo',
+    v === '단체 합창' ? 'choir vocals' : v === '남자' ? 'male vocal' : v === '여자' ? 'female vocal' : 'any vocal',
+    'environmental campaign song', 'Korean lyrics'
+  ].filter(function (x) { return x; }).join(', ') + ']';
+
+  return { ko: ko, tags: tags };
+}
+
+function doGet(e) {
+  var p = (e && e.parameter) ? e.parameter : {};
+  var action = str_(p.action);
+  try {
+    if (action === 'roster') return jsonOut_(getRoster());
+    if (action === 'summary') return jsonOut_(getGroupSummary(p.classNum, p.groupNum));
+    if (action === 'gallery') return jsonOut_(getGallery(p.classNum));
+    if (action === 'teacherBoard') return jsonOut_(getTeacherBoard(p.classNum));
+    return jsonOut_({ ok: true, service: 'biodiversity-api' });
+  } catch (err) {
+    return jsonOut_({ ok: false, error: errText_(err) });
+  }
+}
+
+function doPost(e) {
+  var data = {};
+  try {
+    data = JSON.parse((e && e.postData && e.postData.contents) || '{}') || {};
+  } catch (err) {
+    return jsonOut_({ ok: false, error: '요청 내용을 읽지 못했어요.' });
+  }
+  var action = str_(data.method);
+  if (!API_ACTIONS[action]) action = str_(data.action);   // 옛 방식(요청 종류를 action 으로 보내던 때)
+  if (!API_ACTIONS[action]) {
+    return jsonOut_({ ok: false, error: '알 수 없는 요청이에요: ' + action });
+  }
+  try {
+    if (action === 'submitSurvey') return jsonOut_(submitSurvey(data));
+    if (action === 'submitVote') return jsonOut_(submitVote(data));
+    if (action === 'uploadPoster') return jsonOut_(submitPoster(data));
+    if (action === 'saveSunoLink') return jsonOut_(setSunoLink(data));
+    return jsonOut_({ ok: false, error: '알 수 없는 요청이에요: ' + action });
+  } catch (err) {
+    return jsonOut_({ ok: false, error: errText_(err) });
+  }
+}
+
+/* ================= 교사용 보드 =================
+ * 한 반의 명렬표·개인조사·수노투표·포스터전시장·모둠수노링크를 한 번에 읽어
+ * 1~8모둠 집계와 학생별 제출 여부를 돌려줍니다. (시트는 각각 한 번만 읽습니다)
+ */
+function getTeacherBoard(classNum) {
+  var cls = num_(classNum);
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+
+  var roster = (getRoster()[cls] || []).map(function (p) {
+    return { number: String(p.num), name: p.name };
+  });
+
+  var survey = sheet_(SHEET_SURVEY).getDataRange().getValues();
+  var vote = sheet_(SHEET_VOTE).getDataRange().getValues();
+  var poster = sheet_(SHEET_POSTER).getDataRange().getValues();
+  var links = sheet_(SHEET_LINK).getDataRange().getValues();
+
+  var groups = [];
+  for (var g = 1; g <= 8; g++) {
+    groups.push({
+      group: g,
+      students: [], creatures: [], reasons: [], genres: [], moods: [],
+      tempos: [], vocals: [], keywords: [], choruses: [], posters: []
+    });
+  }
+  var byGroup = {};
+  groups.forEach(function (o) { byGroup[o.group] = o; });
+
+  var byNum = {};   // '1' → { survey:true, vote:true, poster:true, creature:'수달' }
+
+  function touch(no) {
+    var k = num_(no);
+    if (!k) return null;
+    if (!byNum[k]) byNum[k] = { survey: false, vote: false, poster: false, creature: '' };
+    return byNum[k];
+  }
+
+  var i, r, grp;
+  for (i = 1; i < survey.length; i++) {
+    r = survey[i];
+    if (num_(r[1]) !== cls) continue;
+    grp = byGroup[num_(r[2])];
+    if (!grp || !str_(r[5])) continue;
+    grp.students.push({ number: str_(r[3]), name: str_(r[4]), creature: str_(r[5]) });
+    grp.creatures.push(r[5]);
+    grp.reasons.push.apply(grp.reasons, str_(r[6]).split(','));
+    var one = touch(r[3]);
+    if (one) { one.survey = true; if (!one.creature) one.creature = str_(r[5]); }
+  }
+
+  for (i = 1; i < vote.length; i++) {
+    r = vote[i];
+    if (num_(r[1]) !== cls) continue;
+    grp = byGroup[num_(r[2])];
+    if (!grp || !str_(r[5])) continue;
+    grp.genres.push(r[5]);
+    grp.moods.push(r[6]);
+    grp.tempos.push(r[7]);
+    grp.vocals.push(r[8]);
+    var kws = str_(r[9]).split(/[,/·|\n]+/);
+    for (var k = 0; k < kws.length; k++) if (str_(kws[k])) grp.keywords.push(str_(kws[k]));
+    if (str_(r[10])) grp.choruses.push(str_(r[10]));
+    var two = touch(r[3]);
+    if (two) two.vote = true;
+  }
+
+  for (i = 1; i < poster.length; i++) {
+    r = poster[i];
+    if (num_(r[1]) !== cls) continue;
+    grp = byGroup[num_(r[2])];
+    if (!grp || !str_(r[8])) continue;
+    grp.posters.push({
+      number: str_(r[3]), name: str_(r[4]), creature: str_(r[5]),
+      slogan: str_(r[6]), url: str_(r[7]), at: str_(r[0])
+    });
+    var three = touch(r[3]);
+    if (three) three.poster = true;
+  }
+
+  var suno = {};
+  for (i = 1; i < links.length; i++) {
+    r = links[i];
+    if (num_(r[1]) !== cls) continue;
+    if (!str_(r[4])) continue;
+    suno[num_(r[2])] = { title: str_(r[3]), link: str_(r[4]), at: str_(r[0]) };
+  }
+
+  var out = groups.map(function (o) {
+    var genreT = tally_(o.genres), moodT = tally_(o.moods);
+    var tempoT = tally_(o.tempos), vocalT = tally_(o.vocals);
+    var creatureT = tally_(o.creatures), keywordT = tally_(o.keywords);
+    var chorusT = tally_(o.choruses);
+    var mainCreature = topLabel_(creatureT);
+    var s = sunoOf_(genreT, moodT, tempoT, vocalT, mainCreature, keywordT.slice(0, 8), chorusT);
+    return {
+      group: o.group,
+      surveyCount: o.students.length,
+      voteCount: o.genres.length,
+      posterCount: o.posters.length,
+      students: o.students,
+      creatures: creatureT,
+      reasons: tally_(o.reasons),
+      genre: genreT,
+      mood: moodT,
+      tempo: tempoT,
+      vocal: vocalT,
+      keywords: keywordT.slice(0, 8),
+      choruses: chorusT.slice(0, 5),
+      mainCreature: mainCreature,
+      sunoKo: s.ko,
+      sunoTags: s.tags,
+      suno: suno[String(o.group)] || null,
+      posters: o.posters
+    };
+  });
+
+  var students = roster.map(function (p) {
+    var b = byNum[num_(p.number)] || { survey: false, vote: false, poster: false, creature: '' };
+    return {
+      number: p.number, name: p.name,
+      survey: b.survey, vote: b.vote, poster: b.poster, creature: b.creature
+    };
+  });
+
+  return {
+    ok: true,
+    classLabel: cls + '반',
+    groups: out,
+    roster: students,
+    totals: {
+      students: students.length,
+      survey: students.filter(function (x) { return x.survey; }).length,
+      vote: students.filter(function (x) { return x.vote; }).length,
+      poster: students.filter(function (x) { return x.poster; }).length
+    },
+    at: now_()
+  };
+}
