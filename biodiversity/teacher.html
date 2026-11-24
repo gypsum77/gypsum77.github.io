@@ -69,10 +69,17 @@ a{color:var(--green-d)}
 .linky input{flex:1;min-width:0;font-family:var(--fl);font-size:12.5px;border:1.5px solid var(--line);
   border-radius:9px;padding:6px 9px;background:#fff;color:var(--ink)}
 .thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-.thumbs button{border:1.5px solid var(--line);border-radius:10px;padding:0;overflow:hidden;background:#fff;
-  width:74px;cursor:pointer}
+.thumbbox{width:78px;display:flex;flex-direction:column;gap:3px}
+.thumbs .thumb{border:1.5px solid var(--line);border-radius:10px;padding:0;overflow:hidden;background:#fff;
+  width:78px;cursor:pointer}
 .thumbs img{display:block;width:100%;height:96px;object-fit:cover}
 .thumbs small{display:block;font-size:10px;color:var(--grey);padding:2px 3px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.del{font-family:var(--fl);font-size:11px;line-height:1.2;border:1.5px solid #F0C7C7;background:#FFF4F4;color:#B3352F;
+  border-radius:8px;padding:3px 2px;cursor:pointer;width:78px}
+.del:active{transform:scale(.97)}
+.del:disabled{opacity:.5;cursor:default}
+.mbtns{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.btn.danger{border-color:#F0C7C7;background:#FFF4F4;color:#B3352F;font-family:var(--fb)}
 .tbl-wrap{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 13px;margin-top:14px}
 .table{width:100%;border-collapse:collapse;font-size:13px}
 .table th,.table td{border-bottom:1px solid #E7F1EB;padding:6px 6px;text-align:center}
@@ -136,9 +143,13 @@ a{color:var(--green-d)}
 
 <div class="toast" id="toast"></div>
 <div class="modal" id="imgModal" hidden>
-  <div>
+  <div class="mbox">
     <img id="imgBig" src="" alt="포스터 크게 보기">
     <div class="cap" id="imgCap"></div>
+    <div class="mbtns">
+      <button class="btn danger" type="button" id="imgDel">🗑️ 삭제</button>
+      <button class="btn" type="button" id="imgClose">닫기</button>
+    </div>
   </div>
 </div>
 
@@ -148,7 +159,7 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbxTuJxsk-St2YqHocVlbcVCQy
 var CLASSES = ['2반', '4반'];
 var GROUPS = 8;
 var $ = function (id) { return document.getElementById(id); };
-var state = { cls: CLASSES[0], data: null, auto: 0, loading: false };
+var state = { cls: CLASSES[0], data: null, auto: 0, loading: false, deleting: false, modalPoster: null };
 
 function esc(s) {
   return String(s === null || s === undefined ? '' : s)
@@ -303,11 +314,14 @@ function cardHtml(g) {
 
     '<div class="sub">🖼️ 올라온 포스터</div>' +
     (g.posters && g.posters.length
-      ? '<div class="thumbs">' + g.posters.map(function (p) {
-          return '<button type="button" class="thumb" data-url="' + esc(p.url) + '" data-cap="' +
-            esc(p.number + '번 ' + p.name + ' · ' + p.creature + (p.slogan ? ' · ' + p.slogan : '')) + '">' +
-            '<img loading="lazy" src="' + esc(p.url) + '" alt="' + esc(p.creature) + ' 포스터">' +
-            '<small>' + esc(p.number + '번 ' + p.name) + '</small></button>';
+      ? '<div class="thumbs">' + g.posters.map(function (p, pi) {
+          return '<div class="thumbbox">' +
+            '<button type="button" class="thumb" data-i="' + pi + '" data-url="' + esc(p.url) + '" data-cap="' +
+              esc(p.number + '번 ' + p.name + ' · ' + p.creature + (p.slogan ? ' · ' + p.slogan : '')) + '">' +
+              '<img loading="lazy" src="' + esc(p.url) + '" alt="' + esc(p.creature) + ' 포스터">' +
+              '<small>' + esc(p.number + '번 ' + p.name) + '</small></button>' +
+            '<button type="button" class="del" data-i="' + pi + '" title="' + esc(p.number + '번 ' + p.name) + ' 포스터 삭제">🗑️ 삭제</button>' +
+            '</div>';
         }).join('') + '</div>'
       : '<div class="empty">아직 올린 포스터가 없어요</div>') +
     '</div>';
@@ -328,9 +342,19 @@ function wireCard(g) {
 
   card.querySelectorAll('.thumb').forEach(function (el) {
     el.addEventListener('click', function () {
+      var p = (g.posters || [])[+el.getAttribute('data-i')] || null;
+      state.modalPoster = p;
       $('imgBig').src = el.getAttribute('data-url');
       $('imgCap').textContent = el.getAttribute('data-cap');
+      $('imgDel').hidden = !p;
       $('imgModal').hidden = false;
+    });
+  });
+
+  card.querySelectorAll('.del').forEach(function (el) {
+    el.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      removeFromBoard((g.posters || [])[+el.getAttribute('data-i')] || null);
     });
   });
 
@@ -354,6 +378,41 @@ function wireCard(g) {
   });
 }
 
+/* ================= 포스터 삭제 ================= */
+/* 선생님이 학생 포스터를 바로 지웁니다. 시트 행 + 드라이브 파일을 함께 정리합니다. */
+function removeFromBoard(p) {
+  if (!p) return;
+  if (state.deleting) return;
+  var label = (p.number ? p.number + '번 ' : '') + p.name;
+  if (!window.confirm(p.name + ' 학생 포스터를 삭제할까요?')) return;
+  state.deleting = true;
+  paintDeleteBtns(true);
+  toast('삭제하는 중…');
+  apiPost('deletePoster', {
+    classNum: state.cls,
+    groupNum: (p.group ? p.group + '모둠' : ''),
+    number: p.number || '',
+    name: p.name || '',
+    url: p.url || '',
+    fileId: p.fileId || ''
+  }).then(function (r) {
+    var tail = (r && r.fileTrashed === false) ? ' (드라이브 파일은 이미 없어 시트만 지웠어요)' : '';
+    toast(label + ' 학생 포스터를 삭제했어요' + tail);
+    $('imgModal').hidden = true;
+    load();
+  }).catch(function (err) {
+    toast('삭제하지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시 눌러 주세요'));
+  }).then(function () {
+    state.deleting = false;
+    paintDeleteBtns(false);
+  });
+}
+
+function paintDeleteBtns(busy) {
+  var all = document.querySelectorAll('.del, #imgDel');
+  for (var i = 0; i < all.length; i++) all[i].disabled = !!busy;
+}
+
 /* ================= 자동 새로고침 ================= */
 function toggleAuto() {
   if (state.auto) { clearInterval(state.auto); state.auto = 0; }
@@ -367,7 +426,10 @@ function toggleAuto() {
   paintChips();
   $('btnReload').addEventListener('click', load);
   $('btnAuto').addEventListener('click', toggleAuto);
-  $('imgModal').addEventListener('click', function () { $('imgModal').hidden = true; });
+  $('imgModal').addEventListener('click', function () { $('imgModal').hidden = true; state.modalPoster = null; });
+  document.querySelector('#imgModal .mbox').addEventListener('click', function (ev) { ev.stopPropagation(); });
+  $('imgDel').addEventListener('click', function () { removeFromBoard(state.modalPoster); });
+  $('imgClose').addEventListener('click', function () { $('imgModal').hidden = true; state.modalPoster = null; });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('imgModal').hidden = true; });
   load();
 })();
