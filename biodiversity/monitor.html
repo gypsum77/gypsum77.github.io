@@ -73,9 +73,9 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
 /* ── 모둠원 ── */
 .mlist{display:flex;flex-direction:column;gap:.42em;overflow:auto}
 .mrow{display:grid;grid-template-columns:auto 1fr auto;gap:.5em;align-items:center;
-  background:var(--mint);border:1px solid var(--line);border-radius:11px;padding:.28em .6em}
+  background:var(--mint);border:1px solid var(--line);border-radius:11px;padding:.22em .6em}
 .mrow .cre{font-size:1.15em;line-height:1}
-.mrow .nm{font-family:var(--fb);font-weight:normal;font-size:clamp(14px,1.2vw,21px)}
+.mrow .nm{font-family:var(--fb);font-weight:normal;font-size:clamp(14px,1.1vw,20px)}
 .mrow .cr{font-size:clamp(12px,.92vw,16px);color:var(--green-d)}
 .mrow .no{font-size:clamp(11px,.85vw,14px);color:var(--grey);margin-right:.35em}
 .mrow .fl{display:flex;gap:.3em;font-size:clamp(11px,.8vw,13px)}
@@ -129,7 +129,7 @@ details.suno-box[open]{padding-bottom:.15em}
 .empty{color:var(--grey);font-size:clamp(13px,1.05vw,18px);padding:.3em 0}
 
 /* ── 포스터 ── */
-.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:.5em;overflow:auto}
+.posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,132px),1fr));gap:.5em;overflow:auto;align-content:start}
 .post{margin:0;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
 .post img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:#EEF5F0}
 .post figcaption{font-size:clamp(11px,.85vw,14px);padding:.3em .5em;color:var(--ink);font-family:var(--fb)}
@@ -200,7 +200,6 @@ select{font-family:var(--fl);font-size:inherit;border:1.5px solid var(--line);bo
     <div class="grid" id="grid" hidden>
       <section class="panel members">
         <h2 class="ph">👥 우리 모둠이 보낸 조사 <small id="mCount"></small></h2>
-        <div class="hero-cre" id="mHero" hidden></div>
         <div class="mlist" id="mList"></div>
       </section>
 
@@ -456,13 +455,6 @@ function render(board, sum) {
 
   /* ① 모둠원 */
   $('mCount').textContent = students.length ? students.length + '명 보냄' : '아직 없음';
-  var hero = $('mHero');
-  var creTop = (g.creatures || [])[0];
-  if (creTop) {
-    hero.hidden = false;
-    hero.innerHTML = '<span class="e">' + creEmoji(creTop.label) + '</span><div><b>' + esc(creTop.label) +
-      '</b><br><span>우리 모둠에서 가장 많이 나온 생물 · ' + students.length + '명 중 1등</span></div>';
-  } else { hero.hidden = true; }
   $('mList').innerHTML = students.length
     ? students.slice().sort(function (a, b) { return Number(a.number) - Number(b.number); }).map(function (s) {
         var isNew = state.newNames[String(s.number)];
