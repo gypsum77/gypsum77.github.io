@@ -55,7 +55,7 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
   body{overflow:hidden}
   .wrap{height:100vh;overflow:hidden;min-height:0}
   #mon{min-height:0}
-  .grid{min-height:0;grid-template-rows:1fr 1fr}
+  .grid{min-height:0;grid-template-rows:1.15fr 1fr}
   .panel{overflow:auto}
 }
 .panel{background:#fff;border:1.5px solid var(--line);border-radius:clamp(14px,1.2vw,20px);
@@ -72,18 +72,18 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
 
 /* ── 모둠원 ── */
 .mlist{display:flex;flex-direction:column;gap:.42em;overflow:auto}
-.mrow{display:grid;grid-template-columns:auto 1fr auto;gap:.55em;align-items:center;
-  background:var(--mint);border:1px solid var(--line);border-radius:12px;padding:.42em .6em}
-.mrow .cre{font-size:1.35em;line-height:1}
-.mrow .nm{font-family:var(--fb);font-weight:normal;font-size:clamp(15px,1.35vw,23px)}
-.mrow .cr{font-size:clamp(13px,1.05vw,18px);color:var(--green-d)}
+.mrow{display:grid;grid-template-columns:auto 1fr auto;gap:.5em;align-items:center;
+  background:var(--mint);border:1px solid var(--line);border-radius:11px;padding:.28em .6em}
+.mrow .cre{font-size:1.15em;line-height:1}
+.mrow .nm{font-family:var(--fb);font-weight:normal;font-size:clamp(14px,1.2vw,21px)}
+.mrow .cr{font-size:clamp(12px,.92vw,16px);color:var(--green-d)}
 .mrow .no{font-size:clamp(11px,.85vw,14px);color:var(--grey);margin-right:.35em}
 .mrow .fl{display:flex;gap:.3em;font-size:clamp(11px,.8vw,13px)}
 .mrow .fl span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:.05em .45em;color:var(--grey)}
 .mrow.new{animation:arrive 2.6s ease}
 @keyframes arrive{0%{background:#FFF3C4;transform:scale(.98)}60%{background:#FFF9E2}100%{background:var(--mint)}}
 .hero-cre{display:flex;align-items:center;gap:.6em;background:#fff;border:1.5px solid var(--line);
-  border-radius:14px;padding:.5em .7em;margin-bottom:.6em}
+  border-radius:14px;padding:.35em .7em;margin-bottom:.5em}
 .hero-cre .e{font-size:2em;line-height:1}
 .hero-cre b{font-family:var(--fb);font-weight:normal;font-size:clamp(18px,1.8vw,30px);color:var(--green-d)}
 .hero-cre span{color:var(--grey);font-size:clamp(12px,.95vw,16px)}
