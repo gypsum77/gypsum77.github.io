@@ -55,7 +55,7 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
   body{overflow:hidden}
   .wrap{height:100vh;overflow:hidden;min-height:0}
   #mon{min-height:0}
-  .grid{min-height:0;grid-template-rows:1.15fr 1fr}
+  .grid{min-height:0;grid-template-rows:1fr 1.1fr}
   .panel{overflow:auto}
 }
 .panel{background:#fff;border:1.5px solid var(--line);border-radius:clamp(14px,1.2vw,20px);
@@ -477,28 +477,31 @@ function render(board, sum) {
         return '<div class="w"><b>' + pair[0] + '</b><span>' + (top ? esc(top.label) : '—') + '</span>' +
           (top ? '<i>' + top.count + '표</i>' : '') + '</div>';
       }).join('') + '</div>';
+    s += '<div class="sh">🎧 우리 노래</div>' + (g.suno
+      ? '<a class="listen" href="' + esc(g.suno.link) + '" target="_blank" rel="noopener">🎵 ' +
+        esc(g.suno.title || '수노에서 듣기') + '</a>'
+      : '<span class="nolink">아직 수노 링크가 없어요 (선생님이 등록해요)</span>');
     s += '<div class="sh">🔑 가사에 넣을 말 <span>많이 나온 순서</span></div>' +
       (g.keywords && g.keywords.length
         ? '<div class="tags">' + g.keywords.map(function (k) {
             return '<span class="tag p"><b>' + esc(k.label) + '</b>' + (k.count > 1 ? ' ' + k.count : '') + '</span>';
           }).join('') + '</div>'
         : '<div class="empty">아직 없어요.</div>');
-    var ch = uniq((g.choruses || []).map(function (c) { return c.label; }));
-    s += '<div class="sh">🎤 후렴구 후보</div>' +
+    var ch = (g.choruses && g.choruses.length) ? uniq([g.choruses[0].label]).concat([]) : [];
+    s += '<div class="sh">🎤 가장 많이 나온 후렴구</div>' +
       (ch.length
-        ? '<div class="quotes">' + ch.slice(0, 2).map(function (c) {
-            return '<div class="quote">“' + esc(c) + '”</div>';
-          }).join('') + '</div>'
+        ? '<div class="quotes"><div class="quote">“' + esc(ch[0]) + '”' +
+          (g.choruses[0].count > 1 ? ' <span style="color:#6B7B73">×' + g.choruses[0].count + '</span>' : '') + '</div></div>'
         : '<div class="empty">아직 없어요.</div>');
     s += '<details class="suno-box"><summary>🎼 선생님이 수노에 넣을 문장 보기</summary>' +
       '<p>' + esc(g.sunoKo || '') + '</p><code>' + esc(g.sunoTags || '') + '</code></details>';
   } else {
-    s = '<div class="empty">모둠원이 투표를 보내면 장르·분위기·템포·보컬과 가사 키워드가 여기에 모여요.</div>';
+    s = '<div class="empty">모둠원이 투표를 보내면 장르·분위기·템포·보컬과 가사 키워드가 여기에 모여요.</div>' +
+      '<div class="sh">🎧 우리 노래</div>' + (g.suno
+        ? '<a class="listen" href="' + esc(g.suno.link) + '" target="_blank" rel="noopener">🎵 ' +
+          esc(g.suno.title || '수노에서 듣기') + '</a>'
+        : '<span class="nolink">아직 수노 링크가 없어요</span>');
   }
-  s += '<div class="sh">🎧 우리 노래</div>' + (g.suno
-    ? '<a class="listen" href="' + esc(g.suno.link) + '" target="_blank" rel="noopener">🎵 ' +
-      esc(g.suno.title || '수노에서 듣기') + '</a>'
-    : '<span class="nolink">아직 수노 링크가 없어요 (선생님이 등록)</span>');
   $('sBody').innerHTML = s;
 
   /* ③ 왜 · 무엇을 */
@@ -511,7 +514,7 @@ function render(board, sum) {
       : '<div class="empty">아직 없어요.</div>');
   if (st && uniq(st.impacts).length) {
     w += '<div class="sh">🔗 사라지면 생태계에</div><div class="quotes">' +
-      uniq(st.impacts).slice(0, 2).map(function (x) { return '<div class="quote amber">' + esc(x) + '</div>'; }).join('') + '</div>';
+      uniq(st.impacts).slice(0, 1).map(function (x) { return '<div class="quote amber">' + esc(x) + '</div>'; }).join('') + '</div>';
   }
   if (st && st.actions && st.actions.length) {
     w += '<div class="sh">🙌 우리가 할 수 있는 행동</div><div class="quotes">' +
@@ -522,7 +525,7 @@ function render(board, sum) {
   if (st && uniq(st.slogans).length) {
     var sl = uniq(st.slogans);
     w += '<div class="sh">📣 우리 포스터 슬로건</div><div class="quotes">' +
-      sl.slice(-2).map(function (x) { return '<div class="quote">“' + esc(x) + '”</div>'; }).join('') + '</div>';
+      sl.slice(-1).map(function (x) { return '<div class="quote">“' + esc(x) + '”</div>'; }).join('') + '</div>';
   }
   $('wCount').textContent = students.length ? students.length + '명' : '아직 없음';
   $('wBody').innerHTML = w;
