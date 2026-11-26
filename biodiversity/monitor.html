@@ -100,6 +100,17 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
 .tl>i{font-style:normal;color:var(--grey);font-size:clamp(11px,.85vw,15px)}
 
 /* ── 칩·인용 ── */
+.winners{display:grid;grid-template-columns:1fr 1fr;gap:.4em}
+.winners .w{background:#fff;border:1.5px solid var(--purple-line);border-radius:12px;padding:.32em .6em;
+  display:flex;align-items:baseline;gap:.45em;flex-wrap:wrap;min-width:0}
+.winners .w b{font-family:var(--fb);font-weight:normal;font-size:clamp(11px,.85vw,14px);color:var(--grey)}
+.winners .w span{font-family:var(--fb);font-weight:normal;font-size:clamp(17px,1.6vw,27px);color:var(--purple);
+  line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.winners .w i{font-style:normal;margin-left:auto;font-size:clamp(11px,.85vw,14px);color:var(--grey)}
+details.suno-box{margin-top:.45em}
+details.suno-box summary{cursor:pointer;font-family:var(--fb);color:var(--purple);font-size:clamp(12px,.95vw,16px);list-style:none}
+details.suno-box summary::-webkit-details-marker{display:none}
+details.suno-box[open]{padding-bottom:.15em}
 .tags{display:flex;flex-wrap:wrap;gap:.32em}
 .tag{background:var(--mint);border:1px solid var(--line);border-radius:999px;padding:.12em .6em;
   font-size:clamp(13px,1.05vw,18px)}
@@ -468,25 +479,29 @@ function render(board, sum) {
   $('sCount').textContent = g.voteCount ? g.voteCount + '표 모임' : '아직 없음';
   var s = '';
   if (g.voteCount) {
-    s += ['장르', '분위기', '템포', '보컬'].map(function (label, i) {
-      var key = ['genre', 'mood', 'tempo', 'vocal'][i];
-      return '<div class="sh">' + label + ' 1등</div>' + tally(g[key], '표', 3);
-    }).join('');
+    s += '<div class="winners">' + [['장르', g.genre], ['분위기', g.mood], ['템포', g.tempo], ['보컬', g.vocal]]
+      .map(function (pair) {
+        var top = (pair[1] && pair[1].length) ? pair[1][0] : null;
+        return '<div class="w"><b>' + pair[0] + '</b><span>' + (top ? esc(top.label) : '—') + '</span>' +
+          (top ? '<i>' + top.count + '표</i>' : '') + '</div>';
+      }).join('') + '</div>';
     s += '<div class="sh">🔑 가사에 넣을 말 <span>많이 나온 순서</span></div>' +
       (g.keywords && g.keywords.length
         ? '<div class="tags">' + g.keywords.map(function (k) {
             return '<span class="tag p"><b>' + esc(k.label) + '</b>' + (k.count > 1 ? ' ' + k.count : '') + '</span>';
           }).join('') + '</div>'
         : '<div class="empty">아직 없어요.</div>');
+    var ch = uniq((g.choruses || []).map(function (c) { return c.label; }));
     s += '<div class="sh">🎤 후렴구 후보</div>' +
-      (g.choruses && g.choruses.length
-        ? '<div class="quotes">' + g.choruses.slice(0, 3).map(function (c) {
-            return '<div class="quote">“' + esc(c.label) + '”</div>';
+      (ch.length
+        ? '<div class="quotes">' + ch.slice(0, 2).map(function (c) {
+            return '<div class="quote">“' + esc(c) + '”</div>';
           }).join('') + '</div>'
         : '<div class="empty">아직 없어요.</div>');
-    s += '<div class="suno-box"><p>' + esc(g.sunoKo || '') + '</p><code>' + esc(g.sunoTags || '') + '</code></div>';
+    s += '<details class="suno-box"><summary>🎼 선생님이 수노에 넣을 문장 보기</summary>' +
+      '<p>' + esc(g.sunoKo || '') + '</p><code>' + esc(g.sunoTags || '') + '</code></details>';
   } else {
-    s = '<div class="empty">모둠원이 투표를 보내면 장르·분위기·키워드가 여기에 모여요.</div>';
+    s = '<div class="empty">모둠원이 투표를 보내면 장르·분위기·템포·보컬과 가사 키워드가 여기에 모여요.</div>';
   }
   s += '<div class="sh">🎧 우리 노래</div>' + (g.suno
     ? '<a class="listen" href="' + esc(g.suno.link) + '" target="_blank" rel="noopener">🎵 ' +
@@ -497,21 +512,25 @@ function render(board, sum) {
   /* ③ 왜 · 무엇을 */
   var w = '';
   w += '<div class="sh">🐾 사라지는 이유</div>' +
-    (g.reasons && g.reasons.length ? tally(g.reasons, '', 4) : '<div class="empty">아직 없어요.</div>');
-  if (st && st.impacts && uniq(st.impacts).length) {
+    (g.reasons && g.reasons.length
+      ? '<div class="tags">' + g.reasons.slice(0, 4).map(function (x) {
+          return '<span class="tag"><b>' + esc(x.label) + '</b> ' + x.count + '</span>';
+        }).join('') + '</div>'
+      : '<div class="empty">아직 없어요.</div>');
+  if (st && uniq(st.impacts).length) {
     w += '<div class="sh">🔗 사라지면 생태계에</div><div class="quotes">' +
-      uniq(st.impacts).slice(0, 3).map(function (x) { return '<div class="quote amber">' + esc(x) + '</div>'; }).join('') + '</div>';
+      uniq(st.impacts).slice(0, 2).map(function (x) { return '<div class="quote amber">' + esc(x) + '</div>'; }).join('') + '</div>';
   }
   if (st && st.actions && st.actions.length) {
     w += '<div class="sh">🙌 우리가 할 수 있는 행동</div><div class="quotes">' +
-      st.actions.slice(0, 3).map(function (x) {
+      st.actions.slice(0, 2).map(function (x) {
         return '<div class="quote">' + esc(x.label) + (x.count > 1 ? ' <span style="color:#6B7B73">×' + x.count + '</span>' : '') + '</div>';
       }).join('') + '</div>';
   }
-  if (st && st.slogans && uniq(st.slogans).length) {
+  if (st && uniq(st.slogans).length) {
     var sl = uniq(st.slogans);
     w += '<div class="sh">📣 우리 포스터 슬로건</div><div class="quotes">' +
-      sl.slice(-3).map(function (x) { return '<div class="quote">“' + esc(x) + '”</div>'; }).join('') + '</div>';
+      sl.slice(-2).map(function (x) { return '<div class="quote">“' + esc(x) + '”</div>'; }).join('') + '</div>';
   }
   $('wCount').textContent = students.length ? students.length + '명' : '아직 없음';
   $('wBody').innerHTML = w;
