@@ -158,6 +158,20 @@ b,strong,.bd{font-weight:700}
 #toast{position:fixed;left:50%;bottom:86px;transform:translate(-50%,14px);background:#12331f;color:#fff;
   padding:12px 20px;border-radius:12px;font-size:16px;opacity:0;transition:.25s;pointer-events:none;z-index:60}
 #toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- 인쇄 · PDF 저장 ---------- */
+@media print{
+  @page{size:1280px 720px;margin:0}
+  html,body{height:auto;overflow:visible;background:#fff}
+  #stage{position:static;width:1280px;height:auto;transform:none !important;left:auto !important;top:auto !important;
+    box-shadow:none;display:block}
+  #topbar,#navbar,#progress,#help,#toast{display:none !important}
+  #viewport{position:static;overflow:visible;height:auto}
+  .slide{position:static !important;display:flex !important;width:1280px;height:720px;overflow:hidden;
+    break-after:page;page-break-after:always;break-inside:avoid}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .stp .s{opacity:1 !important;transform:none !important}
+}
 </style>
 </head>
 <body>
@@ -540,7 +554,11 @@ function paintClock() {
   if (!TH.qno) return;
   var left = Math.max(0, Math.ceil((TH.deadline - performance.now()) / 1000));
   var clk = el('clk'), bar = el('bar');
-  if (clk) clk.textContent = TH.status === '진행' ? left : (TH.status === '마감' ? 0 : '--');
+  if (clk) {
+    if (TH.status === '진행') { clk.textContent = left; clk.style.color = '#c9560a'; }
+    else if (TH.status === '마감') { clk.textContent = 0; clk.style.color = '#9b8a6b'; }
+    else { clk.textContent = TH.sec || 0; clk.style.color = '#dcc9a6'; }
+  }
   if (bar) bar.style.width = (TH.sec && TH.status === '진행') ? Math.max(0, Math.min(100, left / TH.sec * 100)) + '%' : (TH.status === '마감' ? '0%' : '100%');
   if (el('st')) el('st').textContent = TH.status === '진행' ? '진행 중' : (TH.status === '마감' ? '마감됨' : '대기');
   if (el('cnt')) el('cnt').textContent = '답변 ' + TH.answered + '명';
