@@ -53,7 +53,8 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
 /* 모둠 모니터(큰 화면): 한 화면에 네 칸이 다 들어오고, 넘치는 내용은 칸 안에서만 넘깁니다 */
 @media(min-width:901px){
   body{overflow:hidden}
-  .wrap{height:100vh}
+  .wrap{height:100vh;overflow:hidden;min-height:0}
+  #mon{min-height:0}
   .grid{min-height:0;grid-template-rows:1fr 1fr}
   .panel{overflow:auto}
 }
