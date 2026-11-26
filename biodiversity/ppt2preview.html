@@ -90,7 +90,7 @@ b,strong,.bd{font-weight:700}
 .qclock{margin-left:auto;display:flex;align-items:baseline;gap:8px}
 .qclock b{font-size:76px;font-weight:700;color:#c9560a;line-height:1;letter-spacing:-.02em}
 .qclock span{font-size:20px;color:#8a6a2e}
-.qbody{display:flex;flex-direction:column;gap:16px}
+.qbody{display:flex;flex-direction:column;gap:16px;flex:1 1 auto;justify-content:center}
 .qbody h1{font-size:47px;font-weight:700;color:#2b1d05;line-height:1.28;letter-spacing:-.01em}
 .qhint{font-size:19px;color:#8a6a2e;line-height:1.6}
 .qbar{height:12px;background:#f7e6c6;border-radius:99px;overflow:hidden}
@@ -296,7 +296,7 @@ var SLIDES = [
     <span class="qask">🖥️ 모둠 모니터에 질문이 떠 있어요. <b>각자</b> 답을 적고 [모둠 모니터에 보내기]를 누르세요.</span>
     <span class="qstat"><b id="cnt">답변 0명</b> <span id="st">대기</span></span>
     <button class="qbtn primary" id="startBtn">▶ 이 질문 시작</button>
-    <button class="qbtn" id="closeBtn" disabled>⏹ 마감</button>
+    <button class="qbtn" id="closeBtn" disabled>마감하기</button>
   </div>`},
 
 { kind:'a', steps:3, id:'a1', html:`
@@ -336,7 +336,7 @@ var SLIDES = [
     <span class="qask">🖥️ 각자 답을 적어 보내세요. <b>3분</b> 동안 생각을 넓혀 봅니다.</span>
     <span class="qstat"><b id="cnt">답변 0명</b> <span id="st">대기</span></span>
     <button class="qbtn primary" id="startBtn">▶ 이 질문 시작</button>
-    <button class="qbtn" id="closeBtn" disabled>⏹ 마감</button>
+    <button class="qbtn" id="closeBtn" disabled>마감하기</button>
   </div>`},
 
 { kind:'a', steps:3, id:'a2', html:`
@@ -378,7 +378,7 @@ var SLIDES = [
     <span class="qask">🖥️ 한 문장이면 충분해요. <b>2분</b> 동안 각자 적습니다.</span>
     <span class="qstat"><b id="cnt">답변 0명</b> <span id="st">대기</span></span>
     <button class="qbtn primary" id="startBtn">▶ 이 질문 시작</button>
-    <button class="qbtn" id="closeBtn" disabled>⏹ 마감</button>
+    <button class="qbtn" id="closeBtn" disabled>마감하기</button>
   </div>`},
 
 { kind:'a', steps:3, id:'a3', html:`
@@ -419,7 +419,7 @@ var SLIDES = [
     <span class="qask">🖥️ 답은 <b>①~⑤ 중 하나 + 이유 한 줄</b>. 반 전체가 어떤 위협을 골랐는지 모아 봅니다.</span>
     <span class="qstat"><b id="cnt">답변 0명</b> <span id="st">대기</span></span>
     <button class="qbtn primary" id="startBtn">▶ 이 질문 시작</button>
-    <button class="qbtn" id="closeBtn" disabled>⏹ 마감</button>
+    <button class="qbtn" id="closeBtn" disabled>마감하기</button>
   </div>`},
 
 { kind:'a', steps:3, id:'a4', html:`
@@ -460,7 +460,7 @@ var SLIDES = [
     <span class="qask">🖥️ 마지막 질문입니다. <b>1분 30초</b>, 각자 한 가지씩. 우리 반 31명이면 31가지가 모입니다.</span>
     <span class="qstat"><b id="cnt">답변 0명</b> <span id="st">대기</span></span>
     <button class="qbtn primary" id="startBtn">▶ 이 질문 시작</button>
-    <button class="qbtn" id="closeBtn" disabled>⏹ 마감</button>
+    <button class="qbtn" id="closeBtn" disabled>마감하기</button>
   </div>`},
 
 { kind:'a', steps:3, id:'a5', html:`
