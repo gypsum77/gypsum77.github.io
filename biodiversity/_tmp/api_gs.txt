@@ -1,0 +1,663 @@
+/* ================= JSON API (GitHub Pages 화면용) =================
+ * 화면은 https://gypsum77.github.io/biodiversity/ 에서 열리고,
+ * 이 웹앱은 JSON만 돌려줍니다.
+ *
+ *   GET  <웹앱주소>?action=roster                     → 명렬표 { "2": [{num,name}], "4": [...] }
+ *   GET  <웹앱주소>?action=summary&classNum=&groupNum= → 모둠 현황(학생용 3단계)
+ *   GET  <웹앱주소>?action=gallery&classNum=           → 전시장(학생용 5단계)
+ *   GET  <웹앱주소>?action=teacherBoard&classNum=      → 교사용 보드(모둠별 집계 + 학생별 제출 현황)
+ *   GET  <웹앱주소>?action=thinkList&classNum=         → 생각 나누기 문항 목록
+ *   GET  <웹앱주소>?action=thinkState&classNum=&groupNum= → 지금 문항 + 남은 시간 + 답변(모둠 지정하면 그 모둠만)
+ *   POST { method: 'submitSurvey' | 'submitVote' | 'uploadPoster' | 'saveSunoLink' | 'deletePoster',
+ *          'thinkStart' | 'thinkClose' | 'thinkSubmit' | 'thinkClear', ... }
+ *
+ * 주의: submitSurvey 의 'action' 은 학생이 쓴 '실천 행동' 값이라 요청 종류와 이름이 겹칩니다.
+ *       그래서 POST 는 data.method 로 종류를 고르고, method 가 없을 때만 data.action 을 봅니다.
+ */
+
+function jsonOut_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function errText_(err) {
+  if (!err) return '알 수 없는 오류';
+  if (typeof err === 'string') return err;
+  return String(err.message || err);
+}
+
+function topLabel_(list) {
+  return (list && list.length) ? list[0].label : '';
+}
+
+/** 포스터 주소에서 드라이브 파일 ID 뽑기 (https://lh3.googleusercontent.com/d/<ID>=w1400) */
+function fileIdFromUrl_(url) {
+  var m = str_(url).match(/\/d\/([^\/=?#]+)/);
+  return m ? m[1] : '';
+}
+
+/** 집계 결과로 선생님이 Suno에 그대로 넣을 문장·태그 만들기 (getGroupSummary 와 같은 규칙) */
+function sunoOf_(genreT, moodT, tempoT, vocalT, mainCreature, keywords, chorusT) {
+  var g = topLabel_(genreT), m = topLabel_(moodT), t = topLabel_(tempoT), v = topLabel_(vocalT);
+  var kw = (keywords || []).map(function (x) { return x.label || x; });
+
+  var ko = '우리 모둠 캠페인 송은 ' + (g || '(장르 미정)') + ' 장르, ' +
+    (m || '(분위기 미정)') + ' 분위기, ' + (t || '(템포 미정)') + ' 템포, ' +
+    (v || '(보컬 미정)') + ' 보컬로 만들어 주세요. 주제 생물은 ' + (mainCreature || '(조사 전)') +
+    '이고' + (kw.length ? ', 가사에 꼭 넣을 말은 ' + kw.join(', ') + '입니다.' : '.') +
+    ((chorusT && chorusT.length)
+      ? ' 후렴구 후보: "' + chorusT.slice(0, 3).map(function (x) { return x.label; }).join('" / "') + '".'
+      : '');
+
+  var tags = '[' + [
+    GENRE_EN[g] || g,
+    m === '긴장감 있는' ? 'dramatic' : m,
+    t === '빠르게' ? 'fast tempo' : t === '느리게' ? 'slow tempo' : 'mid tempo',
+    v === '단체 합창' ? 'choir vocals' : v === '남자' ? 'male vocal' : v === '여자' ? 'female vocal' : 'any vocal',
+    'environmental campaign song', 'Korean lyrics'
+  ].filter(function (x) { return x; }).join(', ') + ']';
+
+  return { ko: ko, tags: tags };
+}
+
+function doGet(e) {
+  var p = (e && e.parameter) ? e.parameter : {};
+  var action = str_(p.action);
+  try {
+    if (action === 'roster') return jsonOut_(getRoster());
+    if (action === 'summary') return jsonOut_(getGroupSummary(p.classNum, p.groupNum));
+    if (action === 'gallery') return jsonOut_(getGallery(p.classNum));
+    if (action === 'teacherBoard') return jsonOut_(getTeacherBoard(p.classNum));
+    if (action === 'thinkList') return jsonOut_(getThinkList(p.classNum));
+    if (action === 'thinkState') return jsonOut_(getThinkState(p.classNum, p.groupNum));
+    return jsonOut_({ ok: true, service: 'biodiversity-api' });
+  } catch (err) {
+    return jsonOut_({ ok: false, error: errText_(err) });
+  }
+}
+
+function doPost(e) {
+  var data = {};
+  try {
+    data = JSON.parse((e && e.postData && e.postData.contents) || '{}') || {};
+  } catch (err) {
+    return jsonOut_({ ok: false, error: '요청 내용을 읽지 못했어요.' });
+  }
+  var action = (str_(data.method)) ? str_(data.method) : str_(data.action);  // 요청 종류(method 우선, 옛 방식 action)
+  try {
+    if (action === 'submitSurvey') return jsonOut_(submitSurvey(data));
+    if (action === 'submitVote') return jsonOut_(submitVote(data));
+    if (action === 'uploadPoster') return jsonOut_(submitPoster(data));
+    if (action === 'saveSunoLink') return jsonOut_(setSunoLink(data));
+    if (action === 'deletePoster') return jsonOut_(deletePoster(data));
+    if (action === 'thinkStart') return jsonOut_(thinkStart(data));
+    if (action === 'thinkClose') return jsonOut_(thinkClose(data));
+    if (action === 'thinkSubmit') return jsonOut_(thinkSubmit(data));
+    if (action === 'thinkClear') return jsonOut_(thinkClear(data));
+    return jsonOut_({ ok: false, error: '알 수 없는 요청이에요: ' + action });
+  } catch (err) {
+    return jsonOut_({ ok: false, error: errText_(err) });
+  }
+}
+
+/* ================= 교사용 보드 =================
+ * 한 반의 명렬표·개인조사·수노투표·포스터전시장·모둠수노링크를 한 번에 읽어
+ * 1~8모둠 집계와 학생별 제출 여부를 돌려줍니다. (시트는 각각 한 번만 읽습니다)
+ */
+function getTeacherBoard(classNum) {
+  var cls = num_(classNum);
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+
+  var roster = (getRoster()[cls] || []).map(function (p) {
+    return { number: String(p.num), name: p.name };
+  });
+
+  var survey = sheet_(SHEET_SURVEY).getDataRange().getValues();
+  var vote = sheet_(SHEET_VOTE).getDataRange().getValues();
+  var poster = sheet_(SHEET_POSTER).getDataRange().getValues();
+  var links = sheet_(SHEET_LINK).getDataRange().getValues();
+
+  var groups = [];
+  for (var g = 1; g <= 8; g++) {
+    groups.push({
+      group: g,
+      students: [], creatures: [], reasons: [], genres: [], moods: [],
+      tempos: [], vocals: [], keywords: [], choruses: [], posters: []
+    });
+  }
+  var byGroup = {};
+  groups.forEach(function (o) { byGroup[o.group] = o; });
+
+  var byNum = {};   // '1' → { survey:true, vote:true, poster:true, creature:'수달' }
+
+  function touch(no) {
+    var k = num_(no);
+    if (!k) return null;
+    if (!byNum[k]) byNum[k] = { survey: false, vote: false, poster: false, creature: '' };
+    return byNum[k];
+  }
+
+  var i, r, grp;
+  for (i = 1; i < survey.length; i++) {
+    r = survey[i];
+    if (num_(r[1]) !== cls) continue;
+    grp = byGroup[num_(r[2])];
+    if (!grp || !str_(r[5])) continue;
+    grp.students.push({ number: str_(r[3]), name: str_(r[4]), creature: str_(r[5]) });
+    grp.creatures.push(r[5]);
+    grp.reasons.push.apply(grp.reasons, str_(r[6]).split(','));
+    var one = touch(r[3]);
+    if (one) { one.survey = true; if (!one.creature) one.creature = str_(r[5]); }
+  }
+
+  for (i = 1; i < vote.length; i++) {
+    r = vote[i];
+    if (num_(r[1]) !== cls) continue;
+    grp = byGroup[num_(r[2])];
+    if (!grp || !str_(r[5])) continue;
+    grp.genres.push(r[5]);
+    grp.moods.push(r[6]);
+    grp.tempos.push(r[7]);
+    grp.vocals.push(r[8]);
+    var kws = str_(r[9]).split(/[,/·|\n]+/);
+    for (var k = 0; k < kws.length; k++) if (str_(kws[k])) grp.keywords.push(str_(kws[k]));
+    if (str_(r[10])) grp.choruses.push(str_(r[10]));
+    var two = touch(r[3]);
+    if (two) two.vote = true;
+  }
+
+  for (i = 1; i < poster.length; i++) {
+    r = poster[i];
+    if (num_(r[1]) !== cls) continue;
+    grp = byGroup[num_(r[2])];
+    if (!grp || !str_(r[8])) continue;
+    grp.posters.push({
+      group: num_(r[2]), number: str_(r[3]), name: str_(r[4]), creature: str_(r[5]),
+      slogan: str_(r[6]), url: str_(r[7]), fileId: str_(r[8]) || fileIdFromUrl_(r[7]), at: str_(r[0])
+    });
+    var three = touch(r[3]);
+    if (three) three.poster = true;
+  }
+
+  var suno = {};
+  for (i = 1; i < links.length; i++) {
+    r = links[i];
+    if (num_(r[1]) !== cls) continue;
+    if (!str_(r[4])) continue;
+    suno[num_(r[2])] = { title: str_(r[3]), link: str_(r[4]), at: str_(r[0]) };
+  }
+
+  var out = groups.map(function (o) {
+    var genreT = tally_(o.genres), moodT = tally_(o.moods);
+    var tempoT = tally_(o.tempos), vocalT = tally_(o.vocals);
+    var creatureT = tally_(o.creatures), keywordT = tally_(o.keywords);
+    var chorusT = tally_(o.choruses);
+    var mainCreature = topLabel_(creatureT);
+    var s = sunoOf_(genreT, moodT, tempoT, vocalT, mainCreature, keywordT.slice(0, 8), chorusT);
+    return {
+      group: o.group,
+      surveyCount: o.students.length,
+      voteCount: o.genres.length,
+      posterCount: o.posters.length,
+      students: o.students,
+      creatures: creatureT,
+      reasons: tally_(o.reasons),
+      genre: genreT,
+      mood: moodT,
+      tempo: tempoT,
+      vocal: vocalT,
+      keywords: keywordT.slice(0, 8),
+      choruses: chorusT.slice(0, 5),
+      mainCreature: mainCreature,
+      sunoKo: s.ko,
+      sunoTags: s.tags,
+      suno: suno[String(o.group)] || null,
+      posters: o.posters
+    };
+  });
+
+  var students = roster.map(function (p) {
+    var b = byNum[num_(p.number)] || { survey: false, vote: false, poster: false, creature: '' };
+    return {
+      number: p.number, name: p.name,
+      survey: b.survey, vote: b.vote, poster: b.poster, creature: b.creature
+    };
+  });
+
+  return {
+    ok: true,
+    classLabel: cls + '반',
+    groups: out,
+    roster: students,
+    totals: {
+      students: students.length,
+      survey: students.filter(function (x) { return x.survey; }).length,
+      vote: students.filter(function (x) { return x.vote; }).length,
+      poster: students.filter(function (x) { return x.poster; }).length
+    },
+    at: now_()
+  };
+}
+
+/* ================= 교사용: 포스터 삭제 =================
+ * 선생님이 교사 보드에서 학생 포스터를 바로 지울 때 씁니다.
+ *   1) '포스터전시장' 시트에서 그 포스터 행을 찾아 deleteRow
+ *   2) 드라이브 파일도 휴지통으로 (권한/부재 오류는 무시하고 시트 삭제는 유지)
+ * 어느 학생 포스터인지는 fileId(또는 url 속 파일 ID)로 찾고,
+ * 번호·이름이 함께 오면 그것까지 맞아야 지웁니다. (엉뚱한 포스터 삭제 방지)
+ */
+function deletePoster(data) {
+  data = data || {};
+  var cls = num_(data.classNum);
+  var fileId = str_(data.fileId) || fileIdFromUrl_(data.url);
+  var number = num_(data.number);
+  var name = str_(data.name);
+
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+  if (!fileId && !(number && name)) throw new Error('어떤 포스터인지 알 수 없어요.');
+
+  var result = withLock_(function () {
+    var sh = sheet_(SHEET_POSTER);
+    var values = sh.getDataRange().getValues();
+    var hits = [];
+    for (var i = 1; i < values.length; i++) {
+      var r = values[i];
+      if (num_(r[1]) !== cls) continue;
+      if (fileId) {
+        var rowId = str_(r[8]) || fileIdFromUrl_(r[7]);
+        if (rowId !== fileId) continue;
+      }
+      if (number && num_(r[3]) !== number) continue;
+      if (name && str_(r[4]) !== name) continue;
+      hits.push({ row: i + 1, r: r });
+    }
+    if (!hits.length) {
+      throw new Error('그 포스터를 시트에서 찾지 못했어요. 이미 지워졌는지 새로고침해 확인해 주세요.');
+    }
+    if (hits.length > 1) {
+      throw new Error('같은 포스터가 ' + hits.length + '줄 있어 자동으로 지우지 않았어요. 시트에서 직접 지워 주세요.');
+    }
+
+    var h = hits[0];
+    var deleted = {
+      classNum: cls + '반',
+      groupNum: str_(h.r[2]),
+      number: str_(h.r[3]),
+      name: str_(h.r[4]),
+      creature: str_(h.r[5]),
+      url: str_(h.r[7]),
+      fileId: str_(h.r[8]) || fileIdFromUrl_(h.r[7])
+    };
+
+    sh.deleteRow(h.row);
+
+    var fileTrashed = false, fileError = '';
+    if (deleted.fileId) {
+      try {
+        DriveApp.getFileById(deleted.fileId).setTrashed(true);
+        fileTrashed = true;
+      } catch (err) {
+        fileError = errText_(err);   // 파일이 이미 없거나 권한이 없어도 시트 삭제는 그대로 둡니다.
+      }
+    }
+    return { deleted: deleted, fileTrashed: fileTrashed, fileError: fileError };
+  });
+
+  return {
+    ok: true,
+    deleted: result.deleted,
+    fileTrashed: result.fileTrashed,
+    fileError: result.fileError,
+    at: now_()
+  };
+}
+
+/* ================= 🧠 생각 나누기 (Think) =================
+ * 2차시 수업용: 선생님이 문항을 '시작'하면 모든 모둠 모니터에 질문과 남은 시간이 뜨고,
+ * 학생은 각자 자기 답을 적어 모둠 모니터로 보냅니다. 선생님은 교사 보드에서 반 전체 답을 봅니다.
+ *
+ *   시트 '생각나누기_문항' : 등록시각 | 반 | 문항번호 | 질문 | 키워드·보기 | 제한시간(초) | 시작시각(ms) | 상태 | 순서
+ *   시트 '생각나누기_답변' : 제출시각 | 반 | 문항번호 | 모둠 | 번호 | 이름 | 답
+ *
+ *   GET  ?action=thinkList&classNum=4반              → 문항 목록 (+ 지금 상태)
+ *   GET  ?action=thinkState&classNum=4반[&groupNum=1모둠] → 지금 문항·남은 초·답변
+ *   POST thinkStart  { classNum, no, seconds? }      문항 시작(다른 진행 문항은 자동 마감)
+ *   POST thinkClose  { classNum, no }                마감
+ *   POST thinkSubmit { classNum, no, groupNum, number, name, text }  답 보내기(같은 사람은 덮어쓰기)
+ *   POST thinkClear  { classNum, no }                그 문항의 답변 모두 지우기(다른 반 수업 재사용용)
+ *
+ * 시간 동기화: 남은 초는 서버가 자기 시계로 계산해 remaining 으로 함께 돌려줍니다.
+ *   학생·모둠 기기는 그 값을 받아 자기 기기 시계(performance.now)로 1초씩 줄여 그리므로
+ *   기기 시계가 틀려도 모두 같은 시간을 봅니다. (startedAt 은 참고용 ms 값)
+ */
+
+var SHEET_THINK_Q = '생각나누기_문항';   // 반 · 문항번호 · 질문 · 보기/키워드 · 제한시간 · 시작시각 · 상태 · 순서
+var SHEET_THINK_A = '생각나누기_답변';   // 제출시각 · 반 · 문항번호 · 모둠 · 번호 · 이름 · 답
+var THINK_STATUS = { WAIT: '대기', LIVE: '진행', DONE: '마감' };
+var THINK_KEEP_CLOSED_MS = 45 * 60 * 1000;   // 마감한 문항은 45분 동안 모니터에 남겨 둡니다
+
+/** 한 번의 실행 안에서 스프레드시트를 여러 번 열지 않도록 잡아 둡니다. */
+var _THINK_SS_ = null;
+function thinkSS_() {
+  if (!_THINK_SS_) _THINK_SS_ = SpreadsheetApp.openById(SPREADSHEET_ID);
+  return _THINK_SS_;
+}
+function thinkSheet_(name) {
+  var sh = thinkSS_().getSheetByName(name);
+  if (!sh) throw new Error("'" + name + "' 시트를 찾을 수 없어요. 선생님께 알려 주세요.");
+  return sh;
+}
+
+function ensureThinkSheets_() {
+  var ss = thinkSS_();
+  var q = ss.getSheetByName(SHEET_THINK_Q);
+  if (!q) {
+    q = ss.insertSheet(SHEET_THINK_Q);
+    q.appendRow(['등록시각', '반', '문항번호', '질문', '키워드·보기', '제한시간(초)', '시작시각(ms)', '상태', '순서']);
+    q.setFrozenRows(1);
+  }
+  var a = ss.getSheetByName(SHEET_THINK_A);
+  if (!a) {
+    a = ss.insertSheet(SHEET_THINK_A);
+    a.appendRow(['제출시각', '반', '문항번호', '모둠', '번호', '이름', '답']);
+    a.setFrozenRows(1);
+  }
+  return { q: q, a: a };
+}
+
+/** '생각나누기_문항' 탭을 읽어 문항 객체 목록으로 (행 번호 포함) */
+function thinkRows_(cls) {
+  var rows;
+  try { rows = thinkSheet_(SHEET_THINK_Q).getDataRange().getValues(); }
+  catch (e) { ensureThinkSheets_(); rows = thinkSheet_(SHEET_THINK_Q).getDataRange().getValues(); }
+  var out = [];
+  for (var i = 1; i < rows.length; i++) {
+    var r = rows[i];
+    var c = num_(r[1]);
+    if (!c) continue;
+    if (cls && c !== cls) continue;
+    var no = num_(r[2]);
+    if (!no) continue;
+    var sec = Number(num_(r[5])) || 90;
+    var st = str_(r[7]) || THINK_STATUS.WAIT;
+    if ([THINK_STATUS.WAIT, THINK_STATUS.LIVE, THINK_STATUS.DONE].indexOf(st) < 0) st = THINK_STATUS.WAIT;
+    out.push({
+      row: i + 1,
+      cls: c,
+      no: no,
+      question: str_(r[3]),
+      hint: str_(r[4]),
+      seconds: sec,
+      startedAt: Number(str_(r[6])) || 0,
+      status: st,
+      order: Number(num_(r[8])) || Number(no)
+    });
+  }
+  out.sort(function (a, b) { return a.order - b.order || Number(a.no) - Number(b.no); });
+  return out;
+}
+
+/** 남은 초 (서버 시계 기준, 올림) */
+function thinkRemain_(q, nowMs) {
+  if (!q || q.status !== THINK_STATUS.LIVE || !q.startedAt) return 0;
+  return Math.max(0, Math.ceil((q.startedAt + q.seconds * 1000 - nowMs) / 1000));
+}
+
+function thinkOut_(q, nowMs) {
+  if (!q) return null;
+  return {
+    no: q.no,
+    question: q.question,
+    hint: q.hint,
+    seconds: q.seconds,
+    status: q.status,
+    startedAt: q.startedAt,
+    endAt: q.startedAt ? q.startedAt + q.seconds * 1000 : 0,
+    remaining: thinkRemain_(q, nowMs),
+    order: q.order
+  };
+}
+
+/** 지금 화면에 띄울 문항: 진행 중인 것 → 없으면 방금 마감한 것(45분 안) */
+function thinkCurrent_(list, nowMs) {
+  var live = null, closed = null;
+  for (var i = 0; i < list.length; i++) {
+    var q = list[i];
+    if (q.status === THINK_STATUS.LIVE) {
+      if (!live || q.startedAt > live.startedAt) live = q;
+    } else if (q.status === THINK_STATUS.DONE && q.startedAt) {
+      var end = q.startedAt + q.seconds * 1000;
+      if (nowMs - end < THINK_KEEP_CLOSED_MS) {
+        if (!closed || q.startedAt > closed.startedAt) closed = q;
+      }
+    }
+  }
+  return live || closed;
+}
+
+function getThinkList(classNum) {
+  var cls = num_(classNum);
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+  var nowMs = Date.now();
+  var list = thinkRows_(cls);
+  return {
+    ok: true,
+    classLabel: cls + '반',
+    serverNow: nowMs,
+    questions: list.map(function (q) { return thinkOut_(q, nowMs); }),
+    current: thinkOut_(thinkCurrent_(list, nowMs), nowMs)
+  };
+}
+
+function getThinkState(classNum, groupNum) {
+  var cls = num_(classNum);
+  var grp = num_(groupNum);
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+  var nowMs = Date.now();
+  var cur = thinkCurrent_(thinkRows_(cls), nowMs);
+
+  var answers = [];
+  if (cur) {
+    var rows;
+    try { rows = thinkSheet_(SHEET_THINK_A).getDataRange().getValues(); }
+    catch (e) { ensureThinkSheets_(); rows = thinkSheet_(SHEET_THINK_A).getDataRange().getValues(); }
+    for (var i = 1; i < rows.length; i++) {
+      var r = rows[i];
+      if (num_(r[1]) !== cls) continue;
+      if (num_(r[2]) !== num_(cur.no)) continue;
+      if (grp && num_(r[3]) !== grp) continue;
+      if (!str_(r[6])) continue;
+      answers.push({
+        qno: num_(r[2]),
+        group: num_(r[3]),
+        number: str_(r[4]),
+        name: str_(r[5]),
+        text: str_(r[6]),
+        at: str_(r[0])
+      });
+    }
+  }
+  answers.sort(function (a, b) {
+    return (Number(a.group) - Number(b.group)) || (Number(a.number) - Number(b.number));
+  });
+
+  return {
+    ok: true,
+    classLabel: cls + '반',
+    groupLabel: grp ? grp + '모둠' : '',
+    serverNow: nowMs,
+    current: thinkOut_(cur, nowMs),
+    answers: answers,
+    answerCount: answers.length
+  };
+}
+
+/** 문항 시작 (같은 반에서 진행 중이던 문항은 자동으로 마감) */
+function thinkStart(data) {
+  data = data || {};
+  var cls = num_(data.classNum);
+  var no = num_(data.no);
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+  if (!no) throw new Error('문항 번호가 없어요.');
+
+  var nowMs = Date.now();
+  var found = null, closed = [];
+  withLock_(function () {
+    var list = thinkRows_(cls);
+    list.forEach(function (q) {
+      if (q.no === no) found = q;
+      else if (q.status === THINK_STATUS.LIVE) closed.push(q.no);
+    });
+    if (!found) throw new Error(cls + '반 ' + no + '번 문항을 시트에서 찾지 못했어요.');
+    var sec = num_(data.seconds) ? Number(num_(data.seconds)) : found.seconds;
+    if (!(sec >= 10 && sec <= 1800)) sec = found.seconds;
+    var sh = thinkSheet_(SHEET_THINK_Q);
+    sh.getRange(found.row, 6, 1, 3).setValues([[sec, nowMs, THINK_STATUS.LIVE]]);
+    closed.forEach(function (n) {
+      var c = null;
+      list.forEach(function (q) { if (q.no === n) c = q; });
+      if (c) sh.getRange(c.row, 8).setValue(THINK_STATUS.DONE);
+    });
+    found.seconds = sec;
+    found.startedAt = nowMs;
+    found.status = THINK_STATUS.LIVE;
+  });
+
+  return {
+    ok: true,
+    started: thinkOut_(found, Date.now()),
+    autoClosed: closed,
+    serverNow: Date.now()
+  };
+}
+
+/** 문항 마감 (남은 시간은 0으로, 답변은 그대로 남김) */
+function thinkClose(data) {
+  data = data || {};
+  var cls = num_(data.classNum);
+  var no = num_(data.no);
+  if (!cls) throw new Error('반을 먼저 골라 주세요.');
+
+  var nowMs = Date.now();
+  var found = null;
+  withLock_(function () {
+    var list = thinkRows_(cls);
+    list.forEach(function (q) {
+      if (no ? q.no === no : q.status === THINK_STATUS.LIVE) found = q;
+    });
+    if (!found) throw new Error('마감할 문항을 찾지 못했어요.');
+    thinkSheet_(SHEET_THINK_Q).getRange(found.row, 8).setValue(THINK_STATUS.DONE);
+    found.status = THINK_STATUS.DONE;
+  });
+
+  return { ok: true, closed: thinkOut_(found, nowMs), serverNow: nowMs };
+}
+
+/** 답 보내기 — 같은 반·문항·번호는 새 줄을 만들지 않고 덮어씁니다. */
+function thinkSubmit(data) {
+  data = data || {};
+  var cls = num_(data.classNum);
+  var no = num_(data.no);
+  var grp = num_(data.groupNum);
+  var number = str_(data.number).replace(/[^0-9]/g, '');
+  var name = str_(data.name);
+  var text = str_(data.text);
+
+  if (!cls || !no) throw new Error('문항 정보가 없어요. 화면을 새로고침해 주세요.');
+  if (!grp || !number || !name) throw new Error('반·모둠·번호·이름을 먼저 입력해 주세요.');
+  if (!text) throw new Error('답을 적어 주세요.');
+  if (text.length > 300) text = text.slice(0, 300);
+
+  var nowMs = Date.now();
+  var q = null;
+  thinkRows_(cls).forEach(function (x) { if (x.no === no) q = x; });
+  if (!q) throw new Error(cls + '반 ' + no + '번 문항을 찾지 못했어요.');
+  if (q.status === THINK_STATUS.WAIT) throw new Error('아직 시작하지 않은 문항이에요. 선생님이 시작하면 보낼 수 있어요.');
+
+  var at = now_();
+  var updated = false;
+  withLock_(function () {
+    var sh = thinkSheet_(SHEET_THINK_A);
+    var rows = sh.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      var r = rows[i];
+      if (num_(r[1]) !== cls || num_(r[2]) !== no || num_(r[4]) !== number) continue;
+      sh.getRange(i + 1, 1, 1, 7).setValues([[at, cls + '반', q.no, grp + '모둠', number, name, text]]);
+      updated = true;
+      return;
+    }
+    sh.appendRow([at, cls + '반', q.no, grp + '모둠', number, name, text]);
+  });
+
+  return {
+    ok: true,
+    updated: updated,
+    at: at,
+    qno: q.no,
+    who: cls + '반 ' + grp + '모둠 ' + number + '번 ' + name,
+    remaining: thinkRemain_(q, nowMs),
+    status: q.status
+  };
+}
+
+/** 한 문항의 답변 전부 지우기 (같은 문항을 다른 반에서 다시 쓸 때) */
+function thinkClear(data) {
+  data = data || {};
+  var cls = num_(data.classNum);
+  var no = num_(data.no);
+  if (!cls || !no) throw new Error('반과 문항 번호가 필요해요.');
+
+  var removed = 0;
+  withLock_(function () {
+    var sh = thinkSheet_(SHEET_THINK_A);
+    var rows = sh.getDataRange().getValues();
+    for (var i = rows.length - 1; i >= 1; i--) {
+      var r = rows[i];
+      if (num_(r[1]) === cls && num_(r[2]) === no) { sh.deleteRow(i + 1); removed++; }
+    }
+  });
+
+  return { ok: true, removed: removed, at: now_() };
+}
+
+/* ================= 문항 넣기 (편집기에서 한 번만 실행) =================
+ * 시트에 탭이 없으면 만들고, 4반 5문항을 넣습니다. 이미 같은 번호가 있으면 건너뜁니다.
+ * 다른 반 것을 넣으려면 THINK_SEED 의 class 값을 바꿔 실행하세요.
+ */
+function THINK_SEED_(cls) {
+  return [
+    { cls: cls, no: 1, sec: 60,
+      q: '우리 모둠이 지키기로 한 생물이 사라지면, 가장 먼저 무엇이 달라질까?',
+      hint: '먹이, 천적, 사는 곳, 사람 중 하나를 골라 짧게' },
+    { cls: cls, no: 2, sec: 180,
+      q: '그 생물이 완전히 사라진 10년 뒤, 그 서식지는 어떻게 변해 있을까?',
+      hint: '그 생물을 먹고 살던 동물과, 그 생물이 먹던 것까지 생각해 보기' },
+    { cls: cls, no: 3, sec: 120,
+      q: '생물다양성이 높은 생태계는 왜 쉽게 무너지지 않을까? 한 문장으로.',
+      hint: '여러 종이 서로를 대신할 수 있다는 점을 넣어 보기' },
+    { cls: cls, no: 4, sec: 90,
+      q: '우리 동네 생물에게 가장 급한 위협은? 하나 고르고 이유를 한 줄로.',
+      hint: '① 서식지 파괴  ② 기후변화  ③ 외래종  ④ 남획·밀렵  ⑤ 환경오염' },
+    { cls: cls, no: 5, sec: 90,
+      q: '오늘부터 우리 반이 할 수 있는 생물다양성 지킴 행동 한 가지는?',
+      hint: '학교, 집, 등하굣길에서 바로 할 수 있는 것' }
+  ];
+}
+
+function setupThinkQuestions() {
+  ensureThinkSheets_();
+  var cls = '4';                       // ← 다른 반 문항을 넣을 때 이 값을 바꿔 실행
+  var list = THINK_SEED_(cls);
+  var have = {};
+  thinkRows_(cls).forEach(function (q) { have[q.no] = true; });
+
+  var sh = thinkSheet_(SHEET_THINK_Q);
+  var added = 0;
+  list.forEach(function (x) {
+    if (have[String(x.no)]) return;
+    sh.appendRow([now_(), cls + '반', x.no, x.q, x.hint, x.sec, '', THINK_STATUS.WAIT, x.no]);
+    added++;
+  });
+  Logger.log(cls + '반 문항 ' + added + '개를 넣었습니다. (이미 있던 문항은 건너뜀)');
+  return added;
+}
