@@ -69,6 +69,7 @@ b,strong,.bd{font-weight:700}
 .cover .animals span{background:#eef4ea;border-radius:10px;padding:6px 12px;font-size:15px;color:#33603f}
 
 /* ---------- flow ---------- */
+.slide.flow{justify-content:center}
 .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
 .fcard{background:#fff;border:1px solid #e3ebdd;border-radius:18px;padding:18px 16px;box-shadow:0 8px 22px rgba(30,60,40,.06);
   display:flex;flex-direction:column;gap:8px}
@@ -299,7 +300,7 @@ var SLIDES = [
   <div class="qtop">
     <span class="qbadge">생각 나누기 1</span>
     <span class="qleft">먹이그물의 한 칸이 빠지면?</span>
-    <div class="qclock"><b id="clk">--</b><span>초</span></div>
+    <div class="qclock"><b id="clk" style="color:#dcc9a6">60</b><span>초</span></div>
   </div>
   <div class="qbody">
     <h1>우리 모둠이 지키기로 한 생물이 사라지면,<br>가장 먼저 무엇이 달라질까?</h1>
@@ -339,7 +340,7 @@ var SLIDES = [
   <div class="qtop">
     <span class="qbadge">생각 나누기 2</span>
     <span class="qleft">10년 뒤를 그려 보기</span>
-    <div class="qclock"><b id="clk">--</b><span>초</span></div>
+    <div class="qclock"><b id="clk" style="color:#dcc9a6">180</b><span>초</span></div>
   </div>
   <div class="qbody">
     <h1>그 생물이 완전히 사라진 10년 뒤,<br>그 서식지는 어떻게 변해 있을까?</h1>
@@ -381,7 +382,7 @@ var SLIDES = [
   <div class="qtop">
     <span class="qbadge">생각 나누기 3</span>
     <span class="qleft">오늘의 개념 한 문장</span>
-    <div class="qclock"><b id="clk">--</b><span>초</span></div>
+    <div class="qclock"><b id="clk" style="color:#dcc9a6">120</b><span>초</span></div>
   </div>
   <div class="qbody">
     <h1>생물다양성이 높은 생태계는<br>왜 쉽게 무너지지 않을까?</h1>
@@ -421,7 +422,7 @@ var SLIDES = [
   <div class="qtop">
     <span class="qbadge">생각 나누기 4</span>
     <span class="qleft">우리 동네 기준으로 고르기</span>
-    <div class="qclock"><b id="clk">--</b><span>초</span></div>
+    <div class="qclock"><b id="clk" style="color:#dcc9a6">90</b><span>초</span></div>
   </div>
   <div class="qbody">
     <h1>우리 동네 생물에게 가장 급한 위협은?</h1>
@@ -463,7 +464,7 @@ var SLIDES = [
   <div class="qtop">
     <span class="qbadge">생각 나누기 5</span>
     <span class="qleft">오늘부터, 우리 반이</span>
-    <div class="qclock"><b id="clk">--</b><span>초</span></div>
+    <div class="qclock"><b id="clk" style="color:#dcc9a6">90</b><span>초</span></div>
   </div>
   <div class="qbody">
     <h1>오늘부터 우리 반이 할 수 있는<br>생물다양성 지킴 행동 한 가지는?</h1>
@@ -511,7 +512,7 @@ var SLIDES = [
 
 var viewport = document.getElementById('viewport');
 viewport.innerHTML = SLIDES.map(function (s, i) {
-  return '<section class="slide ' + (s.kind === 'cover' ? 'cover' : '') + '" data-i="' + i + '">' + s.html + '</section>';
+  return '<section class="slide k-' + s.kind + (s.kind === 'cover' ? ' cover' : '') + '" data-i="' + i + '">' + s.html + '</section>';
 }).join('');
 
 var slideEls = [].slice.call(document.querySelectorAll('.slide'));
