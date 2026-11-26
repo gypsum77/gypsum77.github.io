@@ -96,6 +96,47 @@ a{color:var(--green-d)}
 .modal img{max-width:100%;max-height:82vh;border-radius:12px;background:#fff}
 .modal .cap{color:#E8F5EC;font-size:13px;text-align:center;margin-top:8px}
 .updated{font-size:11.5px;color:var(--grey);margin-top:6px}
+
+/* ── 🧠 생각 나누기 판 ── */
+.tpanel{background:#fff;border:2px solid var(--amber-line);border-radius:18px;padding:12px 13px;margin:12px 0;
+  box-shadow:0 4px 14px rgba(184,115,14,.07)}
+.tp-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.tp-head h2{margin:0;font-family:var(--fb);font-weight:normal;font-size:17px;color:#7A4E05}
+.tp-head h2 small{display:block;font-family:var(--fl);font-size:11.5px;color:var(--grey);margin-top:2px}
+.tp-head .tp-btns{margin-left:auto;display:flex;gap:6px;align-items:center}
+.tp-head select{font-size:13px;border:1.5px solid var(--line);border-radius:9px;padding:6px 8px;font-family:var(--fl);background:#fff}
+.tp-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.tq-row{display:grid;grid-template-columns:auto 1fr auto auto auto auto;gap:8px;align-items:center;
+  background:#FFFDF7;border:1.5px solid var(--amber-line);border-radius:12px;padding:7px 10px}
+.tq-row .no{font-family:var(--fb);font-size:15px;color:#B8730E;min-width:1.4em;text-align:center}
+.tq-row .txt{min-width:0}
+.tq-row .txt b{display:block;font-family:var(--fb);font-weight:normal;font-size:13.5px;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tq-row .txt small{font-size:11px;color:var(--grey)}
+.tq-row .st{font-size:11.5px;border-radius:999px;padding:2px 9px;font-family:var(--fb);white-space:nowrap}
+.tq-row .st.wait{background:#F1F5F2;color:var(--grey)}
+.tq-row .st.live{background:#17824B;color:#fff}
+.tq-row .st.done{background:#FFF0E4;color:#C05A1E}
+.tq-row .left{font-family:var(--fb);font-size:15px;color:#B8730E;min-width:3.2em;text-align:right}
+.tq-row.live{border-color:#17824B;background:#F3FBF6}
+.tp-live{margin-top:12px;border-top:1.5px dashed var(--amber-line);padding-top:11px}
+.tp-live-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.tp-live-h b{font-family:var(--fb);font-weight:normal;font-size:15px;color:var(--green-d)}
+.tp-live-h #tpCount{margin-left:auto;font-size:12.5px;color:var(--grey)}
+.tp-ans{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:7px;margin-top:9px;max-height:46vh;overflow:auto}
+.tile{background:#F7FCF9;border:1.5px solid var(--line);border-radius:12px;padding:8px 10px;cursor:pointer;transition:.12s}
+.tile:hover{background:#EEF8F2;border-color:var(--green-l)}
+.tile.new{animation:tin 1.6s ease}
+@keyframes tin{0%{background:#FFF3C4}100%{background:#F7FCF9}}
+.tile .who{font-family:var(--fb);font-weight:normal;font-size:12px;color:var(--green-d)}
+.tile .who i{font-style:normal;font-family:var(--fl);color:var(--grey);font-size:11px}
+.tile .tx{font-size:13px;line-height:1.4;margin-top:3px;word-break:keep-all;max-height:4.2em;overflow:hidden}
+.tp-miss{margin-top:7px;font-size:11.5px;color:var(--grey);line-height:1.5}
+.ansmodal{position:fixed;inset:0;background:rgba(9,24,17,.82);display:flex;align-items:center;justify-content:center;padding:20px;z-index:70}
+.ansmodal .box{background:#fff;border-radius:18px;padding:22px 24px;max-width:760px;width:100%;max-height:80vh;overflow:auto}
+.ansmodal .who{font-family:var(--fb);font-size:17px;color:var(--green-d)}
+.ansmodal .tx{font-size:26px;line-height:1.5;margin-top:10px;word-break:keep-all;font-family:var(--fb);color:#22352B}
+.ansmodal .btns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 @media(max-width:560px){
   .stats{grid-template-columns:repeat(2,1fr)}
   .grid{grid-template-columns:1fr}
@@ -121,6 +162,35 @@ a{color:var(--green-d)}
     <button class="btn" id="btnAuto">⏱️ 15초 자동 새로고침</button>
     <a class="btn" id="sheetLink" href="https://docs.google.com/spreadsheets/d/1zpkB_Ao9P94mqoiCzZWs3q-XYljic_53dA6SdEWkXZw/edit" target="_blank" rel="noopener">📊 취합 시트 열기</a>
     <a class="btn" href="./">🧪 학생용 화면</a>
+    <button class="btn" id="btnCopyAll" title="반 전체 모둠의 수노 프롬프트를 한 번에 복사">📋 모둠별 프롬프트 복사</button>
+    <a class="btn" href="monitor.html" target="_blank" rel="noopener">📺 모둠 모니터</a>
+  </div>
+
+  <!-- 🧠 생각 나누기 -->
+  <div class="tpanel" id="tpanel">
+    <div class="tp-head">
+      <h2>🧠 생각 나누기<small>문항을 시작하면 모든 모둠 모니터에 질문과 남은 시간이 뜽니다</small></h2>
+      <div class="tp-btns">
+        <select id="tpSec" title="이번에 시작할 문항의 제한시간 (문항 기본 = 시트에 적힌 초)">
+          <option value="" selected>문항 기본</option>
+          <option value="60">60초</option>
+          <option value="90">90초</option>
+          <option value="120">120초</option>
+          <option value="180">180초</option>
+        </select>
+        <button class="btn" id="tpRefresh">🔄</button>
+      </div>
+    </div>
+    <div class="tp-list" id="tpList"><div class="empty">문항을 불러오는 중…</div></div>
+    <div class="tp-live" id="tpLive" hidden>
+      <div class="tp-live-h">
+        <b id="tpLiveQ"></b>
+        <span id="tpCount"></span>
+        <button class="btn" id="tpClear" style="margin-left:8px">🗑️ 이 문항 답변 지우기</button>
+      </div>
+      <div class="tp-ans" id="tpAns"></div>
+      <p class="tp-miss" id="tpMiss"></p>
+    </div>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -142,6 +212,13 @@ a{color:var(--green-d)}
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="ansmodal" id="ansModal" hidden>
+  <div class="box">
+    <div class="who" id="ansWho"></div>
+    <div class="tx" id="ansText"></div>
+    <div class="btns"><button class="btn" type="button" id="ansClose">닫기</button></div>
+  </div>
+</div>
 <div class="modal" id="imgModal" hidden>
   <div class="mbox">
     <img id="imgBig" src="" alt="포스터 크게 보기">
@@ -156,10 +233,10 @@ a{color:var(--green-d)}
 <script>
 /* ================= 서버 ================= */
 var API_URL = 'https://script.google.com/macros/s/AKfycbxTuJxsk-St2YqHocVlbcVCQyIEIp-zIqDbNe9Pw_lmaTIe7xusXqz_Pe34dZ_cq_fYYQ/exec';
-var CLASSES = ['2반', '4반'];
+var CLASSES = [];          // 명렬표(?action=roster)에서 채웁니다 — 반을 코드에 적지 않습니다
 var GROUPS = 8;
 var $ = function (id) { return document.getElementById(id); };
-var state = { cls: CLASSES[0], data: null, auto: 0, loading: false, deleting: false, modalPoster: null };
+var state = { cls: '', data: null, auto: 0, loading: false, deleting: false, modalPoster: null };
 
 function esc(s) {
   return String(s === null || s === undefined ? '' : s)
@@ -208,8 +285,12 @@ function paintChips() {
     b.addEventListener('click', function () {
       if (state.cls === c) return;
       state.cls = c;
+      try { localStorage.setItem('bd_teacher_cls', c); } catch (e) { }
       paintChips();
+      TH.list = []; TH.cur = null; TH.lastQ = '';
+      $('tpLive').hidden = true;
       load();
+      thinkLoad();
     });
     box.appendChild(b);
   });
@@ -421,6 +502,179 @@ function paintDeleteBtns(busy) {
   for (var i = 0; i < all.length; i++) all[i].disabled = !!busy;
 }
 
+/* ================= 🧠 생각 나누기 =================
+ * 문항 목록을 읽어 [▶ 시작]을 누르면 모둠 모니터에 질문·남은 시간이 뜨고,
+ * 학생이 보낸 답이 반 전체 타일로 모입니다. 타일을 누르면 크게 보여 다시 읽어 줄 수 있어요. */
+var TH = { list: [], cur: null, deadline: 0, lastQ: '', lastSeen: '' };
+
+function thinkLoad() {
+  if (!state.cls) return;
+  apiGet({ action: 'thinkList', classNum: state.cls }).then(function (r) {
+    TH.list = r.questions || [];
+    paintThinkList();
+    pollThink();
+  }).catch(function (err) {
+    $('tpList').innerHTML = '<div class="empty">문항을 불러오지 못했어요: ' +
+      esc(err && err.message ? err.message : '잠시 뒤 다시') + '</div>';
+  });
+}
+
+function paintThinkList() {
+  var box = $('tpList');
+  if (!TH.list.length) {
+    box.innerHTML = '<div class="empty">이 반에 넣어 둔 문항이 없어요. (\'생각나누기_문항\' 탭에 반·문항번호·질문을 넣으면 여기에 뜨아요)</div>';
+    return;
+  }
+  box.innerHTML = TH.list.map(function (q) {
+    var st = q.status === '진행' ? 'live' : (q.status === '마감' ? 'done' : 'wait');
+    return '<div class="tq-row ' + (q.status === '진행' ? 'live' : '') + '" data-no="' + q.no + '">' +
+      '<span class="no">' + q.no + '</span>' +
+      '<div class="txt"><b>' + esc(q.question || '') + '</b><small>' +
+        (q.hint ? esc(q.hint) + ' · ' : '') + q.seconds + '초</small></div>' +
+      '<span class="st ' + st + '">' + esc(q.status) + '</span>' +
+      '<span class="left" data-left="' + q.no + '">' + (q.status === '진행' ? (q.remaining || 0) + '초' : '–') + '</span>' +
+      '<button class="btn th-start" type="button" data-no="' + q.no + '" style="padding:5px 10px;font-size:12.5px">▶ 시작</button>' +
+      '<button class="btn th-close" type="button" data-no="' + q.no + '" style="padding:5px 10px;font-size:12.5px"' +
+        (q.status === '진행' ? '' : ' disabled') + '>⏹ 마감</button>' +
+      '</div>';
+  }).join('');
+  box.querySelectorAll('.th-start').forEach(function (el) {
+    el.addEventListener('click', function () { startQuestion(el.getAttribute('data-no')); });
+  });
+  box.querySelectorAll('.th-close').forEach(function (el) {
+    el.addEventListener('click', function () { closeQuestion(el.getAttribute('data-no')); });
+  });
+}
+
+function startQuestion(no) {
+  if (TH.busy) return;
+  TH.busy = true;
+  var sec = $('tpSec').value;
+  var body = { classNum: state.cls, no: no };
+  if (sec) body.seconds = sec;
+  apiPost('thinkStart', body).then(function (r) {
+    toast(no + '번 문항을 시작했어요 — 모든 모둠 모니터에 떴습니다' +
+      (r.autoClosed && r.autoClosed.length ? ' (' + r.autoClosed.join(', ') + '번은 자동 마감)' : ''));
+    thinkLoad();
+  }).catch(function (err) {
+    toast('시작하지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시'));
+  }).then(function () { TH.busy = false; });
+}
+
+function closeQuestion(no) {
+  if (TH.busy) return;
+  TH.busy = true;
+  apiPost('thinkClose', { classNum: state.cls, no: no }).then(function () {
+    toast(no + '번 문항을 마감했어요 — 답변은 그대로 남아 있어요');
+    thinkLoad();
+  }).catch(function (err) {
+    toast('마감하지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시'));
+  }).then(function () { TH.busy = false; });
+}
+
+function pollThink() {
+  if (!state.cls) return;
+  apiGet({ action: 'thinkState', classNum: state.cls }).then(renderThink).catch(function () { });
+}
+
+function renderThink(s) {
+  var cur = s && s.current;
+  var live = $('tpLive');
+  if (!cur) { live.hidden = true; TH.cur = null; return; }
+  TH.cur = cur;
+  TH.deadline = performance.now() + (cur.remaining || 0) * 1000;
+  if (cur.no !== TH.lastQ) { TH.lastQ = cur.no; TH.lastSeen = ''; }
+
+  live.hidden = false;
+  $('tpLiveQ').textContent = cur.no + '번 · ' + (cur.question || '');
+  paintThinkCount(cur, s.answerCount || 0);
+
+  var list = s.answers || [];
+  var box = $('tpAns');
+  if (!list.length) {
+    box.innerHTML = '<div class="empty" style="grid-column:1/-1">아직 보낸 답이 없어요. 학생 화면에서 [🖥️ 모둠 모니터에 보내기]를 누르면 여기에 모입니다.</div>';
+  } else {
+    box.innerHTML = list.map(function (a, i) {
+      var isNew = TH.lastSeen.indexOf('|' + a.group + ':' + a.number) < 0;
+      return '<div class="tile' + (isNew ? ' new' : '') + '" data-i="' + i + '">' +
+        '<div class="who">' + esc(a.group) + '모둠 ' + esc(a.number) + '번 ' + esc(a.name) + '</div>' +
+        '<div class="tx">' + esc(a.text) + '</div></div>';
+    }).join('');
+    box.querySelectorAll('.tile').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var a = list[+el.getAttribute('data-i')];
+        if (!a) return;
+        $('ansWho').textContent = a.group + '모둠 ' + a.number + '번 ' + a.name + ' · ' + cur.no + '번 문항';
+        $('ansText').textContent = a.text;
+        $('ansModal').hidden = false;
+      });
+    });
+  }
+  TH.lastSeen = list.map(function (a) { return '|' + a.group + ':' + a.number; }).join('');
+
+  /* 아직 안 보낸 학생 */
+  var answered = {};
+  list.forEach(function (a) { answered[String(a.number).replace(/[^0-9]/g, '')] = 1; });
+  var roster = (state.data && state.data.roster) || [];
+  var miss = roster.filter(function (p) { return !answered[String(p.number).replace(/[^0-9]/g, '')]; })
+    .map(function (p) { return p.number + '번 ' + p.name; });
+  $('tpMiss').textContent = roster.length
+    ? (miss.length ? '아직 안 보낸 학생 ' + miss.length + '명: ' + miss.join(', ') : '명렬표 학생 모두 보냈어요 ✅')
+    : '';
+}
+
+function paintThinkCount(cur, n) {
+  var left = Math.max(0, Math.ceil((TH.deadline - performance.now()) / 1000));
+  $('tpCount').textContent = '답변 ' + n + '명' +
+    (cur.status === '진행' ? ' · 남은 ' + left + '초' : ' · 마감됨');
+  var cell = document.querySelector('.left[data-left="' + cur.no + '"]');
+  if (cell) cell.textContent = cur.status === '진행' ? left + '초' : '–';
+}
+setInterval(function () {
+  if (!TH.cur) return;
+  var n = document.querySelectorAll('#tpAns .tile').length;
+  paintThinkCount(TH.cur, n);
+}, 1000);
+
+/* 4초마다 답변을 다시 읽습니다 (문항 진행 중이면 3초) */
+function thinkLoop() {
+  setTimeout(function () {
+    if (!document.hidden) pollThink();
+    thinkLoop();
+  }, (TH.cur && TH.cur.status === '진행') ? 3000 : 5000);
+}
+
+/* ================= 모둠별 프롬프트 복사 (다른 선생님께 메신저로 보낼 때) ================= */
+function copyAllPrompts() {
+  var d = state.data;
+  if (!d || !d.groups) { toast('보드를 먼저 불러와 주세요'); return; }
+  var lines = [];
+  lines.push('[' + (d.classLabel || state.cls) + '] 모둠별 수노 프롬프트');
+  lines.push('(' + (d.at || '') + ' 기준)');
+  lines.push('');
+  var n = 0;
+  d.groups.forEach(function (g) {
+    if (!g.voteCount) return;
+    n++;
+    lines.push('■ ' + (d.classLabel || state.cls) + ' ' + g.group + '모둠  (조사 ' + g.surveyCount + '명, 투표 ' + g.voteCount + '표, 주인공 ' + (g.mainCreature || '미정') + ')');
+    lines.push(g.sunoKo || '');
+    lines.push(g.sunoTags || '');
+    lines.push('');
+  });
+  if (!n) { toast('아직 수노 투표를 낸 모둠이 없어요'); return; }
+  var text = lines.join('\n');
+  var done = function () { toast((d.classLabel || state.cls) + ' ' + n + '모둠 프롬프트를 복사했어요 — 메신저에 붙여넣어 보내세요'); };
+  var fail = function () {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { toast('복사하지 못했어요'); }
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(fail);
+  } else { fail(); }
+}
+
 /* ================= 자동 새로고침 ================= */
 function toggleAuto() {
   if (state.auto) { clearInterval(state.auto); state.auto = 0; }
@@ -438,8 +692,36 @@ function toggleAuto() {
   document.querySelector('#imgModal .mbox').addEventListener('click', function (ev) { ev.stopPropagation(); });
   $('imgDel').addEventListener('click', function () { removeFromBoard(state.modalPoster); });
   $('imgClose').addEventListener('click', function () { $('imgModal').hidden = true; state.modalPoster = null; });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('imgModal').hidden = true; });
-  load();
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { $('imgModal').hidden = true; $('ansModal').hidden = true; } });
+  $('ansModal').addEventListener('click', function () { $('ansModal').hidden = true; });
+  $('ansClose').addEventListener('click', function () { $('ansModal').hidden = true; });
+  $('btnCopyAll').addEventListener('click', copyAllPrompts);
+  $('tpRefresh').addEventListener('click', function () { thinkLoad(); });
+  $('tpClear').addEventListener('click', function () {
+    if (!TH.cur) return;
+    if (!window.confirm(TH.cur.no + '번 문항의 답변을 모두 지울까요?\n(다른 반에서 같은 문항을 다시 쓸 때만 하세요. 되돌릴 수 없어요.)')) return;
+    apiPost('thinkClear', { classNum: state.cls, no: TH.cur.no }).then(function (r) {
+      toast(r.removed + '개 답변을 지웠어요');
+      pollThink(); load();
+    }).catch(function (err) { toast('지우지 못했어요: ' + (err && err.message ? err.message : '')); });
+  });
+
+  /* 반 목록은 명렬표에서 받아옵니다 (반을 파일에 적지 않아요) */
+  apiGet({ action: 'roster' }).then(function (res) {
+    var keys = Object.keys(res || {}).map(function (k) { return String(k).replace(/[^0-9]/g, ''); })
+      .filter(function (n) { return n; });
+    keys.sort(function (a, b) { return Number(a) - Number(b); });
+    if (keys.length) CLASSES = keys.map(function (n) { return n + '반'; });
+  }).catch(function () { }).then(function () {
+    var saved = '';
+    try { saved = localStorage.getItem('bd_teacher_cls') || ''; } catch (e) { }
+    if (CLASSES.indexOf(saved) < 0) saved = CLASSES[0] || '';
+    state.cls = saved;
+    paintChips();
+    load();
+    thinkLoad();
+    thinkLoop();
+  });
 })();
 </script>
 </body>

@@ -127,6 +127,23 @@ input[readonly]{background:#EEF6F1;color:var(--green-d);border-color:var(--line)
 .monstat .tick{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px}
 .monstat .tick.no{color:var(--grey);background:#F7FBF8}
 
+/* ── 생각 나누기 (선생님이 문항을 시작하면 카드 안에 나타나요) ── */
+.think{margin-top:12px;border:2px solid var(--amber-line);border-radius:15px;background:var(--amber-bg);padding:13px}
+.think-h{display:flex;align-items:center;gap:8px;font-family:var(--fb);font-size:12px;color:#7A4E05}
+.think-h .badge{background:var(--amber);color:#fff;border-radius:7px;padding:2px 8px;font-size:11px;font-family:var(--fl)}
+.think-q{font-family:var(--fb);font-size:16px;line-height:1.42;color:#3A2A08;margin-top:8px;word-break:keep-all}
+.think-hint{font-size:12px;color:#8A6A2E;margin-top:5px;line-height:1.5;word-break:keep-all}
+.think-time{display:flex;align-items:center;gap:8px;margin-top:10px}
+.think-time b{font-family:var(--fb);font-size:26px;line-height:1;color:var(--amber);min-width:2.1em;text-align:right}
+.think-time i{font-style:normal;font-size:12px;color:#8A6A2E}
+.think-time .bar{flex:1;height:9px;background:#F6E4C2}
+.think-time .bar>span{background:linear-gradient(90deg,#F0B429,#E09B12)}
+.think textarea{margin-top:10px;background:#fff;border-color:var(--amber-line);font-size:14px;min-height:72px}
+.think .btn.main{background:var(--amber);box-shadow:0 6px 16px rgba(184,115,14,.22)}
+.think .btn.main:disabled{background:#DFC9A6;box-shadow:none}
+.think.over{border-color:#E0863A;background:#FFF0E4}
+.think .sent{background:#fff;border:1.5px solid var(--green-l);border-radius:11px;padding:8px 11px;font-size:13px;margin-top:9px;color:var(--green-d);line-height:1.5}
+
 /* ── 프롬프트 상자 ── */
 .pbox{margin-top:14px;border:1.5px dashed var(--amber);border-radius:15px;background:var(--amber-bg);padding:13px}
 .pbox h3{margin:0 0 8px;font-family:var(--fb);font-size:14.5px;color:#7A4E05;display:flex;align-items:center;gap:6px}
@@ -239,6 +256,19 @@ input[readonly]{background:#EEF6F1;color:var(--green-d);border-color:var(--line)
   <!-- 0-1. 모둠 모니터 -->
   <section class="card">
     <div class="card-h"><span class="num">🖥️</span><div>우리 모둠 모니터<small>모둠원이 보낸 내용이 모둠 TV 한 화면에 모여요</small></div></div>
+    <!-- 🧠 생각 나누기 — 선생님이 문항을 시작하면 이 자리에 질문과 남은 시간이 떠요 -->
+    <div class="think" id="thinkBox" hidden>
+      <div class="think-h"><span class="badge">🧠 생각 나누기</span><span id="tHead">지금 이 질문에 답해요</span></div>
+      <div class="think-q" id="tQ"></div>
+      <div class="think-hint" id="tHint"></div>
+      <div class="think-time"><b id="tLeft">0</b><i>초</i><div class="bar"><span id="tBar" style="width:100%"></span></div></div>
+      <textarea id="tText" maxlength="300" rows="3" placeholder="내 생각을 한두 문장으로 적어요"></textarea>
+      <div class="row-btn" style="margin-top:9px">
+        <button type="button" class="btn main" id="btnThinkSend" style="flex:1">🖥️ 모둠 모니터에 보내기</button>
+      </div>
+      <p class="tiny" id="tMsg" style="color:#8A6A2E">보낸 뒤 고쳐서 다시 보내면 <b>마지막 답</b>으로 바뀌어요. 같은 모둠 친구들 답은 모둠 모니터에 모여요.</p>
+    </div>
+
     <div class="monstat" id="monStat"><span class="dot"></span>모둠 현황을 불러오는 중…</div>
     <div class="row-btn" style="margin-top:10px">
       <button type="button" class="btn main" id="btnSend" style="flex:1;min-width:170px">🖥️ 모둠 모니터에 보내기</button>
@@ -441,7 +471,9 @@ var VOCALS = ['남자','여자','단체 합창','누구든'];
    화면은 GitHub Pages(공개)에 있고, 명렬표·제출·전시장은 Apps Script 웹앱과 JSON으로 주고받습니다.
    학생 명렬표는 이 파일에 넣지 않습니다(공개 저장소). 페이지가 열릴 때 ?action=roster 로 받아옵니다. */
 var API_URL = 'https://script.google.com/macros/s/AKfycbxTuJxsk-St2YqHocVlbcVCQyIEIp-zIqDbNe9Pw_lmaTIe7xusXqz_Pe34dZ_cq_fYYQ/exec';
-var CLASSES = ['2반', '4반'];
+/* 반 목록은 이 파일에 적지 않습니다. 명렬표(?action=roster)에 있는 반이 자동으로 들어옵니다.
+   → 다른 선생님은 명렬표 탭에 자기 반을 넣기만 하면 됩니다. */
+var CLASSES = [];             // 서버 명렬표에서 채웁니다
 var NOBODY = '__none__';
 var ROSTER = {};              // 서버(?action=roster)에서 받아 채웁니다
 var ROSTER_STATE = 'loading'; // loading | ready | fail
@@ -628,6 +660,7 @@ function onClassChange() {
 }
 /** 초안·기본값을 반·번호·이름에 맞춰 화면에 되살립니다. */
 function applyIdentity(cls, no, nm) {
+  if (!CLASSES.length) return;
   if (CLASSES.indexOf(cls) < 0) cls = CLASSES[0];
   $('cls').value = cls;
   buildStudentSelect(cls, no || '');
@@ -644,26 +677,52 @@ function applyIdentity(cls, no, nm) {
     setManual(true);
   }
 }
+/** 서버 명렬표로 반 목록(CLASSES)과 학생 명단(ROSTER)을 다시 만듭니다.
+    반을 하드코딩하지 않으므로, 명렬표 탭에 반을 추가하면 그 반도 여기 자동으로 뜽니다. */
+function applyRoster(res) {
+  var keys = Object.keys(res || {}).map(function (k) { return String(k).replace(/[^0-9]/g, ''); })
+    .filter(function (n) { return n; });
+  keys.sort(function (a, b) { return Number(a) - Number(b); });
+  if (!keys.length) return false;
+
+  var next = {};
+  keys.forEach(function (n) {
+    var cls = n + '반';
+    var list = (res[n] || res[cls] || []).map(function (p) {
+      var num = String(p && p.num !== undefined && p.num !== null ? p.num : '').replace(/[^0-9]/g, '');
+      var nm = String(p && p.name ? p.name : '').trim();
+      return [num, nm];
+    }).filter(function (p) { return p[0] && p[1]; });
+    if (list.length) next[cls] = list;
+  });
+  var classes = Object.keys(next);
+  if (!classes.length) return false;
+
+  ROSTER = next;
+  var cur = $('cls').value;
+  CLASSES = classes;
+  $('cls').innerHTML = '';
+  CLASSES.forEach(function (c) { $('cls').options.add(new Option(c, c)); });
+  $('cls').value = (CLASSES.indexOf(cur) >= 0) ? cur : CLASSES[0];
+  return true;
+}
+
 /** 서버의 '명렬표' 탭을 읽어 학생 선택 칸을 채웁니다. 실패하면 직접 입력으로 계속 쓸 수 있어요. */
 function refreshRoster() {
   ROSTER_STATE = 'loading';
   apiGet({ action: 'roster' })
     .then(function (res) {
       if (!res) throw new Error('빈 응답');
-      Object.keys(res).forEach(function (k) {
-        var cls = String(k).replace(/[^0-9]/g, '') + '반';
-        if (CLASSES.indexOf(cls) < 0) return;
-        var list = (res[k] || []).map(function (p) {
-          var num = String(p && p.num !== undefined && p.num !== null ? p.num : '').replace(/[^0-9]/g, '');
-          var nm = String(p && p.name ? p.name : '').trim();
-          return [num, nm];
-        }).filter(function (p) { return p[0] && p[1]; });
-        if (list.length) ROSTER[cls] = list;
-      });
+      var draft = null;
+      try { draft = JSON.parse(localStorage.getItem('bd_id') || 'null'); } catch (e) { }
+      var wantCls = $('cls').value || (draft && draft.classNum) || '';
+      var wantNo = $('num').value || (draft && draft.number) || '';
+      var wantNm = $('name').value || (draft && draft.name) || '';
+      if (!applyRoster(res)) throw new Error('명렬표가 비어 있어요');
       ROSTER_STATE = 'ready';
-      var no = $('num').value, nm = $('name').value;
-      applyIdentity($('cls').value, no, nm);
+      applyIdentity(wantCls, wantNo, wantNm);
       updateWho();
+      pollThink();
     })
     .catch(function () {
       if (ROSTER_STATE === 'ready') return;
@@ -748,11 +807,11 @@ function paint() {
 
 /* ================= 시작 ================= */
 (function init() {
-  CLASSES.forEach(function (c) { $('cls').options.add(new Option(c, c)); });
+  // 반 선택칸은 명렬표를 받은 뒤에 채웁니다(refreshRoster).
   for (var g = 1; g <= 8; g++) {
     $('grp').options.add(new Option(g + '모둠', g + '모둠'));
   }
-  applyIdentity(CLASSES[0], '', '');
+  applyIdentity('', '', '');
   var pickBox = $('picks');
   CREATURES.forEach(function (pair) {
     var b = document.createElement('button');
@@ -803,6 +862,8 @@ function paint() {
   paintGalleryClasses();
   refreshRoster();
   loadMonStat();
+  pollThink();
+  setInterval(function () { if (!document.hidden) pollThink(); }, 12000);
 
   var tabs = $('tabs').children;
   for (var t = 0; t < tabs.length; t++) {
@@ -827,7 +888,9 @@ function paint() {
   // 🖥️ 모둠 모니터
   $('btnSend').addEventListener('click', sendToMonitor);
   $('btnMonitor').addEventListener('click', openMonitor);
-  $('grp').addEventListener('change', function () { loadMonStat(); });
+  $('grp').addEventListener('change', function () { loadMonStat(); pollThink(); });
+  $('btnThinkSend').addEventListener('click', sendThink);
+  $('tText').addEventListener('input', saveThinkDraft);
 
   // 모달 닫기
   document.querySelectorAll('[data-close]').forEach(function (el) {
@@ -1232,6 +1295,111 @@ function openMonitor() {
       '" target="_blank" rel="noopener"><b>📺 여기를 누르면 모둠 모니터가 열려요</b></a>';
     toast('팝업이 막혀 있어요 — 아래 링크를 눌러 주세요');
   }
+}
+
+/* ================= 🧠 생각 나누기 =================
+ * 선생님이 교사 보드(또는 PPT)에서 문항을 시작하면, 이 카드 안에 질문·남은 시간·답 칸이 뜽니다.
+ * 답은 각자 적고 [🖥️ 모둠 모니터에 보내기]로 보냅니다(같은 문항을 다시 보내면 마지막 답으로 바뀜).
+ * 남은 시간은 서버가 계산한 remaining 을 받아 이 기기 시계(performance.now)로 1초씩 줄입니다. */
+var TH = { no: '', sec: 0, live: false, deadline: 0, timer: 0, busy: false, lastNo: '' };
+
+function thinkDraftKey() {
+  var d = identity();
+  return 'bd_think_' + d.classNum + '_' + d.groupNum + '_' + d.number + '_' + TH.no;
+}
+function loadThinkDraft() {
+  try { $('tText').value = localStorage.getItem(thinkDraftKey()) || ''; } catch (e) { $('tText').value = ''; }
+}
+function saveThinkDraft() {
+  try { localStorage.setItem(thinkDraftKey(), $('tText').value); } catch (e) { }
+}
+
+function thinkTick() {
+  var left = Math.max(0, Math.ceil((TH.deadline - performance.now()) / 1000));
+  $('tLeft').textContent = left;
+  $('tBar').style.width = (TH.sec ? Math.max(0, Math.min(100, left / TH.sec * 100)) : 0) + '%';
+  $('thinkBox').classList.toggle('over', left === 0);
+}
+function startThinkTimer() {
+  if (TH.timer) clearInterval(TH.timer);
+  thinkTick();
+  TH.timer = setInterval(thinkTick, 250);
+}
+function stopThinkTimer() { if (TH.timer) { clearInterval(TH.timer); TH.timer = 0; } }
+
+/** 서버가 준 지금 문항을 화면에 반영 */
+function paintThink(s) {
+  var cur = s && s.current;
+  var box = $('thinkBox');
+  if (!cur) {
+    box.hidden = true; TH.no = ''; TH.live = false; stopThinkTimer(); return;
+  }
+  var isNew = (cur.no !== TH.no);
+  TH.no = cur.no; TH.sec = cur.seconds || 0; TH.live = (cur.status === '진행');
+  box.hidden = false;
+
+  $('tQ').textContent = cur.question || '';
+  $('tHint').textContent = cur.hint || '';
+  $('tHead').textContent = '지금 이 질문에 답해요 · ' + cur.no + '번';
+  TH.deadline = performance.now() + (cur.remaining || 0) * 1000;
+  startThinkTimer();
+
+  $('tText').disabled = !TH.live;
+  $('tMsg').innerHTML = TH.live
+    ? '보낸 뒤 고쳐서 다시 보내면 <b>마지막 답</b>으로 바뀌어요. 같은 모둠 친구들 답은 모둠 모니터에 모여요.'
+    : '시간이 끝났어요. 선생님이 정리할 때까지 내가 보낸 답이 그대로 남아 있어요.';
+
+  /* 내가 이미 보냈는지 (우리 모둠 답변 중 내 번호) */
+  var d = identity(), mine = null;
+  (s.answers || []).forEach(function (a) {
+    if (String(a.number) === String(d.number) && String(a.qno) === String(cur.no)) mine = a;
+  });
+  if (mine && mine.text) {
+    $('tMsg').innerHTML = '<b>보냈어요 ✅</b> “' + esc(mine.text) + '”<br>' +
+      (TH.live ? '고쳐 보내면 마지막 답으로 바뀝니다.' : '시간이 끝나 이 답으로 남았어요.');
+    if (isNew) $('tText').value = mine.text;
+  }
+  if (isNew) { loadThinkDraft(); }
+  $('btnThinkSend').disabled = !TH.live || TH.busy;
+
+  if (isNew && TH.live) {
+    TH.lastNo = cur.no;
+    try { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { }
+    toast('🧠 새 질문이 떴어요 — 위 카드에 답을 적어 보내세요');
+  }
+}
+
+function pollThink() {
+  var cls = $('cls').value;
+  if (!cls) return;
+  var d = identity();
+  apiGet({ action: 'thinkState', classNum: cls, groupNum: d.groupNum || '' })
+    .then(paintThink)
+    .catch(function () { /* 잠시 못 받으면 다음 차례에 다시 */ });
+}
+
+/** 🖥️ 모둠 모니터에 내 답 보내기 (같은 문항이면 덮어쓰기) */
+function sendThink() {
+  if (!identityOk()) return;
+  if (!TH.no) { toast('지금 진행 중인 질문이 없어요'); return; }
+  var text = ($('tText').value || '').trim();
+  if (!text) { toast('답을 먼저 적어 주세요'); $('tText').focus(); return; }
+  var d = identity(), btn = $('btnThinkSend');
+  TH.busy = true; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>보내는 중…';
+  apiPost('thinkSubmit', {
+    classNum: d.classNum, no: TH.no, groupNum: d.groupNum,
+    number: d.number, name: d.name, text: text
+  }).then(function (r) {
+    $('tMsg').innerHTML = '<b>보냈어요 ✅</b> ' + (r.updated ? '고친 답으로 바꿨어요.' : '모둠 모니터에 올라갔어요.') +
+      ' <span style="color:#6B7B73">(' + esc(r.who) + ')</span>';
+    toast('모둠 모니터로 보냈어요! 📺');
+    saveThinkDraft();
+    pollThink();
+  }).catch(function (err) {
+    toast('보내지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시'));
+  }).then(function () {
+    TH.busy = false; btn.disabled = !TH.live; btn.innerHTML = '🖥️ 모둠 모니터에 보내기';
+  });
 }
 
 /* 이미 보낸 것을 또 보내면 시트에 줄이 하나 더 생기므로, 서버 기록과 이 기기 기록을 함께 봅니다. */

@@ -157,6 +157,33 @@ select{font-family:var(--fl);font-size:inherit;border:1.5px solid var(--line);bo
   transition:.25s;z-index:60;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+/* ── 🧠 생각 나누기 ── */
+.think{display:grid;grid-template-columns:1fr auto;gap:clamp(10px,1.2vw,22px);align-items:center;
+  background:linear-gradient(140deg,#FFF9EC,#FFFEFA);border:2px solid var(--amber-line);
+  border-radius:clamp(14px,1.2vw,20px);padding:clamp(10px,1.1vw,18px) clamp(14px,1.5vw,26px);flex:0 0 auto}
+.think .tk{font-size:clamp(11px,.9vw,15px);color:#8A6A2E}
+.think .tk b{font-family:var(--fb);font-weight:normal}
+.think .qq{font-family:var(--fb);font-size:clamp(17px,2.1vw,36px);line-height:1.18;color:#3A2A08;margin-top:.15em;word-break:keep-all}
+.think .hh{font-size:clamp(11px,.92vw,16px);color:#8A6A2E;margin-top:.3em;word-break:keep-all}
+.think .tt{display:flex;flex-direction:column;align-items:center;min-width:clamp(96px,11vw,170px)}
+.think .tn{font-family:var(--fb);font-size:clamp(44px,5.6vw,92px);line-height:1;color:var(--amber);letter-spacing:-.02em}
+.think .tn.over{color:#D2542A}
+.think .tu{font-size:clamp(10px,.85vw,14px);color:#8A6A2E;margin-top:-.1em}
+.think .tb{width:100%;height:clamp(7px,.8vw,12px);background:#F6E4C2;border-radius:999px;overflow:hidden;margin-top:.35em}
+.think .tb>i{display:block;height:100%;background:linear-gradient(90deg,#F0B429,#E09B12);width:100%;transition:width .3s linear}
+.think .tover{display:none;font-family:var(--fb);font-size:clamp(15px,1.5vw,26px);color:#D2542A;margin-top:.25em;text-align:center}
+.think.done .tover{display:block}
+.think.done .tn{font-size:clamp(28px,3vw,46px)}
+.tans{display:flex;gap:clamp(6px,.7vw,12px);overflow-x:auto;flex:0 0 auto;padding-bottom:2px}
+.tans .a{background:#fff;border:1.5px solid var(--line);border-radius:clamp(10px,1vw,16px);
+  padding:clamp(6px,.55vw,10px) clamp(9px,.8vw,14px);min-width:min(210px,40vw);max-width:340px;flex:0 0 auto}
+.tans .a .who{font-family:var(--fb);font-weight:normal;font-size:clamp(11px,1vw,17px);color:var(--green-d)}
+.tans .a .who span{color:var(--grey);font-family:var(--fl)}
+.tans .a p{margin:.2em 0 0;font-size:clamp(12px,1.05vw,18px);line-height:1.3;word-break:keep-all;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tans .a.new{animation:arrive 2.6s ease}
+.tans .a.none{color:var(--grey);font-size:clamp(12px,1vw,17px)}
+
 /* ── 시작(반·모둠 고르기) ── */
 .pick{max-width:900px;margin:6vh auto;text-align:center}
 .pick h1{font-family:var(--fb);font-weight:normal;font-size:clamp(24px,2.6vw,40px);color:var(--green-d);margin:.2em 0}
@@ -196,6 +223,22 @@ select{font-family:var(--fl);font-size:inherit;border:1.5px solid var(--line);bo
         <div id="hNew"></div>
       </div>
     </header>
+
+    <!-- 🧠 생각 나누기 : 선생님이 문항을 시작하면 여기에 질문과 남은 시간이 크게 뜽니다 -->
+    <section class="think" id="think" hidden>
+      <div class="tq">
+        <div class="tk">🧠 생각 나누기 · <b id="tNo"></b></div>
+        <div class="qq" id="tQ"></div>
+        <div class="hh" id="tHint"></div>
+      </div>
+      <div class="tt">
+        <div class="tn" id="tLeft">0</div>
+        <div class="tu" id="tUnit">초 남았어요</div>
+        <div class="tb"><i id="tBar"></i></div>
+        <div class="tover">⏰ 시간 끝!</div>
+      </div>
+    </section>
+    <section class="tans" id="tAns" hidden></section>
 
     <div class="grid" id="grid" hidden>
       <section class="panel members">
@@ -243,7 +286,7 @@ select{font-family:var(--fl);font-size:inherit;border:1.5px solid var(--line);bo
 <script>
 /* ================= 서버 ================= */
 var API_URL = 'https://script.google.com/macros/s/AKfycbxTuJxsk-St2YqHocVlbcVCQyIEIp-zIqDbNe9Pw_lmaTIe7xusXqz_Pe34dZ_cq_fYYQ/exec';
-var CLASSES = ['2반', '4반'];
+var CLASSES = ['2반', '4반'];   // 서버 명렬표를 받으면 그 반 목록으로 바꿔집니다
 var GROUP_N = 8;
 var AUTO_MS = 8000;
 
@@ -315,6 +358,7 @@ function setParams(cls, grp) {
   document.title = cls + ' ' + grp + '모둠 · 모둠 모니터';
   load();
   startAuto();
+  pollThink();
 }
 
 /* ================= 고르기 화면 ================= */
@@ -565,6 +609,71 @@ function tally(list, unit, max) {
   }).join('') + '</div>';
 }
 
+/* ================= 🧠 생각 나누기 =================
+ * 선생님이 문항을 시작하면 화면 위에 질문과 남은 시간이 크게 뜨고,
+ * 아래에 우리 모둠원들이 보낸 답이 실시간으로 쌓입니다.
+ * 남은 시간은 서버가 준 remaining 을 받아 이 기기 시계로 1초씩 줄입니다. */
+var TH = { no: '', sec: 0, on: false, deadline: 0, seen: '' };
+
+function thinkTick() {
+  var left = Math.max(0, Math.ceil((TH.deadline - performance.now()) / 1000));
+  $('tLeft').textContent = left;
+  $('tBar').style.width = (TH.sec ? Math.max(0, Math.min(100, left / TH.sec * 100)) : 0) + '%';
+  if (left === 0 && !$('think').hidden) $('think').classList.add('done');
+}
+setInterval(thinkTick, 250);
+
+function renderThink(s) {
+  var cur = s && s.current;
+  var box = $('think'), ans = $('tAns');
+  if (!cur) {
+    box.hidden = true; ans.hidden = true; TH.on = false; TH.no = ''; return;
+  }
+  box.hidden = false;
+  var live = (cur.status === '진행');
+  var isNew = (cur.no !== TH.no);
+  TH.on = live;
+  TH.no = cur.no;
+  TH.sec = cur.seconds || 0;
+  if (isNew || live) TH.deadline = performance.now() + (cur.remaining || 0) * 1000;
+  if (isNew) TH.seen = '';
+
+  $('tNo').textContent = cur.no + '번';
+  $('tQ').textContent = cur.question || '';
+  $('tHint').textContent = cur.hint || '';
+  $('tUnit').textContent = live ? '초 남았어요' : '시간 끝';
+  box.classList.toggle('done', !live);
+  thinkTick();
+
+  var list = s.answers || [];
+  ans.hidden = false;
+  if (!list.length) {
+    ans.innerHTML = '<div class="a none">아직 우리 모둠에서 보낸 답이 없어요. 학생 화면에서 답을 적어 보내면 여기에 바로 나타나요.</div>';
+  } else {
+    ans.innerHTML = list.map(function (a) {
+      var isNewA = TH.seen.indexOf('|' + a.number) < 0;
+      return '<div class="a' + (isNewA ? ' new' : '') + '"><div class="who">' + esc(a.number) + '번 ' +
+        esc(a.name) + ' <span>' + esc(a.text ? '' : '') + '</span></div><p>' + esc(a.text) + '</p></div>';
+    }).join('');
+  }
+  TH.seen = list.map(function (a) { return '|' + a.number; }).join('');
+}
+
+function pollThink() {
+  if (!state.cls || !state.grp) return;
+  apiGet({ action: 'thinkState', classNum: state.cls, groupNum: state.grp + '모둠' })
+    .then(renderThink)
+    .catch(function () { });
+}
+/* 문항이 진행 중이면 4초마다, 아니면 8초마다 확인합니다. */
+function thinkLoop() {
+  pollThink();
+  setTimeout(function () {
+    if (!document.hidden) pollThink();
+    thinkLoop();
+  }, TH.on ? 4000 : 8000);
+}
+
 /* ================= 시계 ================= */
 function tickClock() {
   var d = new Date();
@@ -617,18 +726,28 @@ function fullscreen() {
     if (e.key === 'F5') return;
     if (e.key === 'r' && (e.altKey || e.metaKey)) { e.preventDefault(); load(); }
   });
-  if (p.cls && p.grp) {
-    state.cls = p.cls; state.grp = p.grp;
-    $('pick').hidden = true;
-    $('mon').hidden = false;
-    paintSelects();
-    $('hWho').textContent = '📺 ' + state.cls + ' ' + state.grp + '모둠';
-    document.title = state.cls + ' ' + state.grp + '모둠 · 모둠 모니터';
-    load();
-    startAuto();
-  } else {
-    paintPick();
-  }
+
+  /* 반 목록은 명렬표에서 받아 옵니다 (파일에 반을 적지 않습니다) */
+  apiGet({ action: 'roster' }).then(function (res) {
+    var keys = Object.keys(res || {}).map(function (k) { return String(k).replace(/[^0-9]/g, ''); })
+      .filter(function (n) { return n; });
+    keys.sort(function (a, b) { return Number(a) - Number(b); });
+    if (keys.length) CLASSES = keys.map(function (n) { return n + '반'; });
+  }).catch(function () { }).then(function () {
+    if (p.cls && p.grp) {
+      state.cls = p.cls; state.grp = p.grp;
+      $('pick').hidden = true;
+      $('mon').hidden = false;
+      paintSelects();
+      $('hWho').textContent = '📺 ' + state.cls + ' ' + state.grp + '모둠';
+      document.title = state.cls + ' ' + state.grp + '모둠 · 모둠 모니터';
+      load();
+      startAuto();
+    } else {
+      paintPick();
+    }
+    thinkLoop();
+  });
 })();
 </script>
 </body>
