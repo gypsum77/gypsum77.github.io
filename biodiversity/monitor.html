@@ -442,7 +442,7 @@ function render(board, sum) {
   if (creTop) {
     hero.hidden = false;
     hero.innerHTML = '<span class="e">' + creEmoji(creTop.label) + '</span><div><b>' + esc(creTop.label) +
-      '</b><br><span>우리 모둠 1등 생물 · ' + creTop.count + '명</span></div>';
+      '</b><br><span>우리 모둠에서 가장 많이 나온 생물 · ' + students.length + '명 중 1등</span></div>';
   } else { hero.hidden = true; }
   $('mList').innerHTML = students.length
     ? students.slice().sort(function (a, b) { return Number(a.number) - Number(b.number); }).map(function (s) {
