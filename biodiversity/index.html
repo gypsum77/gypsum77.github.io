@@ -114,6 +114,19 @@ input[readonly]{background:#EEF6F1;color:var(--green-d);border-color:var(--line)
 .card.s3{border-color:#BFE0C9;background:linear-gradient(#F5FCF7,#fff 120px)}
 .card.s3 .num{background:#2E7D5B}
 
+/* ── 모둠 모니터 ── */
+.monstat{background:var(--mint);border:1.5px solid var(--line);border-radius:13px;padding:10px 12px;
+  font-size:13px;line-height:1.65;word-break:keep-all}
+.monstat b{font-family:var(--fb);font-weight:normal;color:var(--green-d)}
+.monstat .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green-l);
+  margin-right:6px;vertical-align:1.5px}
+.monstat .miss{color:var(--grey)}
+.monstat .ln{display:block}
+.monstat a{color:var(--green-d)}
+.monstat .ticks{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.monstat .tick{background:#fff;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:12px}
+.monstat .tick.no{color:var(--grey);background:#F7FBF8}
+
 /* ── 프롬프트 상자 ── */
 .pbox{margin-top:14px;border:1.5px dashed var(--amber);border-radius:15px;background:var(--amber-bg);padding:13px}
 .pbox h3{margin:0 0 8px;font-family:var(--fb);font-size:14.5px;color:#7A4E05;display:flex;align-items:center;gap:6px}
@@ -221,6 +234,17 @@ input[readonly]{background:#EEF6F1;color:var(--green-d);border-color:var(--line)
       <label class="f"><span>이름</span><input id="name" type="text" maxlength="12" placeholder="예) 홍길동"></label>
     </div>
     <p class="tiny">명단에서 내 이름을 고르면 번호·이름이 저절로 채워져요. 전입·결번처럼 명단에 없으면 <b>명단에 없음 (직접 입력)</b>을 골라 직접 적어요.</p>
+  </section>
+
+  <!-- 0-1. 모둠 모니터 -->
+  <section class="card">
+    <div class="card-h"><span class="num">🖥️</span><div>우리 모둠 모니터<small>모둠원이 보낸 내용이 모둠 TV 한 화면에 모여요</small></div></div>
+    <div class="monstat" id="monStat"><span class="dot"></span>모둠 현황을 불러오는 중…</div>
+    <div class="row-btn" style="margin-top:10px">
+      <button type="button" class="btn main" id="btnSend" style="flex:1;min-width:170px">🖥️ 모둠 모니터에 보내기</button>
+      <button type="button" class="btn ghost" id="btnMonitor" style="flex:1;min-width:150px">📺 모둠 모니터 열기</button>
+    </div>
+    <p class="tiny">모둠에서 <b>HDMI 선이 연결된 크롬북 1대</b>만 [모둠 모니터 열기]를 누르면 돼요. 새 창을 모둠 모니터 쪽으로 끌어다 놓고 <b>⛶ 전체 화면</b>(크롬북은 F11)을 누르면 크게 보여요.</p>
   </section>
 
   <!-- 탭 -->
@@ -778,6 +802,7 @@ function paint() {
   updateWho();
   paintGalleryClasses();
   refreshRoster();
+  loadMonStat();
 
   var tabs = $('tabs').children;
   for (var t = 0; t < tabs.length; t++) {
@@ -798,6 +823,11 @@ function paint() {
   $('btnPoster').addEventListener('click', doPoster);
   $('btnReloadGallery').addEventListener('click', function () { loadGallery(state.galleryClass || CLASSES[0]); });
   $('btnSunoSave').addEventListener('click', doSaveSuno);
+
+  // 🖥️ 모둠 모니터
+  $('btnSend').addEventListener('click', sendToMonitor);
+  $('btnMonitor').addEventListener('click', openMonitor);
+  $('grp').addEventListener('change', function () { loadMonStat(); });
 
   // 모달 닫기
   document.querySelectorAll('[data-close]').forEach(function (el) {
@@ -844,7 +874,9 @@ function doSurvey() {
       $('btnToggle').textContent = '글자 넣은 버전 보기';
       $('pbox').hidden = false;
       saveDraft();
-      toast('저장 완료! 아래 프롬프트를 복사해서 제미나이에 붙여넣어요');
+      markSent('survey');
+      loadMonStat();
+      toast('모둠 모니터로 보냈어요 ✅ 아래 프롬프트를 복사해 제미나이에 붙여넣어요');
       $('pbox').scrollIntoView({ behavior: 'smooth', block: 'center' });
     })
     .catch(function (err) {
@@ -898,7 +930,9 @@ function doVote() {
       btn.disabled = false;
       btn.innerHTML = '투표 제출하기 🎵';
       saveDraft();
-      toast('투표 완료! 3단계에서 우리 모둠 1등을 확인해 보세요');
+      markSent('vote');
+      loadMonStat();
+      toast('투표를 모둠 모니터로 보냈어요 ✅ 3단계에서 우리 모둠 1등을 확인해요');
     })
     .catch(function (err) {
       btn.disabled = false;
@@ -1053,6 +1087,7 @@ function doPoster() {
         $('posterFile').value = '';
         $('preview').hidden = true;
         toast(r.sharing === 'anyone' ? '전시장에 걸었어요! 누구나 볼 수 있어요' : '전시장에 저장했어요');
+        markSent('poster');
         state.galleryClass = d.classNum;
         paintGalleryClasses();
         loadGallery(d.classNum);
@@ -1173,6 +1208,160 @@ function doSaveSuno() {
       btn.disabled = false;
       btn.innerHTML = '저장하기';
       toast('저장하지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시 눌러 주세요'));
+    });
+}
+
+/* ================= 🖥️ 모둠 모니터 ================= */
+function grpNoOf() { return String(identity().groupNum || '').replace(/[^0-9]/g, ''); }
+function monitorUrl() {
+  var d = identity();
+  return 'monitor.html?class=' + encodeURIComponent(d.classNum) + '&group=' + encodeURIComponent(grpNoOf() || '1');
+}
+/** 📺 모둠 모니터 열기 — HDMI 선이 연결된 크롬북 1대에서 누르면 새 창이 뜨고,
+    그 창을 모둠 모니터로 끌어다 놓은 뒤 전체 화면(⛶·F11)으로 보는 방식입니다. */
+function openMonitor() {
+  var d = identity();
+  if (!grpNoOf()) { toast('반과 모둠을 먼저 골라 주세요'); return; }
+  var u = monitorUrl(), w = null;
+  try { w = window.open(u, 'bdmon_' + d.classNum + '_' + grpNoOf(), 'width=1280,height=760'); } catch (e) { }
+  if (w) {
+    try { w.focus(); } catch (e) { }
+    toast('새 창을 모둠 모니터로 끌어다 놓고 ⛶ 전체 화면을 눌러 주세요');
+  } else {
+    $('monStat').innerHTML = '팝업이 막혀 새 창을 열지 못했어요. <a href="' + esc(u) +
+      '" target="_blank" rel="noopener"><b>📺 여기를 누르면 모둠 모니터가 열려요</b></a>';
+    toast('팝업이 막혀 있어요 — 아래 링크를 눌러 주세요');
+  }
+}
+
+/* 이미 보낸 것을 또 보내면 시트에 줄이 하나 더 생기므로, 서버 기록과 이 기기 기록을 함께 봅니다. */
+function sentKey(kind) { var d = identity(); return 'bd_sent_' + kind + '_' + d.classNum + '_' + d.groupNum + '_' + d.number; }
+function sentLocal(kind) { try { return !!localStorage.getItem(sentKey(kind)); } catch (e) { return false; } }
+function markSent(kind) { try { localStorage.setItem(sentKey(kind), '1'); } catch (e) { } }
+
+function surveyPayloadIfReady() {
+  var creature = chosenCreature();
+  if (!creature) return null;
+  if (!state.reasons.length) return null;
+  if (!$('impact').value.trim()) return null;
+  if (!$('action').value.trim()) return null;
+  var d = identity();
+  return {
+    classNum: d.classNum, groupNum: d.groupNum, number: d.number, name: d.name,
+    creature: creature, reasons: state.reasons.join(','), reasonDetail: $('reasonDetail').value.trim(),
+    impact: $('impact').value.trim(), action: $('action').value.trim(), slogan: $('slogan').value.trim()
+  };
+}
+function votePayloadIfReady() {
+  if (!state.genre || !state.mood || !state.tempo || !state.vocal) return null;
+  var d = identity();
+  var kw = [$('kw1').value.trim(), $('kw2').value.trim(), $('kw3').value.trim()]
+    .filter(function (x) { return x; }).join(',');
+  return {
+    classNum: d.classNum, groupNum: d.groupNum, number: d.number, name: d.name,
+    genre: state.genre, mood: state.mood, tempo: state.tempo, vocal: state.vocal,
+    keywords: kw, chorus: $('chorus').value.trim()
+  };
+}
+
+/** 우리 모둠에 지금까지 몇 명이 보냈는지 (가벼운 summary 한 번) */
+function loadMonStat() {
+  var d = identity(), box = $('monStat');
+  if (!grpNoOf()) {
+    box.innerHTML = '<span class="dot"></span>반과 모둠을 고르면 우리 모둠 모니터 현황이 보여요.';
+    return;
+  }
+  apiGet({ action: 'summary', classNum: d.classNum, groupNum: grpNoOf() + '모둠' })
+    .then(function (s) {
+      var n = (s.students || []).length, v = s.voteCount || 0, meIn = false;
+      (s.students || []).forEach(function (x) { if (String(x.number) === String(d.number)) meIn = true; });
+      var msg = '<span class="dot"></span>우리 모둠 도착 — <b>조사 ' + n + '명</b> · <b>투표 ' + v + '표</b>';
+      msg += (meIn || sentLocal('survey'))
+        ? '<span class="ln" style="margin-top:4px">내 조사는 <b>모둠 모니터에 올라가 있어요</b> ✅</span>'
+        : '<span class="ln miss" style="margin-top:4px">내 조사는 아직 안 보냈어요 — <b>[🖥️ 모둠 모니터에 보내기]</b>를 눌러 주세요.</span>';
+      box.innerHTML = msg;
+    })
+    .catch(function () {
+      box.innerHTML = '<span class="dot"></span>모둠 현황을 불러오지 못했어요. 잠시 뒤 다시 눌러 주세요.';
+    });
+}
+
+/** 🖥️ 모둠 모니터에 보내기 — 아직 안 보낸 것(조사·투표)만 서버로 보내고,
+    보낸 뒤 우리 모둠 도착 현황을 다시 확인해 보여 줍니다. */
+function sendToMonitor() {
+  if (!identityOk()) return;
+  var d = identity(), btn = $('btnSend'), box = $('monStat');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>보내는 중…';
+  var res = { survey: '', vote: '' };
+  var sp = surveyPayloadIfReady(), vp = votePayloadIfReady();
+
+  apiGet({ action: 'teacherBoard', classNum: d.classNum })
+    .then(function (board) {
+      var me = null, key = String(d.number).replace(/[^0-9]/g, '');
+      (board.roster || []).forEach(function (p) {
+        if (String(p.number).replace(/[^0-9]/g, '') === key) me = p;
+      });
+      var didS = me ? !!me.survey : sentLocal('survey');
+      var didV = me ? !!me.vote : sentLocal('vote');
+      res.survey = didS ? 'already' : (sp ? 'todo' : 'missing');
+      res.vote = didV ? 'already' : (vp ? 'todo' : 'missing');
+
+      var p = Promise.resolve();
+      if (res.survey === 'todo') {
+        p = p.then(function () {
+          return apiPost('submitSurvey', sp).then(function (r) {
+            res.survey = 'sent';
+            markSent('survey');
+            state.promptNo = r.prompt;
+            state.promptYes = r.promptWithText;
+            state.showingYes = false;
+            $('promptText').value = r.prompt;
+            $('btnToggle').textContent = '글자 넣은 버전 보기';
+            $('pbox').hidden = false;
+          });
+        });
+      }
+      if (res.vote === 'todo') {
+        p = p.then(function () {
+          return apiPost('submitVote', vp).then(function () { res.vote = 'sent'; markSent('vote'); });
+        });
+      }
+      return p;
+    })
+    .then(function () {
+      return apiGet({ action: 'summary', classNum: d.classNum, groupNum: grpNoOf() + '모둠' })
+        .catch(function () { return null; });
+    })
+    .then(function (s) {
+      var n = s ? (s.students || []).length : 0, v = s ? (s.voteCount || 0) : 0;
+      var tick = function (label, st) {
+        var on = (st === 'sent' || st === 'already');
+        return '<span class="tick' + (on ? '' : ' no') + '">' + (on ? '✅ ' : '⬜ ') + label + '</span>';
+      };
+      var head;
+      if (res.survey === 'sent' || res.vote === 'sent') head = '🖥️ <b>모둠 모니터로 보냈어요!</b>';
+      else if (res.survey === 'already' && res.vote === 'already') head = '🖥️ <b>이미 다 올라가 있어요.</b>';
+      else if (res.survey === 'missing') head = '🖥️ <b>보낼 조사 내용이 아직 덜 찼어요.</b>';
+      else head = '🖥️ <b>내 투표는 아직 안 보냈어요.</b>';
+
+      var body = '<span class="ln" style="margin-top:5px">우리 모둠 도착 — <b>조사 ' + n + '명 · 투표 ' + v + '표</b></span>' +
+        '<span class="ticks">' + tick('내 조사', res.survey) + tick('내 투표', res.vote) + '</span>';
+      if (res.survey === 'missing') body += '<span class="ln miss" style="margin-top:5px">① 생물 · ② 사라지는 이유 · ③ 생태계 영향 · ④ 할 수 있는 행동을 채우면 보낼 수 있어요.</span>';
+      if (res.vote === 'missing') body += '<span class="ln miss" style="margin-top:5px">투표는 장르·분위기·템포·보컬을 고르면 보낼 수 있어요.</span>';
+      if (res.survey !== 'missing') body += '<span class="ln miss" style="margin-top:5px">내용을 고쳐서 다시 보내려면 ①의 <b>제출</b> 버튼을 누르세요.</span>';
+      box.innerHTML = head + body;
+      toast((res.survey === 'sent' || res.vote === 'sent') ? '모둠 모니터로 보냈어요! 📺' : '모둠 모니터 현황을 확인했어요');
+      if (res.survey === 'sent') $('pbox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })
+    .catch(function (err) {
+      box.innerHTML = '<span class="dot"></span>보내지 못했어요 — ' +
+        esc(err && err.message ? err.message : '잠시 뒤 다시 눌러 주세요');
+      toast('보내지 못했어요: ' + (err && err.message ? err.message : '잠시 뒤 다시 눌러 주세요'));
+    })
+    .then(function () {
+      btn.disabled = false;
+      btn.innerHTML = '🖥️ 모둠 모니터에 보내기';
     });
 }
 

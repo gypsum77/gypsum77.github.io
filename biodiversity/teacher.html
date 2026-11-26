@@ -299,6 +299,7 @@ function cardHtml(g) {
     '<code class="suno-tags">' + esc(g.sunoTags || '') + '</code>' +
     '<div class="pbtns">' +
       '<button class="btn primary copy-suno" type="button">📋 수노 프롬프트 복사</button>' +
+      '<button class="btn mon" type="button">📺 모둠 모니터 열기</button>' +
     '</div>' +
 
     '<div class="sub">🔗 모둠 수노 링크</div>' +
@@ -356,6 +357,13 @@ function wireCard(g) {
       ev.stopPropagation();
       removeFromBoard((g.posters || [])[+el.getAttribute('data-i')] || null);
     });
+  });
+
+  card.querySelector('.mon').addEventListener('click', function () {
+    var u = 'monitor.html?class=' + encodeURIComponent(state.cls) + '&group=' + g.group;
+    var w = window.open(u, 'bdmon_' + state.cls + '_' + g.group, 'width=1280,height=760');
+    if (w) { try { w.focus(); } catch (e) { } toast('새 창을 전자칠판으로 끌어다 놓고 ⛶ 전체 화면을 누르세요'); }
+    else { window.location.href = u; }
   });
 
   card.querySelector('.save-suno').addEventListener('click', function () {
