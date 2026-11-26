@@ -50,6 +50,13 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
   grid-template-columns:1.05fr 1fr;
   grid-template-areas:"members song" "why posters";align-items:stretch}
 @media(max-width:900px){.grid{grid-template-columns:1fr;grid-template-areas:"members" "song" "why" "posters"}}
+/* 모둠 모니터(큰 화면): 한 화면에 네 칸이 다 들어오고, 넘치는 내용은 칸 안에서만 넘깁니다 */
+@media(min-width:901px){
+  body{overflow:hidden}
+  .wrap{height:100vh}
+  .grid{min-height:0;grid-template-rows:1fr 1fr}
+  .panel{overflow:auto}
+}
 .panel{background:#fff;border:1.5px solid var(--line);border-radius:clamp(14px,1.2vw,20px);
   padding:clamp(11px,1.05vw,18px);box-shadow:0 3px 12px rgba(23,130,75,.06);min-width:0;display:flex;flex-direction:column}
 .panel.members{grid-area:members}
