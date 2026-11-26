@@ -25,19 +25,19 @@ body{margin:0;color:var(--ink);font-family:var(--fl);line-height:1.42;
 .wrap{min-height:100%;display:flex;flex-direction:column;padding:clamp(10px,1.1vw,20px);gap:clamp(8px,.9vw,16px)}
 
 /* ── 머리 ── */
-.bar{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;
   background:linear-gradient(150deg,#0C5B33 0%,#17824B 58%,#2E9A5E 100%);color:#fff;
   border-radius:clamp(14px,1.4vw,22px);padding:clamp(12px,1.4vw,24px) clamp(16px,1.6vw,28px);
   box-shadow:0 12px 30px rgba(12,91,51,.22);position:relative;overflow:hidden}
-.bar:after{content:"🌿";position:absolute;right:-6px;bottom:-40px;font-size:clamp(70px,9vw,150px);opacity:.13;line-height:1}
-.bar .k{font-size:clamp(12px,.95vw,16px);opacity:.9;letter-spacing:.02em}
-.bar h1{margin:.15em 0 0;font-family:var(--fb);font-weight:normal;
+.topbar:after{content:"🌿";position:absolute;right:-6px;bottom:-40px;font-size:clamp(70px,9vw,150px);opacity:.13;line-height:1}
+.topbar .k{font-size:clamp(12px,.95vw,16px);opacity:.9;letter-spacing:.02em}
+.topbar h1{margin:.15em 0 0;font-family:var(--fb);font-weight:normal;
   font-size:clamp(26px,3.1vw,52px);line-height:1.1;letter-spacing:-.01em}
-.bar h1 .hero{display:inline-block;margin-left:.25em;padding:.06em .38em;border-radius:.35em;
+.topbar h1 .hero{display:inline-block;margin-left:.25em;padding:.06em .38em;border-radius:.35em;
   background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45)}
-.bar h1 .hero.pop{animation:pop .9s ease}
+.topbar h1 .hero.pop{animation:pop .9s ease}
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.13)}100%{transform:scale(1)}}
-.bar .right{text-align:right;min-width:min(38%,340px)}
+.topbar .right{text-align:right;min-width:min(38%,340px)}
 .clock{font-family:var(--fb);font-size:clamp(24px,2.6vw,44px);line-height:1;letter-spacing:.02em}
 .mini{font-size:clamp(12px,.95vw,16px);opacity:.95;margin-top:.35em}
 .mini b{font-family:var(--fb);font-weight:normal}
@@ -166,7 +166,7 @@ select{font-family:var(--fl);font-size:inherit;border:1.5px solid var(--line);bo
 
   <!-- 모니터 본화면 -->
   <div id="mon" hidden style="display:flex;flex-direction:column;gap:clamp(8px,.9vw,16px);flex:1">
-    <header class="bar">
+    <header class="topbar">
       <div>
         <div class="k">보평중학교 1학년 자유학기 과학 · 생물다양성 캠페인</div>
         <h1><span id="hWho">📺 모둠 모니터</span> <span class="hero" id="hHero" hidden></span></h1>
@@ -376,7 +376,13 @@ function render(board, sum) {
     return;
   }
   var st = (sum && sum.ok) ? sum : null;
-  var students = g.students || [];
+  /* 같은 학생이 여러 번 보내면 시트에 줄이 여러 개 쌓입니다 — 모니터에는 사람마다 한 줄로(마지막 것) 보여 줍니다. */
+  var raw = g.students || [], seen = {}, students = [];
+  for (var ri = 0; ri < raw.length; ri++) {
+    var rk = String(raw[ri].number);
+    if (seen[rk] !== undefined) students[seen[rk]] = raw[ri];
+    else { seen[rk] = students.length; students.push(raw[ri]); }
+  }
   var posters = g.posters || [];
   var empty = !students.length && !g.voteCount && !posters.length;
 
@@ -483,10 +489,10 @@ function render(board, sum) {
   /* ③ 왜 · 무엇을 */
   var w = '';
   w += '<div class="sh">🐾 사라지는 이유</div>' +
-    (g.reasons && g.reasons.length ? tally(g.reasons, '명', 4) : '<div class="empty">아직 없어요.</div>');
-  if (st && st.impacts && st.impacts.length) {
+    (g.reasons && g.reasons.length ? tally(g.reasons, '', 4) : '<div class="empty">아직 없어요.</div>');
+  if (st && st.impacts && uniq(st.impacts).length) {
     w += '<div class="sh">🔗 사라지면 생태계에</div><div class="quotes">' +
-      st.impacts.map(function (x) { return '<div class="quote amber">' + esc(x) + '</div>'; }).join('') + '</div>';
+      uniq(st.impacts).slice(0, 3).map(function (x) { return '<div class="quote amber">' + esc(x) + '</div>'; }).join('') + '</div>';
   }
   if (st && st.actions && st.actions.length) {
     w += '<div class="sh">🙌 우리가 할 수 있는 행동</div><div class="quotes">' +
@@ -494,11 +500,12 @@ function render(board, sum) {
         return '<div class="quote">' + esc(x.label) + (x.count > 1 ? ' <span style="color:#6B7B73">×' + x.count + '</span>' : '') + '</div>';
       }).join('') + '</div>';
   }
-  if (st && st.slogans && st.slogans.length) {
+  if (st && st.slogans && uniq(st.slogans).length) {
+    var sl = uniq(st.slogans);
     w += '<div class="sh">📣 우리 포스터 슬로건</div><div class="quotes">' +
-      st.slogans.slice(-3).map(function (x) { return '<div class="quote">“' + esc(x) + '”</div>'; }).join('') + '</div>';
+      sl.slice(-3).map(function (x) { return '<div class="quote">“' + esc(x) + '”</div>'; }).join('') + '</div>';
   }
-  $('wCount').textContent = g.surveyCount ? g.surveyCount + '명' : '아직 없음';
+  $('wCount').textContent = students.length ? students.length + '명' : '아직 없음';
   $('wBody').innerHTML = w;
 
   /* ④ 포스터 */
@@ -513,6 +520,16 @@ function render(board, sum) {
   state.last = sig;
   $('grid').hidden = false;
   $('wait').hidden = true;
+}
+
+function uniq(list) {
+  var out = [], got = {};
+  (list || []).forEach(function (x) {
+    var k = String(x);
+    if (!k || got[k]) return;
+    got[k] = 1; out.push(x);
+  });
+  return out;
 }
 
 function tally(list, unit, max) {
